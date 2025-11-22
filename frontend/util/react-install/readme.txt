@@ -1,3 +1,6 @@
+Gevonden tutorials
+1. gebruikt - https://codeparrot.ai/blogs/a-beginners-guide-to-using-vite-react
+
 Ik had een hele berg opties, maar wat mij verbaasde was dat geen tutorial echt vraagt hoe je je code-base op wil hebben gezet
 
 ZO heb je de volgende commands
