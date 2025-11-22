@@ -1,5 +1,8 @@
 Gevonden tutorials
-1. gebruikt - https://codeparrot.ai/blogs/a-beginners-guide-to-using-vite-react
+1. gebruikt -
+    video: https://www.youtube.com/watch?v=M1GS1SaxAiY
+    tutorial: https://react.dev/learn/installation
+2. alternatief https://codeparrot.ai/blogs/a-beginners-guide-to-using-vite-react
 
 Ik had een hele berg opties, maar wat mij verbaasde was dat geen tutorial echt vraagt hoe je je code-base op wil hebben gezet
 
