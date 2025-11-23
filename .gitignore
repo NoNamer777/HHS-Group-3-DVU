@@ -1,0 +1,8 @@
+# Backend stuff
+__pycache__/
+*.py[cod]
+*.pyo
+
+
+# env
+.env
