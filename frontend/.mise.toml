@@ -1,0 +1,11 @@
+[tools]
+node = "lts"
+npm = "latest"
+
+[tasks.install-deps]
+description = "Install React Router DOM using npm"
+run = "npm install react-router-dom"
+
+[tasks.install]
+description = "Install all dependencies including React Router DOM"
+run = "npm install && npm install react-router-dom"
