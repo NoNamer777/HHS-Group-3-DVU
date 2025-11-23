@@ -9,3 +9,10 @@ run = "npm install react-router-dom"
 [tasks.install]
 description = "Install all dependencies including React Router DOM"
 run = "npm install && npm install react-router-dom"
+
+## alternative - more modular approach. consider this file a '.yml' of sorts
+# [tasks.start]
+# run = "npm run dev"
+
+# [tasks.add-router]
+# run = "npm install react-router-dom"
