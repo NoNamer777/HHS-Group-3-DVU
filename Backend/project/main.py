@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 
+from project.gobals import CLIENT_URL
 from project.middleware.cors import setup_cors_middleware
 
 
 def add_middleware(app: FastAPI) -> None:
     """apply middleware handlers"""
     # Provide allowed_origins to the CORS setup. Adjust as needed for your environment.
-    setup_cors_middleware(app, allowed_origins=["*"])
+    setup_cors_middleware(app, allowed_origins=[CLIENT_URL])
 
 def build_app() -> FastAPI:
     """
