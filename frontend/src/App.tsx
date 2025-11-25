@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home.tsx";
 import Login from "./pages/Login.tsx";
 // styles
-import './style.css'
 
 const App = () => {
   return (

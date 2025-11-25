@@ -1,6 +1,6 @@
 import React from "react";
 import viteLogo from '/vite.svg'
-import '../style.css'
+
 
 
 const Login = () => {

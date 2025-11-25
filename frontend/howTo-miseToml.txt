@@ -5,4 +5,4 @@ Ervanuitgaande dat je Powershell of de VSCode terminal gebruitk
 mise install
 
 # Install react-router-dom using the task
-mise run install-deps
+mise run install-all
