@@ -1,6 +1,6 @@
 [tools]
-node = "lts"
-npm = "latest"
+node = "22.14.0"
+npm = "11"
 
 [tasks.install-deps]
 description = "Install React Router DOM using npm"
