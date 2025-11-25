@@ -5,7 +5,3 @@ npm = "11"
 [tasks.install-all]
 description = "Install packages via mise using its specific npm"	
 run = "npm install"
-
-[tasks.install-bootstrap]
-description = "Install packages via mise using its specific npm"	
-run = "npm install bootstrap"
