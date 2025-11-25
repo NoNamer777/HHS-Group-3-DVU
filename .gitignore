@@ -32,3 +32,11 @@ dist-ssr
 
 ## Backend directories and files
 # place secret files and others here - like an environment specific AppSettings.config file
+
+__pycache__/
+*.py[cod]
+*.pyo
+
+
+# env
+.env

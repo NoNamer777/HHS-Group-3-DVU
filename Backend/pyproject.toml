@@ -1,0 +1,87 @@
+[project]
+name = "dvu-backend"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Danny",email = "22157360@student.hhs.nl"},
+    {name = "Adil", email = "22100261@student.hhs.nl"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[all] (>=0.121.3,<0.122.0)",
+    "uvicorn[standard] (>=0.38.0,<0.39.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "sqlmodel (>=0.0.27,<0.0.28)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "bcrypt (>=5.0.0,<6.0.0)",
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "pyodbc (>=5.3.0,<6.0.0)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)",
+    "alembic (>=1.17.2,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = true
+packages = [
+    { include = "project" },
+]
+
+[tool.ruff]
+line-length = 88
+lint.select = [
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "B",     # bugbear
+    "BLE",   # checks for blind except: statements
+    "D",     # pydocstyle
+    "E",     # flake8 pycodestyle
+    "F",     # flake8 Pyflakes
+    "I",     # isort
+    "INP",   # implicit namespace packages
+    "PLE",   # pylint errors
+    "PLW",   # pylint warnings
+    "PT",    # pytest-style
+    "RET",   # return
+    "SIM",   # simplify
+    "T20",   # print statement checker
+    "W",     # warnings
+    "TD003", #missing-todo-link
+]
+lint.ignore = [
+    "ANN101",  # Missing type annotation for `self` in method
+    "D100",    # Missing docstring in public module
+    "D101",    # Missing docstring in public class
+    "D103",    # Missing docstring in public function 
+    "D104",    # Missing docstring in public package
+    "D200",    # One-line docstring should fit on one line with quotes
+    "D202",    # No blank lines allowed after function docstring
+    "D203",    # 1 blank line required before class docstring
+    "D205",    # 1 blank line required between summary line and description
+    "D212",    # Multi-line docstring summary should start at the first line
+    "D400",    # First line should end with a period
+    "D401",    # First line should be in imperative mood
+    "D403",    # First word of the first line should be properly capitalized
+    "D415",    # First line should end with a period, question mark, or exclamation point
+    "E712",    # Comparison to true should be 'if cond is true:' or 'if cond:'
+    "E731",    # Do not assign a lambda expression, use a def
+    "PLW0120", # `else` clause on loop without a `break` statement
+    "RET504",  # Unnecessary variable assignment before return statement
+    "RET505",  # Unnecessary else after return statement
+    "RET506",  # Unnecessary else after raise statement
+    "SIM102",  # Use a single if-statement instead of nested if-statements
+    "SIM105",  # Use 'contextlib.suppress(...)' instead of try-except-pass
+    "SIM118",  # Checks for key-existence checks against dict.keys() calls
+    "SIM115",  # Use context handler for opening files
+    "W605",    # Invalid escape sequence 'x'
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
