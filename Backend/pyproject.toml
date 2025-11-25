@@ -3,7 +3,8 @@ name = "dvu-backend"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "Danny",email = "22157360@student.hhs.nl"},
+    {name = "Adil", email = "22100261@student.hhs.nl"}
 ]
 readme = "README.md"
 requires-python = ">=3.12"
