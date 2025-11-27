@@ -2,7 +2,7 @@
 
 ## Setup Docker image
 1. **Open backend folder**
-    - cd Backend/
+    - cd backend/
 
 2. **Create docker image**
     - docker build -t "image-name" .
@@ -17,7 +17,7 @@
     - poetry shell
 
 1. **Open backend folder**
-    - cd Backend/
+    - cd backend/
 
 2. **Activate poetry env**
     - poetry shell

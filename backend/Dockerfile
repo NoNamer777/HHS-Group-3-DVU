@@ -22,11 +22,11 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # Everything will live in /app
 WORKDIR /app
 
-# Install dependencies (pyproject.toml & poetry.lock are in Backend/)
+# Install dependencies (pyproject.toml & poetry.lock are in backend/)
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
 
-# Copy the rest of the Backend folder into /app
+# Copy the rest of the backend folder into /app
 COPY . .
 
 # Open ports used by app
