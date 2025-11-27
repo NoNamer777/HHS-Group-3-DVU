@@ -1,5 +1,5 @@
-import { render } from "vitest-browser-react";
-import Home from "./home.tsx";
+import { render } from 'vitest-browser-react';
+import Home from './home.tsx';
 
 test('Home', async () => {
     const { getByText } = await render(<Home />);
