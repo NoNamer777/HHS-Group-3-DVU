@@ -2,7 +2,7 @@
 
 This directory contains the React.js frontend for the project.
 
-For information about required tools (Node.js version, package manager, system dependencies, etc.), see the [README](../README.md) in the root of the repository:
+For information about required tools (Node.js version, package manager, system dependencies, etc.), see the [README](../README.md) in the root of the repository.
 
 ---
 
@@ -30,8 +30,8 @@ npm start
 
 This will typically:
 
-- Start the development server (e.g. via `react-scripts start` or your custom dev script).
-- Open the app in your browser, usually at `http://localhost:5173`
+- Start the development server.
+- You can find the app in your browser, usually at `http://localhost:5173`.
 
 The server will automatically reload when you make changes to the source files.
 
@@ -45,12 +45,32 @@ The server will automatically reload when you make changes to the source files.
 
 ---
 
+## Testing
+
+This project uses [Vitest](https://vitest.dev) for unit/integration tests and [Playwright](https://playwright.dev) for browser-based testing.
+
+### Browser setup
+
+Before running tests, install the browsers used by Playwright:
+
+```bash
+npx playwright install chromium
+```
+
+### Test commands
+
+```bash
+npm run test  # Same as `npm test`, runs all tests once
+npm run test:dev  # Run all tests in watch mode
+```
+
+---
+
 ## Additional Commands
 
 Other scripts that are available are:
 
 ```bash
-npm run test  # Run tests
 npm run build # Build the app for production
 npm run lint  # Run linters (if configured)
 ```
