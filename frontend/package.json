@@ -9,6 +9,8 @@
     "build": "npx vite build",
     "test": "npx vitest run",
     "test:dev": "npx vitest",
+    "format:check": "npx prettier -l .",
+    "format:write": "npx prettier -w ."
   },
   "dependencies": {
     "bootstrap": "~5.3.0",
@@ -23,6 +25,8 @@
     "@vitest/coverage-v8": "~4.0.0",
     "@vitest/ui": "~4.0.0",
     "playwright": "~1.57.0",
+    "prettier": "~3.7.0",
+    "prettier-plugin-organize-imports": "~4.3.0",
     "react": "~19.2.0",
     "react-dom": "~19.2.0",
     "typescript": "~5.9.0",
