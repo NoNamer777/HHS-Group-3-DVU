@@ -9,6 +9,8 @@
 # generated files from packages and builds
 node_modules/
 dist/
+reports/
+**/__screenshots__/
 
 __pycache__/
 *.py[cod]
