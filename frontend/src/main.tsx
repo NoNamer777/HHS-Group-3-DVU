@@ -1,11 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.tsx";
+import App from "./app/app.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
-// Grab the DOM element with type safety
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
@@ -13,10 +11,10 @@ if (!rootElement) {
 }
 
 // Create React root and render
-ReactDOM.createRoot(rootElement as HTMLElement).render(
-  <React.StrictMode>
+createRoot(rootElement).render(
+  <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  </StrictMode>
 );

@@ -1,9 +1,7 @@
-import React from "react";
 import viteLogo from '/vite.svg'
 import typescriptLogo from '/typescript.svg'
 
-
-const Home = () => {
+export default function Home() {
   return (
     <main>
       <div>
@@ -18,6 +16,4 @@ const Home = () => {
       <h1>Hello Home</h1>
     </main>
   );
-};
-
-export default Home;
+}

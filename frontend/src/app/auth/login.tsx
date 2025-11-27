@@ -1,9 +1,6 @@
-import React from "react";
 import viteLogo from '/vite.svg'
 
-
-
-const Login = () => {
+export default function Login() {
   return (
     <main>
       <div>
@@ -15,6 +12,4 @@ const Login = () => {
       <h1>Hello Oscar</h1>
     </main>
   );
-};
-
-export default Login;
+}
