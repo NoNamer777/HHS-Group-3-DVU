@@ -1,10 +1,25 @@
 /// <reference types="vitest/config" />
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
+const __dirname = import.meta.dirname;
+
 export default defineConfig({
+    build: {
+        assetsDir: '.',
+        rollupOptions: {
+            input: {
+                main: resolve(__dirname, 'src/index.html'),
+            },
+        },
+        outDir: resolve(__dirname, 'dist'),
+        emptyOutDir: true,
+    },
     plugins: [react()],
+    publicDir: resolve(__dirname, 'public'),
+    root: resolve(__dirname, 'src'),
     test: {
         browser: {
             enabled: true,
@@ -27,7 +42,7 @@ export default defineConfig({
         name: 'diabeticum-pedis',
         open: false,
         reporters: ['dot', ['html', { outputFile: 'reports/index.html' }]],
-        root: import.meta.dirname,
+        root: __dirname,
         ui: true,
         sequence: {
             shuffle: true,
