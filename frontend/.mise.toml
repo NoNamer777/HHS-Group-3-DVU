@@ -1,0 +1,7 @@
+[tools]
+node = "22.14.0"
+npm = "11"
+
+[tasks.install-all]
+description = "Install packages via mise using its specific npm"	
+run = "npm install"
