@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "files": ["src/main.tsx"],
+    "include": ["src/**/*.tsx"],
+    "exclude": ["src/**/*.spec.tsx"],
+    "compilerOptions": {
+        "types": ["vite/client"]
+    }
+}
