@@ -5,8 +5,11 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "build": "vite build"
+    "start": "npx vite",
+    "build": "npx vite build",
+    "test": "npx vitest run",
+    "test:dev": "npx vitest",
+    "test:reports": "npx vite preview --outDir reports --open"
   },
   "dependencies": {
     "bootstrap": "~5.3.0",
