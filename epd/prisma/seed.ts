@@ -1,10 +1,10 @@
-import { PrismaClient, UserRole, Sex, PatientStatus, EncounterType, EncounterStatus, MedicalRecordType, DiagnosisType, MedicationStatus, VitalType, AppointmentStatus, InsuranceStatus } from '@prisma/client';
+import { PrismaClient, UserRole, Sex, PatientStatus, EncounterType, EncounterStatus, MedicalRecordType, DiagnosisType, MedicationStatus, VitalType, AppointmentStatus, InsuranceStatus, LabResultStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding database...');
+  console.log('Seeding database...');
 
   // Clear existing data
   await prisma.appointment.deleteMany();
@@ -63,7 +63,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Users created');
+  console.log('Users created');
 
   // Create Insurers
   const cz = await prisma.insurer.create({
@@ -86,61 +86,55 @@ async function main() {
     }
   });
 
-  console.log('✅ Insurers created');
+  console.log('Insurers created');
 
   // Create Patients
-  const patient1 = await prisma.patient.create({
-    data: {
-      hospitalNumber: 'P2024001',
-      firstName: 'Anna',
-      lastName: 'Smit',
-      dateOfBirth: new Date('1985-03-15'),
-      sex: Sex.FEMALE,
-      phone: '06-12345678',
-      email: 'anna.smit@email.nl',
-      addressLine1: 'Hoofdstraat 123',
-      city: 'Amsterdam',
-      postalCode: '1011 AB',
-      status: PatientStatus.ACTIVE,
-      createdById: doctor.id
-    }
-  });
+  const firstNames: string[] = ['Anna', 'Henk', 'Sophie', 'Jan', 'Maria', 'Peter', 'Lisa', 'Tom', 'Emma', 'Lars', 
+    'Sara', 'Mark', 'Julia', 'Tim', 'Nina', 'Paul', 'Laura', 'Bas', 'Eva', 'Daan',
+    'Lotte', 'Sven', 'Isa', 'Ruben', 'Fleur', 'Max', 'Anne', 'Jesse', 'Mila', 'Lucas',
+    'Zoey', 'Finn', 'Noa', 'Sem', 'Lina', 'Luuk', 'Tess', 'Thijs', 'Fenna', 'Bram',
+    'Liv', 'Sam', 'Evi', 'Stijn', 'Iris', 'Joep', 'Roos', 'Gijs', 'Luna', 'Milan',
+    'Sophie', 'Nick', 'Lynn', 'Jayden', 'Lieke', 'Dex', 'Saar', 'Robin', 'Fay', 'Koen'];
+  
+  const lastNames: string[] = ['Smit', 'de Jong', 'van Dijk', 'Bakker', 'Jansen', 'Visser', 'van den Berg', 'Peters', 
+    'Hendriks', 'de Vries', 'van Leeuwen', 'Mulder', 'Vermeulen', 'de Boer', 'Willems',
+    'Koning', 'van der Meer', 'Schouten', 'Meijer', 'van Dam', 'Brouwer', 'Jacobs', 'de Groot',
+    'Hoekstra', 'van Veen', 'Maas', 'de Wit', 'Vos', 'Dekker', 'Kok', 'de Graaf'];
 
-  const patient2 = await prisma.patient.create({
-    data: {
-      hospitalNumber: 'P2024002',
-      firstName: 'Henk',
-      lastName: 'de Jong',
-      dateOfBirth: new Date('1972-08-22'),
-      sex: Sex.MALE,
-      phone: '06-87654321',
-      email: 'henk.dejong@email.nl',
-      addressLine1: 'Kerkstraat 45',
-      city: 'Rotterdam',
-      postalCode: '3011 CD',
-      status: PatientStatus.ACTIVE,
-      createdById: doctor.id
-    }
-  });
+  const cities: string[] = ['Amsterdam', 'Rotterdam', 'Utrecht', 'Den Haag', 'Eindhoven', 'Tilburg', 
+    'Groningen', 'Almere', 'Breda', 'Nijmegen', 'Enschede', 'Apeldoorn', 'Haarlem', 
+    'Arnhem', 'Amersfoort', 'Zaanstad', 'Haarlemmermeer', 's-Hertogenbosch', 'Zoetermeer', 'Zwolle'];
 
-  const patient3 = await prisma.patient.create({
-    data: {
-      hospitalNumber: 'P2024003',
-      firstName: 'Sophie',
-      lastName: 'van Dijk',
-      dateOfBirth: new Date('1990-11-10'),
-      sex: Sex.FEMALE,
-      phone: '06-11223344',
-      email: 'sophie.vandijk@email.nl',
-      addressLine1: 'Laan 78',
-      city: 'Utrecht',
-      postalCode: '3511 EF',
-      status: PatientStatus.ACTIVE,
-      createdById: nurse.id
-    }
-  });
+  const streets: string[] = ['Hoofdstraat', 'Kerkstraat', 'Laan', 'Markt', 'Dorpsstraat', 'Schoolstraat', 
+    'Stationsweg', 'Parkweg', 'Molenstraat', 'Beatrixlaan'];
 
-  console.log('✅ Patients created');
+  const patients: any[] = [];
+  
+  for (let i = 0; i < 60; i++) {
+    const patient = await prisma.patient.create({
+      data: {
+        hospitalNumber: `P2024${String(i + 1).padStart(3, '0')}`,
+        firstName: firstNames[i % firstNames.length]!,
+        lastName: lastNames[Math.floor(i / 2) % lastNames.length]!,
+        dateOfBirth: new Date(1950 + (i % 50), (i % 12), (i % 28) + 1),
+        sex: i % 3 === 0 ? Sex.MALE : i % 3 === 1 ? Sex.FEMALE : Sex.OTHER,
+        phone: `06-${String(12345678 + i).slice(0, 8)}`,
+        email: `patient${i + 1}@email.nl`,
+        addressLine1: `${streets[i % streets.length]} ${(i % 200) + 1}`,
+        city: cities[i % cities.length]!,
+        postalCode: `${1000 + (i % 9000)} ${String.fromCharCode(65 + (i % 26))}${String.fromCharCode(65 + ((i * 2) % 26))}`,
+        status: i % 15 === 0 ? PatientStatus.DISCHARGED : PatientStatus.ACTIVE,
+        createdById: i % 3 === 0 ? doctor.id : i % 3 === 1 ? nurse.id : assistant.id
+      }
+    });
+    patients.push(patient);
+  }
+
+  const patient1 = patients[0]!;
+  const patient2 = patients[1]!;
+  const patient3 = patients[2]!;
+
+  console.log(`${patients.length} Patients created`);
 
   // Create Insurance Policies
   await prisma.insurancePolicy.create({
@@ -163,7 +157,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Insurance policies created');
+  console.log('Insurance policies created');
 
   // Create Allergies
   await prisma.allergy.create({
@@ -184,7 +178,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Allergies created');
+  console.log('Allergies created');
 
   // Create Encounter for Patient 1
   const encounter1 = await prisma.encounter.create({
@@ -240,7 +234,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Encounter 1 with records created');
+  console.log('Encounter 1 with records created');
 
   // Create Encounter for Patient 2
   const encounter2 = await prisma.encounter.create({
@@ -280,7 +274,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Encounter 2 with records created');
+  console.log('Encounter 2 with records created');
 
   // Create Vital Signs
   await prisma.vitalSign.create({
@@ -313,7 +307,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Vital signs created');
+  console.log('Vital signs created');
 
   // Create Lab Results
   await prisma.labResult.create({
@@ -322,7 +316,7 @@ async function main() {
       value: '6.8',
       unit: '%',
       referenceRange: '< 7.0%',
-      status: 'FINAL',
+      status: LabResultStatus.FINAL,
       takenAt: new Date('2024-11-01T09:00:00'),
       patientId: patient1.id,
       encounterId: encounter1.id,
@@ -336,7 +330,7 @@ async function main() {
       value: '0.02',
       unit: 'ng/mL',
       referenceRange: '< 0.04',
-      status: 'FINAL',
+      status: LabResultStatus.FINAL,
       takenAt: new Date('2024-11-15T14:45:00'),
       patientId: patient2.id,
       encounterId: encounter2.id,
@@ -344,7 +338,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Lab results created');
+  console.log('Lab results created');
 
   // Create Appointments
   await prisma.appointment.create({
@@ -383,10 +377,10 @@ async function main() {
     }
   });
 
-  console.log('✅ Appointments created');
+  console.log('Appointments created');
 
-  console.log('\n🎉 Seeding completed!');
-  console.log('\n📋 Test accounts:');
+  console.log('\nSeeding completed!');
+  console.log('\nTest accounts:');
   console.log('Doctor:    jan.devries@ziekenhuis.nl / password123');
   console.log('Nurse:     maria.jansen@ziekenhuis.nl / password123');
   console.log('Assistant: pieter.bakker@ziekenhuis.nl / password123');
