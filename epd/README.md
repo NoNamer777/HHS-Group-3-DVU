@@ -160,7 +160,7 @@ After seeding, the following accounts are available:
 - `POST /api/insurance/insurers` - Create new insurer
 - `POST /api/insurance/policies` - Create new policy
 
-## 🔒 Authentication
+##  Authentication
 
 All API endpoints (except `/auth/register` and `/auth/login`) require authentication.
 
@@ -197,7 +197,7 @@ curl http://localhost:3001/api/patients \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
-## 📊 Database Schema
+## Database Schema
 
 The database contains the following models:
 - User (with roles: DOCTOR, NURSE, ASSISTANT, ADMIN)
@@ -212,7 +212,7 @@ The database contains the following models:
 - Appointment
 - Insurer & InsurancePolicy
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Runtime**: Node.js
 - **Framework**: Express.js
@@ -223,7 +223,7 @@ The database contains the following models:
 - **Containerization**: Docker & Docker Compose
 - **Validation**: TypeScript types + Prisma
 
-## 📝 Development
+## Development
 
 ### Database changes:
 
@@ -238,6 +238,6 @@ The database contains the following models:
 3. Create routes in `backend/src/routes/`
 4. Register routes in `backend/src/index.ts`
 
-## 📄 License
+## License
 
 ISC
