@@ -1,0 +1,25 @@
+{
+    "arrowParens": "always",
+    "jsxSingleQuote": false,
+    "overrides": [
+        {
+            "files": ["package*.json"],
+            "options": {
+                "tabWidth": 2
+            }
+        },
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "singleQuote": false
+            }
+        }
+    ],
+    "plugins": ["prettier-plugin-organize-imports"],
+    "quoteProps": "consistent",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": false
+}
