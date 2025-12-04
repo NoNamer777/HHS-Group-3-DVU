@@ -6,7 +6,7 @@ services:
             context: ../
             dockerfile: .docker/Dockerfile
             tags:
-                -   "diabeticum-pedis/front-end:latest"
+                - "diabeticum-pedis/front-end:latest"
         container_name: front-end
         restart: unless-stopped
         ports:
