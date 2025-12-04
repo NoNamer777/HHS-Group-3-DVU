@@ -37,6 +37,28 @@ The server will automatically reload when you make changes to the source files.
 
 ---
 
+## Running with Docker
+
+You can run the production build of this React app using Docker and Nginx. The Docker image is built from the `.docker/Dockerfile` in this project and serves the compiled app through Nginx on port `3000` by default.
+
+At a high level, the flow is:
+
+1. The app is built using Node inside a Docker build stage.
+2. The compiled output is copied into a lightweight Nginx image.
+3. Nginx serves the static files and handles client-side routing for the React app.
+
+A convenience script is available in `package.json`:
+
+```bash
+npm run docker:build
+```
+
+This command builds a local image for the app. After building, you can run it with Docker and access it via `http://localhost:3000`.
+
+For detailed instructions (including example `docker run` commands, environment configuration, and how the Nginx setup works), see [.docker/README.md](./.docker/README.md).
+
+---
+
 ## Project Structure (High-Level)
 
 - `src/` – React components, hooks, and other frontend logic
@@ -88,7 +110,11 @@ npm run test:dev  # Run all tests in watch mode
 Other scripts that are available are:
 
 ```bash
-npm run build  # Build the app for production
+npm run build                 # Build the app for production
+npm run docker:build          # Build a Docker image for the production app
+npm run docker-compose:build  # Build a Docker image for the production app using Docker Compose
+npm run docker-compose:up     # Run the production app using Docker Compose
+npm run docker-compose:down   # Stop and remove the Docker containers using Docker Compose
 ```
 
 ---
@@ -143,7 +169,7 @@ In `.vscode/settings.json` (project-level) or your global VS Code settings:
 }
 ```
 
-If you prefer ESLint to drive formatting (with `eslint-plugin-prettier` /`prettier-eslint`), you can rely on `source.fixAll.eslint` instead of `editor.defaultFormatter`.
+If you prefer ESLint to drive formatting (with `eslint-plugin-prettier`/`prettier-eslint`), you can rely on `source.fixAll.eslint` instead of `editor.defaultFormatter`.
 
 ---
 
@@ -151,17 +177,13 @@ If you prefer ESLint to drive formatting (with `eslint-plugin-prettier` /`pretti
 
 #### Enable ESLint
 
-1. Open **Settings / Preferences** → **Languages & Frameworks** → **JavaScript**
-   → **Code Quality Tools** → **ESLint**.
-2. Select **"Automatic ESLint configuration"** or point to your local
-   `node_modules/eslint`.
-3. Enable **"Run eslint --fix on save"** (or **Run for files** on save, depending
-   on IDE version).
+1. Open **Settings / Preferences** → **Languages & Frameworks** → **JavaScript** → **Code Quality Tools** → **ESLint**.
+2. Select **"Automatic ESLint configuration"** or point to your local `node_modules/eslint`.
+3. Enable **"Run eslint --fix on save"** (or **Run for files** on save, depending on the IDE version).
 
 #### Enable Prettier
 
-1. Open **Settings / Preferences** → **Languages & Frameworks** → **JavaScript**
-   → **Prettier**.
+1. Open **Settings / Preferences** → **Languages & Frameworks** → **JavaScript** → **Prettier**.
 2. Set **Prettier package** to `node_modules/prettier`.
 3. Check **"On 'Reformat Code' action"** and/or **"On save"**.
 4. Set the **"Run for files"** pattern: `**/*`
