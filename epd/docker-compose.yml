@@ -1,0 +1,45 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: epd-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: epd_user
+      POSTGRES_PASSWORD: epd_password
+      POSTGRES_DB: epd_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U epd_user -d epd_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # EPD Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: epd-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://epd_user:epd_password@postgres:5432/epd_db
+      PORT: 3001
+      NODE_ENV: production
+      JWT_SECRET: change-this-secret-in-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./prisma:/app/prisma
+      - /app/node_modules
+      - /app/dist
+
+volumes:
+  postgres_data:
