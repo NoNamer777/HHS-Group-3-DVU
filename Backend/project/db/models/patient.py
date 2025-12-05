@@ -2,8 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from db.models.enums import GenderEnum, PatientStatusEnum
-from db.models.user import User
+from project.db.models.enums import GenderEnum, PatientStatusEnum
+from project.db.models.user import User
 
 
 class PatientResponse(User):

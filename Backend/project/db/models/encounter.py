@@ -2,8 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from db.models.basemodel import DVUBaseModel
-from db.models.enums import EncounterStatusEnum, EncounterTypeEnum
+from project.db.models.basemodel import DVUBaseModel
+from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
 
 
 class EncounterResponse(DVUBaseModel):
