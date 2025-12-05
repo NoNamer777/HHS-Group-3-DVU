@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from db.models.enums import PatientStatusEnum
-from db.models.patient import PaginatedPatientResponse, PatientResponse
+from project.db.models.enums import PatientStatusEnum
+from project.db.models.patient import PaginatedPatientResponse, PatientResponse
 from project.services.patients_service import (
     create_patient_service,
     delete_patient_service,

@@ -3,8 +3,8 @@ from typing import Annotated
 import httpx
 from fastapi import Depends, HTTPException, status
 
-from db.models.encounter import EncounterResponse, PaginatedEncounterResponse
-from db.models.enums import EncounterStatusEnum, EncounterTypeEnum
+from project.db.models.encounter import EncounterResponse, PaginatedEncounterResponse
+from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
 from project.globals import EPD_URL
 
 url_prefix = f"{EPD_URL}/encounters"

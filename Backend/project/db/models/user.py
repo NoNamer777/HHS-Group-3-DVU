@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from db.models.basemodel import DVUBaseModel
-from db.models.enums import UserRoleEnum
+from project.db.models.basemodel import DVUBaseModel
+from project.db.models.enums import UserRoleEnum
 
 
 class User(DVUBaseModel):

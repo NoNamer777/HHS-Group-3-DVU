@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from db.models.encounter import EncounterResponse, PaginatedEncounterResponse
-from db.models.enums import EncounterStatusEnum, EncounterTypeEnum
+from project.db.models.encounter import EncounterResponse, PaginatedEncounterResponse
+from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
 from project.services.encounter_service import (
     create_encounter_service,
     delete_encounter_service,

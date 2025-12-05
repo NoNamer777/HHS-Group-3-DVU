@@ -4,7 +4,7 @@ import httpx
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from db.models.user import UserCreate, UserResponse
+from project.db.models.user import UserCreate, UserResponse
 from project.globals import EPD_URL
 
 route_prefix = f"{EPD_URL}/api/auth"
