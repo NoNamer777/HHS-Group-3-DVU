@@ -31,7 +31,7 @@ async def create_token_service(
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Gebruikersnaam of wachtwoord is incorrect",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -59,7 +59,7 @@ async def register_user_service(
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Email al in gebruik",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -80,6 +80,11 @@ async def profile_information_service() -> UserResponse:
     except httpx.RequestError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY, detail="EPD niet bereikbaar"
+        ) from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=exc.response.status_code,
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()

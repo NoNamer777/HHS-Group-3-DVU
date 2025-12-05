@@ -7,7 +7,7 @@ from db.models.enums import PatientStatusEnum
 from db.models.patient import PaginatedPatientResponse, PatientResponse
 from project.globals import EPD_URL
 
-url_prefix = f"{EPD_URL}/patients"
+url_prefix = f"{EPD_URL}/patient"
 
 
 async def get_patients_service(
@@ -40,7 +40,7 @@ async def get_patients_service(
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Er is iets mis gegaan",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -65,7 +65,7 @@ async def get_patient_by_id_service(patient_id: int) -> PatientResponse:
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Er is iets mis gegaan",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -92,7 +92,7 @@ async def create_patient_service(
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Er is iets mis gegaan",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -121,7 +121,7 @@ async def update_patient_service(
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Er is iets mis gegaan",
+            detail=exc.response.text,
         ) from exc
 
     data = response.json()
@@ -146,5 +146,5 @@ async def delete_patient_service(patient_id: int) -> None:
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=exc.response.status_code,
-            detail="Er is iets mis gegaan",
+            detail=exc.response.text,
         ) from exc
