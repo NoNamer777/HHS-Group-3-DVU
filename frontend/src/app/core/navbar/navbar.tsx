@@ -9,6 +9,13 @@ export default function Navbar() {
             </Link>
 
             <section className="collapse navbar-collapse" id="navbarMenu">
+                <ul className="navbar-nav ms-auto text-center">
+                    <li className="nav-item">
+                        <Link className="nav-link text-white" to="/epdtable">
+                            EPD tabel
+                        </Link>
+                    </li>
+                </ul>
                 <ul className="navbar-nav ms-auto text-end">
                     <li className="nav-item">
                         <Link className="nav-link text-white" to="/login">
