@@ -1,8 +1,8 @@
-import "./table.css";
+import './table.css';
 
 type DiapedisTableProps = {
-    columns: string[];                              // kolommen zoals: id, naam, datum
-    data: Array<Record<string, unknown> | null>     // patient data
+    columns: string[]; // kolommen zoals: id, naam, datum
+    data: Array<Record<string, unknown> | null>; // patient data
 };
 
 export default function DiapedisTable({ columns, data }: DiapedisTableProps) {
@@ -28,7 +28,7 @@ export default function DiapedisTable({ columns, data }: DiapedisTableProps) {
                         data.map((row, i) => (
                             <tr key={i}>
                                 {columns.map((col) => (
-                                    <td key={col}>{String(row[col] ?? "")}</td>
+                                    <td key={col}>{String(row[col] ?? '')}</td>
                                 ))}
                             </tr>
                         ))

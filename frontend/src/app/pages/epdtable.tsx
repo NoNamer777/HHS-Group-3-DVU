@@ -1,9 +1,9 @@
 import DiapedisTable from '../shared/components/table';
-const columns = ["id", "name", "email"]; // from backend
+const columns = ['id', 'name', 'email']; // from backend
 
 const data = [
-    { id: 1, name: "Alice", email: "a@test.com" },
-    { id: 2, name: "Bob", email: "b@test.com" }
+    { id: 1, name: 'Alice', email: 'a@test.com' },
+    { id: 2, name: 'Bob', email: 'b@test.com' },
 ];
 export default function EpdTable() {
     return (
