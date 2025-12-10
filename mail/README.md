@@ -4,6 +4,27 @@ Mock mail service voor EPD integratie met PostgreSQL database.
 
 ## Setup
 
+### Quick Start (Recommended)
+
+**Windows (PowerShell):**
+```powershell
+.\start.ps1
+```
+
+**Linux/Mac:**
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+Het script zal je door de setup leiden:
+1. Docker containers bouwen (optioneel)
+2. Database opstarten
+3. Database migreren
+4. Service starten
+
+### Manual Setup
+
 1. **Installeer dependencies:**
    ```bash
    npm install
