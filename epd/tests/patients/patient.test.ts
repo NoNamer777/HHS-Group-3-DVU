@@ -24,7 +24,7 @@ describe('Patient API', () => {
         role: 'DOCTOR'
       });
 
-    authToken = registerResponse.body.token;
+    authToken = registerResponse.body.accessToken;
 
     // Create a test patient for use in GET/PUT/DELETE tests
     const patientResponse = await request(app)

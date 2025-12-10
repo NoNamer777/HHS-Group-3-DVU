@@ -48,8 +48,15 @@ const router = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                 token:
+ *                 accessToken:
  *                   type: string
+ *                   description: Short-lived JWT access token (15 minutes)
+ *                 refreshToken:
+ *                   type: string
+ *                   description: Long-lived refresh token (7 days)
+ *                 expiresIn:
+ *                   type: string
+ *                   description: Access token expiration time
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       400:
@@ -85,7 +92,7 @@ router.post('/register', authController.register);
  *                 format: password
  *     responses:
  *       200:
- *         description: Login successful
+ *         description: Logged in successfully
  *         content:
  *           application/json:
  *             schema:
@@ -93,8 +100,15 @@ router.post('/register', authController.register);
  *               properties:
  *                 message:
  *                   type: string
- *                 token:
+ *                 accessToken:
  *                   type: string
+ *                   description: Short-lived JWT access token (15 minutes)
+ *                 refreshToken:
+ *                   type: string
+ *                   description: Long-lived refresh token (7 days)
+ *                 expiresIn:
+ *                   type: string
+ *                   description: Access token expiration time
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       401:
@@ -128,5 +142,94 @@ router.post('/login', authController.login);
  *         description: Server error
  */
 router.get('/profile', authenticateToken, authController.getProfile);
+
+/**
+ * @swagger
+ * /api/auth/refresh:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Refresh access token
+ *     description: Get a new access token using a valid refresh token
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: Valid refresh token
+ *     responses:
+ *       200:
+ *         description: New access token generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                 expiresIn:
+ *                   type: string
+ *       400:
+ *         description: Refresh token required
+ *       401:
+ *         description: Invalid or expired refresh token
+ *       500:
+ *         description: Server error
+ */
+router.post('/refresh', authController.refresh);
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Logout user
+ *     description: Revoke refresh token to logout user
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ *       400:
+ *         description: Refresh token required
+ *       500:
+ *         description: Server error
+ */
+router.post('/logout', authController.logout);
+
+/**
+ * @swagger
+ * /api/auth/revoke-all:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Revoke all user tokens
+ *     description: Revoke all refresh tokens for the authenticated user (useful for security breach scenarios)
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All tokens revoked
+ *       401:
+ *         description: Not authenticated
+ *       500:
+ *         description: Server error
+ */
+router.post('/revoke-all', authenticateToken, authController.revokeAllTokens);
 
 export default router;

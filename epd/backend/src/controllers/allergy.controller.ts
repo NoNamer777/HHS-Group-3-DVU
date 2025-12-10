@@ -50,10 +50,10 @@ export const allergyController = {
 
   async create(req: AuthRequest, res: Response) {
     try {
-      const { patientId, allergen, reaction, severity, notedAt } = req.body;
+      const { patientId, substance, reaction, severity, notedAt } = req.body;
 
       const data: any = {
-        allergen,
+        substance,
         patient: {
           connect: { id: patientId }
         }

@@ -28,7 +28,7 @@ describe('Insurance API', () => {
       });
 
     expect(userResponse.status).toBe(201);
-    authToken = userResponse.body.token;
+    authToken = userResponse.body.accessToken;
 
     // Create test patient
     const patientResponse = await request(app)

@@ -27,7 +27,7 @@ describe('Encounter API', () => {
         role: 'DOCTOR'
       });
 
-    authToken = registerResponse.body.token;
+    authToken = registerResponse.body.accessToken;
 
     // Create test patient
     const patientResponse = await request(app)
