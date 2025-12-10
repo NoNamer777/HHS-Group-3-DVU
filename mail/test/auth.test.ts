@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { authenticateToken, validateUserAccess, AuthRequest } from '../../middleware/auth';
-import { generateTestToken, mockUser } from '../utils/testHelpers';
+import { authenticateToken, validateUserAccess, AuthRequest } from '../src/middleware/auth';
+import { generateTestToken, mockUser } from './helpers';
 
 describe('Auth Middleware', () => {
   let mockRequest: Partial<AuthRequest>;

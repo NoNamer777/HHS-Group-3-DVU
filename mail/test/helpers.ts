@@ -14,15 +14,3 @@ export const mockUser2 = {
   userId: 'test-user-456',
   email: 'test2@example.com'
 };
-
-export const mockMail = {
-  id: 'mail-123',
-  userId: mockUser.userId,
-  from: 'sender@example.com',
-  to: 'receiver@example.com',
-  subject: 'Test Subject',
-  body: 'Test mail body',
-  isRead: false,
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
