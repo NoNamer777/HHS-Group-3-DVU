@@ -85,13 +85,13 @@ export const patientController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      const data = req.body;
-
       const validationError = validateIdParam(req.params.id!, 'patient');
       if (validationError) {
         return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
+      const data = req.body;
 
       const patient = await patientService.update(id, data);
       res.json(patient);
@@ -103,12 +103,12 @@ export const patientController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
       const validationError = validateIdParam(req.params.id!, 'patient');
       if (validationError) {
         return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await patientService.delete(id);
       res.json({ message: 'Patient deleted' });

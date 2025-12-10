@@ -50,10 +50,10 @@ export const allergyController = {
 
   async create(req: AuthRequest, res: Response) {
     try {
-      const { patientId, substance, reaction, severity, notedAt } = req.body;
+      const { patientId, allergen, reaction, severity, notedAt } = req.body;
 
       const data: any = {
-        substance,
+        allergen,
         patient: {
           connect: { id: patientId }
         }
@@ -73,12 +73,12 @@ export const allergyController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
       const validationError = validateIdParam(req.params.id!, 'allergy');
       if (validationError) {
         return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, notedAt, ...rest } = req.body;
       const data: any = { ...rest };
@@ -96,12 +96,12 @@ export const allergyController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
       const validationError = validateIdParam(req.params.id!, 'allergy');
       if (validationError) {
         return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await allergyService.delete(id);
       res.json({ message: 'Allergy deleted' });
