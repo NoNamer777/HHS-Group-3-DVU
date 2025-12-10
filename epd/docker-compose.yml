@@ -22,7 +22,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: epd-backend
     restart: unless-stopped
     ports:
@@ -30,7 +30,7 @@ services:
     environment:
       DATABASE_URL: postgresql://epd_user:epd_password@postgres:5432/epd_db
       PORT: 3001
-      NODE_ENV: production
+      NODE_ENV: development
       JWT_SECRET: change-this-secret-in-production
     depends_on:
       postgres:
@@ -39,7 +39,6 @@ services:
       - ./backend:/app/backend
       - ./prisma:/app/prisma
       - /app/node_modules
-      - /app/dist
 
 volumes:
   postgres_data:

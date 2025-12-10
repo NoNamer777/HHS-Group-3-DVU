@@ -39,34 +39,33 @@ Write-Host ""
 Write-Host "Waiting for database..."
 Start-Sleep -Seconds 10
 
-# Setup environment
-Copy-Item .env.docker .env -Force
-
 # Seed database
 $seed = Read-Host "Seed database? (y/n)"
 if ($seed -eq "y") {
     Write-Host ""
-    Write-Host "Installing dependencies..."
-    npm install --silent
+    Write-Host "Installing dependencies in container..."
+    docker-compose exec backend npm install --silent
     
     Write-Host "Setting up Prisma..."
-    npx prisma generate
-    npx prisma migrate deploy
+    docker-compose exec backend npx prisma generate
+    docker-compose exec backend npx prisma migrate deploy
     
     if ($LASTEXITCODE -ne 0) {
-        npx prisma migrate dev --name init
+        docker-compose exec backend npx prisma migrate dev --name init
     }
     
     Write-Host "Seeding database..."
-    npm run prisma:seed
+    docker-compose exec backend npm run prisma:seed
 }
 
-# Start backend
+# Backend is already running in Docker
 Write-Host ""
-Write-Host "Starting backend at http://localhost:3001"
+Write-Host "Backend is running at http://localhost:3001"
+Write-Host "API Documentation: http://localhost:3001/api-docs"
 Write-Host ""
 Write-Host "Logins:"
 Write-Host "  jan.devries@ziekenhuis.nl / password123"
 Write-Host ""
-
-npm run dev
+Write-Host "To view logs: docker-compose logs -f backend"
+Write-Host "To stop: docker-compose down"
+Write-Host ""

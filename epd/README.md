@@ -8,21 +8,34 @@ The easiest way to get started is with Docker. This ensures everyone has the sam
 
 ### First-time setup:
 
+**Windows (PowerShell):**
 ```powershell
 .\start.ps1
 ```
 
+**Linux/Mac (bash):**
+```bash
+chmod +x start.sh
+./start.sh
+```
+
 This script:
 - Builds Docker containers (PostgreSQL + backend)
-- Installs dependencies
-- Runs database migrations
-- Seeds the database with test data
-- Starts the backend server
+- Starts the containers
+- Runs database migrations **inside Docker**
+- Seeds the database with test data **inside Docker**
+- Backend runs automatically in Docker with hot reloading
 
 ### Starting the stack:
 
+**Windows:**
 ```powershell
 .\start.ps1
+```
+
+**Linux/Mac:**
+```bash
+./start.sh
 ```
 
 ### Stopping the stack:
@@ -50,7 +63,7 @@ docker-compose down
 - Docker Desktop
 - Node.js (v18 or higher)
 - npm or yarn
-- PowerShell (Windows)
+- PowerShell (Windows) or bash (Linux/Mac)
 
 ## Quick Start
 
