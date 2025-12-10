@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { insuranceService } from '../services/insurance.service';
 import { InsuranceStatus } from '@prisma/client';
+import { validateIdParam } from '../utils/validation';
 
 export const insuranceController = {
   async getAll(req: Request, res: Response) {
@@ -41,11 +42,12 @@ export const insuranceController = {
   },
 
   async getById(req: Request, res: Response) {
-    const id = parseInt(req.params.id!);
-
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'Invalid insurance policy ID' });
+    const validationError = validateIdParam(req.params.id!, 'insurance policy');
+    if (validationError) {
+      return res.status(validationError.status).json({ error: validationError.error });
     }
+    
+    const id = parseInt(req.params.id!);
 
     const policy = await insuranceService.findById(id);
 
@@ -77,11 +79,12 @@ export const insuranceController = {
   },
 
   async update(req: Request, res: Response) {
-    const id = parseInt(req.params.id!);
-
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'Invalid insurance policy ID' });
+    const validationError = validateIdParam(req.params.id!, 'insurance policy');
+    if (validationError) {
+      return res.status(validationError.status).json({ error: validationError.error });
     }
+    
+    const id = parseInt(req.params.id!);
 
     const { policyNumber, status, startDate, endDate, patientId, insurerId } = req.body;
 
@@ -99,11 +102,12 @@ export const insuranceController = {
   },
 
   async delete(req: Request, res: Response) {
-    const id = parseInt(req.params.id!);
-
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'Invalid insurance policy ID' });
+    const validationError = validateIdParam(req.params.id!, 'insurance policy');
+    if (validationError) {
+      return res.status(validationError.status).json({ error: validationError.error });
     }
+    
+    const id = parseInt(req.params.id!);
 
     await insuranceService.delete(id);
 

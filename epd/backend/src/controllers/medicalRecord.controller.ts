@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { medicalRecordService } from '../services/medicalRecord.service';
+import { validateIdParam } from '../utils/validation';
 
 export const medicalRecordController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -85,11 +86,12 @@ export const medicalRecordController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid record ID' });
+      const validationError = validateIdParam(req.params.id!, 'record');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const data = req.body;
       const record = await medicalRecordService.update(id, data);
@@ -102,11 +104,12 @@ export const medicalRecordController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid record ID' });
+      const validationError = validateIdParam(req.params.id!, 'record');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await medicalRecordService.delete(id);
       res.json({ message: 'Record deleted' });

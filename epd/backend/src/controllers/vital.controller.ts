@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { vitalService } from '../services/vital.service';
+import { validateIdParam } from '../utils/validation';
 
 export const vitalController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -74,11 +75,12 @@ export const vitalController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid vital sign ID' });
+      const validationError = validateIdParam(req.params.id!, 'vital sign');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, measuredAt, ...rest } = req.body;
       const data: any = { ...rest };
@@ -96,11 +98,12 @@ export const vitalController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid vital sign ID' });
+      const validationError = validateIdParam(req.params.id!, 'vital sign');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await vitalService.delete(id);
       res.json({ message: 'Vital sign deleted' });

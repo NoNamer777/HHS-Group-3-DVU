@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { medicationService } from '../services/medication.service';
+import { validateIdParam } from '../utils/validation';
 
 export const medicationController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -91,11 +92,12 @@ export const medicationController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid medication ID' });
+      const validationError = validateIdParam(req.params.id!, 'medication');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, encounterId, prescriberId, startDate, endDate, ...rest } = req.body;
       const data: any = { ...rest };
@@ -119,11 +121,12 @@ export const medicationController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid medication ID' });
+      const validationError = validateIdParam(req.params.id!, 'medication');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await medicationService.delete(id);
       res.json({ message: 'Medication deleted' });

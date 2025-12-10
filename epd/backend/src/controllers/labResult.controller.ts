@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { labResultService } from '../services/labResult.service';
+import { validateIdParam } from '../utils/validation';
 
 export const labResultController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -92,11 +93,12 @@ export const labResultController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid lab result ID' });
+      const validationError = validateIdParam(req.params.id!, 'lab result');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, encounterId, validatorId, takenAt, reportedAt, ...rest } = req.body;
       const data: any = { ...rest };
@@ -120,11 +122,12 @@ export const labResultController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid lab result ID' });
+      const validationError = validateIdParam(req.params.id!, 'lab result');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await labResultService.delete(id);
       res.json({ message: 'Lab result deleted' });

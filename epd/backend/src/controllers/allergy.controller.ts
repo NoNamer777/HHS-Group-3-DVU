@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { allergyService } from '../services/allergy.service';
+import { validateIdParam } from '../utils/validation';
 
 export const allergyController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -74,8 +75,9 @@ export const allergyController = {
     try {
       const id = parseInt(req.params.id!);
       
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid allergy ID' });
+      const validationError = validateIdParam(req.params.id!, 'allergy');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
 
       const { patientId, notedAt, ...rest } = req.body;
@@ -96,8 +98,9 @@ export const allergyController = {
     try {
       const id = parseInt(req.params.id!);
       
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid allergy ID' });
+      const validationError = validateIdParam(req.params.id!, 'allergy');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
 
       await allergyService.delete(id);

@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { diagnosisService } from '../services/diagnosis.service';
+import { validateIdParam } from '../utils/validation';
 
 export const diagnosisController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -87,11 +88,12 @@ export const diagnosisController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid diagnosis ID' });
+      const validationError = validateIdParam(req.params.id!, 'diagnosis');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, encounterId, onset, resolved, ...rest } = req.body;
       const data: any = { ...rest };
@@ -114,11 +116,12 @@ export const diagnosisController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid diagnosis ID' });
+      const validationError = validateIdParam(req.params.id!, 'diagnosis');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await diagnosisService.delete(id);
       res.json({ message: 'Diagnosis deleted' });

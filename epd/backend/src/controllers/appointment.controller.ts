@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { appointmentService } from '../services/appointment.service';
+import { validateIdParam } from '../utils/validation';
 
 export const appointmentController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -88,11 +89,12 @@ export const appointmentController = {
 
   async update(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid appointment ID' });
+      const validationError = validateIdParam(req.params.id!, 'appointment');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       const { patientId, clinicianId, start, end, ...rest } = req.body;
       const data: any = { ...rest };
@@ -115,11 +117,12 @@ export const appointmentController = {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      const id = parseInt(req.params.id!);
-      
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid appointment ID' });
+      const validationError = validateIdParam(req.params.id!, 'appointment');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
+      
+      const id = parseInt(req.params.id!);
 
       await appointmentService.delete(id);
       res.json({ message: 'Appointment deleted' });

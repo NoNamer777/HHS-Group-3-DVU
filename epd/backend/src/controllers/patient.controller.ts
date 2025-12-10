@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../types';
 import { patientService } from '../services/patient.service';
 import { PatientStatus } from '@prisma/client';
+import { validateIdParam } from '../utils/validation';
 
 export const patientController = {
   async getAll(req: AuthRequest, res: Response) {
@@ -87,8 +88,9 @@ export const patientController = {
       const id = parseInt(req.params.id!);
       const data = req.body;
 
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid patient ID' });
+      const validationError = validateIdParam(req.params.id!, 'patient');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
 
       const patient = await patientService.update(id, data);
@@ -103,8 +105,9 @@ export const patientController = {
     try {
       const id = parseInt(req.params.id!);
       
-      if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid patient ID' });
+      const validationError = validateIdParam(req.params.id!, 'patient');
+      if (validationError) {
+        return res.status(validationError.status).json({ error: validationError.error });
       }
 
       await patientService.delete(id);
