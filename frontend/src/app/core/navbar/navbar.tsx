@@ -14,6 +14,13 @@ export default function Navbar() {
             </Link>
 
             <section className="collapse navbar-collapse" id="navbarMenu">
+                <ul className="navbar-nav ms-auto text-center">
+                    <li className="nav-item">
+                        <Link className="nav-link text-white" to="/dashboard">
+                            Dashboard
+                        </Link>
+                    </li>
+                </ul>
                 <ul className="navbar-nav ms-auto text-end">
                     {!isLoading && !isAuthenticated && (
                         <li className="nav-item">
