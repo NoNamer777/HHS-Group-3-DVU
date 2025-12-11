@@ -1,0 +1,13 @@
+name: diabeticum-pedis
+services:
+    frontend:
+        image: diabeticum-pedis/front-end
+        build:
+            context: ../
+            dockerfile: .docker/Dockerfile
+            tags:
+                - "diabeticum-pedis/front-end:latest"
+        container_name: front-end
+        restart: unless-stopped
+        ports:
+            - "5173:3000"
