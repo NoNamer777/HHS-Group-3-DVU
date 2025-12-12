@@ -1,0 +1,336 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// ENUMS
+//
+
+enum UserRole {
+  NURSE
+  DOCTOR
+  ASSISTANT
+  ADMIN
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  MX
+  OTHER
+  UNKNOWN
+}
+
+enum PatientStatus {
+  ACTIVE
+  DISCHARGED
+  DECEASED
+}
+
+enum EncounterType {
+  INPATIENT      // opname
+  OUTPATIENT     // poliklinisch
+  EMERGENCY
+  TELEHEALTH
+  OTHER
+}
+
+enum EncounterStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MedicalRecordType {
+  NOTE
+  CONSULTATION
+  PROCEDURE_SUMMARY
+  DISCHARGE_SUMMARY
+  REPORT
+  CHAT_SUMMARY   // voor later als AI chats omzet
+}
+
+enum DiagnosisType {
+  PRIMARY
+  SECONDARY
+  DIFFERENTIAL
+}
+
+enum MedicationStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  ON_HOLD
+}
+
+enum LabResultStatus {
+  REGISTERED
+  PRELIMINARY
+  FINAL
+  AMENDED
+}
+
+enum VitalType {
+  BLOOD_PRESSURE
+  TEMPERATURE
+  OXYGEN_SAT
+  HEART_RATE
+  RESPIRATORY_RATE
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum InsuranceStatus {
+  ACTIVE
+  ENDED
+  PENDING
+}
+
+//
+// MODELS
+//
+
+model User {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  role      UserRole
+  password  String    // in echt: hash
+  createdAt DateTime  @default(now())
+
+  // back-relaties
+  patientsCreated  Patient[]
+  encountersCreated Encounter[]
+  medicalRecords   MedicalRecord[]
+  diagnoses        Diagnosis[]
+  medicationOrders MedicationOrder[]
+  labResults       LabResult[]
+  appointments     Appointment[]
+  refreshTokens    RefreshToken[]
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model Patient {
+  id           Int            @id @default(autoincrement())
+  hospitalNumber String       @unique // intern patiëntnummer
+  firstName    String
+  lastName     String
+  dateOfBirth  DateTime
+  sex          Sex
+  phone        String?
+  email        String?
+  addressLine1 String?
+  addressLine2 String?
+  city         String?
+  postalCode   String?
+  status       PatientStatus  @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  createdById  Int?
+  createdBy    User?          @relation(fields: [createdById], references: [id])
+
+  // relaties
+  encounters      Encounter[]
+  medicalRecords  MedicalRecord[]
+  diagnoses       Diagnosis[]
+  medicationOrders MedicationOrder[]
+  allergies       Allergy[]
+  vitals          VitalSign[]
+  labResults      LabResult[]
+  appointments    Appointment[]
+
+  // insurance
+  insurancePolicies InsurancePolicy[]
+}
+
+model Encounter {
+  id          Int             @id @default(autoincrement())
+  type        EncounterType
+  status      EncounterStatus
+  reason      String?
+  location    String?
+  start       DateTime
+  end         DateTime?
+  createdAt   DateTime        @default(now())
+
+  patientId   Int
+  patient     Patient         @relation(fields: [patientId], references: [id])
+
+  createdById Int?
+  createdBy   User?           @relation(fields: [createdById], references: [id])
+
+  medicalRecords MedicalRecord[]
+  diagnoses      Diagnosis[]
+  medicationOrders MedicationOrder[]
+  labResults     LabResult[]
+}
+
+model MedicalRecord {
+  id          Int               @id @default(autoincrement())
+  type        MedicalRecordType
+  title       String?
+  content     String            // vrije tekst
+  createdAt   DateTime          @default(now())
+
+  patientId   Int
+  patient     Patient           @relation(fields: [patientId], references: [id])
+
+  encounterId Int?
+  encounter   Encounter?        @relation(fields: [encounterId], references: [id])
+
+  authorId    Int?
+  author      User?             @relation(fields: [authorId], references: [id])
+}
+
+model Diagnosis {
+  id          Int          @id @default(autoincrement())
+  code        String
+  description String
+  type        DiagnosisType
+  onset       DateTime?
+  resolved    DateTime?
+  createdAt   DateTime     @default(now())
+
+  patientId   Int
+  patient     Patient      @relation(fields: [patientId], references: [id])
+
+  encounterId Int?
+  encounter   Encounter?   @relation(fields: [encounterId], references: [id])
+
+  authorId    Int?
+  author      User?        @relation(fields: [authorId], references: [id])
+}
+
+model MedicationOrder {
+  id            Int             @id @default(autoincrement())
+  medicationName String
+  dose          String
+  route         String?
+  frequency     String?
+  startDate     DateTime
+  endDate       DateTime?
+  status        MedicationStatus @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+
+  patientId     Int
+  patient       Patient         @relation(fields: [patientId], references: [id])
+
+  encounterId   Int?
+  encounter     Encounter?      @relation(fields: [encounterId], references: [id])
+
+  prescriberId  Int?
+  prescriber    User?           @relation(fields: [prescriberId], references: [id])
+}
+
+model Allergy {
+  id          Int       @id @default(autoincrement())
+  substance   String
+  reaction    String?
+  severity    String?
+  notedAt     DateTime  @default(now())
+
+  patientId   Int
+  patient     Patient   @relation(fields: [patientId], references: [id])
+}
+
+model VitalSign {
+  id          Int        @id @default(autoincrement())
+  type        VitalType
+  value       String
+  unit        String?
+  measuredAt  DateTime   @default(now())
+
+  patientId   Int
+  patient     Patient    @relation(fields: [patientId], references: [id])
+}
+
+model LabResult {
+  id             Int            @id @default(autoincrement())
+  testName       String
+  value          String?
+  unit           String?
+  referenceRange String?
+  status         LabResultStatus @default(REGISTERED)
+  takenAt        DateTime?
+  reportedAt     DateTime?      @default(now())
+
+  patientId      Int
+  patient        Patient        @relation(fields: [patientId], references: [id])
+
+  encounterId    Int?
+  encounter      Encounter?     @relation(fields: [encounterId], references: [id])
+
+  validatorId    Int?
+  validator      User?          @relation(fields: [validatorId], references: [id])
+}
+
+model Appointment {
+  id          Int              @id @default(autoincrement())
+  start       DateTime
+  end         DateTime
+  location    String?
+  reason      String?
+  status      AppointmentStatus @default(SCHEDULED)
+  createdAt   DateTime         @default(now())
+
+  patientId   Int
+  patient     Patient          @relation(fields: [patientId], references: [id])
+
+  clinicianId Int?
+  clinician   User?            @relation(fields: [clinicianId], references: [id])
+}
+
+model Insurer {
+  id        Int       @id @default(autoincrement())
+  name      String    // bv. CZ, VGZ, Zilveren Kruis
+  code      String?   // eigen code of VECOZO-code
+  phone     String?
+  email     String?
+  website   String?
+  address   String?
+
+  createdAt DateTime  @default(now())
+
+  policies  InsurancePolicy[]
+}
+
+model InsurancePolicy {
+  id           Int             @id @default(autoincrement())
+  policyNumber String          @unique
+  status       InsuranceStatus @default(ACTIVE)
+  startDate    DateTime
+  endDate      DateTime?
+
+  patientId    Int
+  patient      Patient         @relation(fields: [patientId], references: [id])
+
+  insurerId    Int
+  insurer      Insurer         @relation(fields: [insurerId], references: [id])
+
+  createdAt    DateTime        @default(now())
+}
