@@ -1,11 +1,11 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
-from fastapi.security import OAuth2PasswordRequestForm
 
-from project.db.models.user import UserCreate, UserResponse
+from project.db.models.user import Auth, TokenResponse, User, UserCreate
 from project.services.auth_service import (
     create_token_service,
+    get_bearer_token,
     profile_information_service,
     register_user_service,
 )
@@ -17,10 +17,10 @@ router = APIRouter(
 )
 
 
-@router.post("/login/", status_code=status.HTTP_200_OK)
+@router.post("/login/", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def create_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-) -> UserResponse:
+    form_data: Annotated[Auth, Depends()],
+) -> TokenResponse:
     """
     Create token for the user
     """
@@ -28,8 +28,10 @@ async def create_token(
     return token
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register_user(form_data: Annotated[UserCreate, Depends()]) -> UserResponse:
+@router.post(
+    "/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
+)
+async def register_user(form_data: Annotated[UserCreate, Depends()]) -> TokenResponse:
     """
     Register a new user
     """
@@ -37,10 +39,10 @@ async def register_user(form_data: Annotated[UserCreate, Depends()]) -> UserResp
     return user
 
 
-@router.get("/profile", status_code=status.HTTP_200_OK)
-async def profile_information() -> UserResponse:
+@router.get("/profile", response_model=User, status_code=status.HTTP_200_OK)
+async def profile_information(token: str = Depends(get_bearer_token)) -> User:
     """
     Request profile info from logged in user
     """
-    user = await profile_information_service()
+    user = await profile_information_service(token=token)
     return user

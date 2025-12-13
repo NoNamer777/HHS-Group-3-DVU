@@ -2,23 +2,42 @@ from typing import Annotated
 
 import httpx
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+)
 
-from project.db.models.user import UserCreate, UserResponse
+from project.db.models.user import Auth, TokenResponse, User, UserCreate
 from project.globals import EPD_URL
 
 route_prefix = f"{EPD_URL}/api/auth"
+bearer_scheme = HTTPBearer(auto_error=True)
+
+
+def get_bearer_token(
+    token: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+) -> str:
+    if token.scheme.lower() != "bearer":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    return token.credentials
+
+
+def create_header(token: str) -> dict:
+    """
+    Create header
+    """
+    return {"Authorization": f"Bearer {token}"}
 
 
 async def create_token_service(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-) -> UserResponse:
+    form_data: Annotated[Auth, Depends()],
+) -> TokenResponse:
     """
     Create token for the user using form data
     """
 
     epd_url = f"{route_prefix}/login"
-    payload = {"email": form_data.username, "password": form_data.password}
+    payload = {"email": form_data.email, "password": form_data.password}
 
     try:
         async with httpx.AsyncClient() as client:
@@ -35,12 +54,12 @@ async def create_token_service(
         ) from exc
 
     data = response.json()
-    return UserResponse.model_validate(data)
+    return TokenResponse.model_validate(data)
 
 
 async def register_user_service(
     form_data: Annotated[UserCreate, Depends()],
-) -> UserResponse:
+) -> TokenResponse:
     """
     Register a user
     """
@@ -63,10 +82,10 @@ async def register_user_service(
         ) from exc
 
     data = response.json()
-    return UserResponse.model_validate(data)
+    return TokenResponse.model_validate(data)
 
 
-async def profile_information_service() -> UserResponse:
+async def profile_information_service(token: str) -> User:
     """
     Gives logged in user information
     """
@@ -75,7 +94,7 @@ async def profile_information_service() -> UserResponse:
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(epd_url)
+            response = await client.get(epd_url, headers=create_header(token))
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -88,4 +107,4 @@ async def profile_information_service() -> UserResponse:
         ) from exc
 
     data = response.json()
-    return UserResponse.model_validate(data)
+    return User.model_validate(data)

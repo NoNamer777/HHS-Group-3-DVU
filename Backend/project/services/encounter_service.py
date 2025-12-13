@@ -3,14 +3,20 @@ from typing import Annotated
 import httpx
 from fastapi import Depends, HTTPException, status
 
-from project.db.models.encounter import EncounterResponse, PaginatedEncounterResponse
+from project.db.models.details import EncounterDetailResponse
+from project.db.models.encounter import (
+    EncounterResponse,
+    PaginatedEncounterResponse,
+)
 from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
 from project.globals import EPD_URL
+from project.services.auth_service import create_header
 
-url_prefix = f"{EPD_URL}/encounters"
+url_prefix = f"{EPD_URL}/api/encounters"
 
 
 async def get_encounters_service(
+    token: str,
     page: int | None = None,
     limit: int | None = None,
     encounter_id: int | None = None,
@@ -33,7 +39,9 @@ async def get_encounters_service(
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(epd_url, params=params)
+            response = await client.get(
+                epd_url, params=params, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -49,16 +57,17 @@ async def get_encounters_service(
     return PaginatedEncounterResponse.model_validate(data)
 
 
-async def get_encounter_by_id_service(encounter_id: int) -> EncounterResponse:
+async def get_encounter_by_id_service(
+    encounter_id: int, token: str
+) -> EncounterDetailResponse:
     """
     Get a encounter by uuid
     """
-    epd_url = url_prefix
-    params = {"id": encounter_id}
+    epd_url = f"{url_prefix}/{encounter_id}"
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(epd_url, params=params)
+            response = await client.get(epd_url, headers=create_header(token))
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -71,12 +80,12 @@ async def get_encounter_by_id_service(encounter_id: int) -> EncounterResponse:
         ) from exc
 
     data = response.json()
-    return EncounterResponse.model_validate(data)
+    return EncounterDetailResponse.model_validate(data)
 
 
 async def create_encounter_service(
-    form_data: Annotated[EncounterResponse, Depends()],
-) -> EncounterResponse:
+    form_data: Annotated[EncounterResponse, Depends()], token: str
+) -> EncounterDetailResponse:
     """
     Create a new encounter
     """
@@ -85,7 +94,9 @@ async def create_encounter_service(
     payload = form_data.model_dump(by_alias=True)
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.post(epd_url, json=payload)
+            response = await client.post(
+                epd_url, json=payload, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -98,12 +109,12 @@ async def create_encounter_service(
         ) from exc
 
     data = response.json()
-    return EncounterResponse.model_validate(data)
+    return EncounterDetailResponse.model_validate(data)
 
 
 async def update_encounter_service(
-    encounter_id: int, form_data: Annotated[EncounterResponse, Depends()]
-) -> EncounterResponse:
+    encounter_id: int, form_data: Annotated[EncounterResponse, Depends()], token: str
+) -> EncounterDetailResponse:
     """
     Update info on an encounter
     """
@@ -114,7 +125,9 @@ async def update_encounter_service(
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.put(epd_url, params=params, json=payload)
+            response = await client.put(
+                epd_url, params=params, json=payload, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -127,10 +140,10 @@ async def update_encounter_service(
         ) from exc
 
     data = response.json()
-    return EncounterResponse.model_validate(data)
+    return EncounterDetailResponse.model_validate(data)
 
 
-async def delete_encounter_service(encounter_id: int) -> None:
+async def delete_encounter_service(encounter_id: int, token: str) -> None:
     """
     Delete an encounter
     """
@@ -139,7 +152,9 @@ async def delete_encounter_service(encounter_id: int) -> None:
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.delete(epd_url, params=params)
+            response = await client.delete(
+                epd_url, params=params, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(

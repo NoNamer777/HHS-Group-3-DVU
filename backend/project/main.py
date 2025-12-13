@@ -1,3 +1,7 @@
+from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator
+
+import httpx
 from fastapi import FastAPI
 
 from project.globals import CLIENT_URL
@@ -16,11 +20,18 @@ def build_app() -> FastAPI:
     """
     Build and configure the FastAPI app with optional settings override.
     """
-    app = FastAPI(
-        root_path="/api",
-    )
+    app = FastAPI(root_path="/api", lifespan=lifespan)
     add_middleware(app)
     return app
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[Any, Any]:
+    """
+    Context manager that sets up and tears down resources.
+    """
+    app.state.http = httpx.AsyncClient()
+    yield
 
 
 app: FastAPI = build_app()

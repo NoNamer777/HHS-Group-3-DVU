@@ -4,13 +4,16 @@ import httpx
 from fastapi import Depends, HTTPException, status
 
 from project.db.models.enums import PatientStatusEnum
-from project.db.models.patient import PaginatedPatientResponse, PatientResponse
+from project.db.models.patient import PaginatedPatientResponse, PatientDetailResponse
+from project.db.models.patient_base import PatientResponse
 from project.globals import EPD_URL
+from project.services.auth_service import create_header
 
-url_prefix = f"{EPD_URL}/patient"
+url_prefix = f"{EPD_URL}/api/patients/"
 
 
 async def get_patients_service(
+    token: str,
     limit: int | None = None,
     offset: int | None = None,
     patient_status: PatientStatusEnum | None = None,
@@ -31,7 +34,9 @@ async def get_patients_service(
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(epd_url, params=params)
+            response = await client.get(
+                epd_url, params=params, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -47,7 +52,9 @@ async def get_patients_service(
     return PaginatedPatientResponse.model_validate(data)
 
 
-async def get_patient_by_id_service(patient_id: int) -> PatientResponse:
+async def get_patient_by_id_service(
+    patient_id: int, token: str
+) -> PatientDetailResponse:
     """
     Get a patient by uuid
     """
@@ -56,7 +63,9 @@ async def get_patient_by_id_service(patient_id: int) -> PatientResponse:
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(epd_url, params=params)
+            response = await client.get(
+                epd_url, params=params, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -69,12 +78,13 @@ async def get_patient_by_id_service(patient_id: int) -> PatientResponse:
         ) from exc
 
     data = response.json()
-    return PatientResponse.model_validate(data)
+    return PatientDetailResponse.model_validate(data)
 
 
 async def create_patient_service(
+    token: str,
     form_data: Annotated[PatientResponse, Depends()],
-) -> PatientResponse:
+) -> PatientDetailResponse:
     """
     Create a new patient
     """
@@ -83,7 +93,9 @@ async def create_patient_service(
     payload = form_data.model_dump(by_alias=True)
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.post(epd_url, json=payload)
+            response = await client.post(
+                epd_url, json=payload, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -96,12 +108,12 @@ async def create_patient_service(
         ) from exc
 
     data = response.json()
-    return PatientResponse.model_validate(data)
+    return PatientDetailResponse.model_validate(data)
 
 
 async def update_patient_service(
-    patient_id: int, form_data: Annotated[PatientResponse, Depends()]
-) -> PatientResponse:
+    patient_id: int, token: str, form_data: Annotated[PatientResponse, Depends()]
+) -> PatientDetailResponse:
     """
     Update info on a patient
     """
@@ -112,7 +124,9 @@ async def update_patient_service(
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.put(epd_url, params=params, json=payload)
+            response = await client.put(
+                epd_url, params=params, json=payload, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
@@ -125,10 +139,10 @@ async def update_patient_service(
         ) from exc
 
     data = response.json()
-    return PatientResponse.model_validate(data)
+    return PatientDetailResponse.model_validate(data)
 
 
-async def delete_patient_service(patient_id: int) -> None:
+async def delete_patient_service(patient_id: int, token: str) -> None:
     """
     Delete a patient
     """
@@ -137,7 +151,9 @@ async def delete_patient_service(patient_id: int) -> None:
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.delete(epd_url, params=params)
+            response = await client.delete(
+                epd_url, params=params, headers=create_header(token)
+            )
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(

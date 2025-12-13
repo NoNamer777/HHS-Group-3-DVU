@@ -1,22 +1,33 @@
-from datetime import datetime
-
 from pydantic import BaseModel
 
-from project.db.models.basemodel import DVUBaseModel
-from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
+from project.db.models.basemodel import DVUBaseModel, PaginationResponse
+from project.db.models.enums import (
+    EncounterStatusEnum,
+    EncounterTypeEnum,
+)
+from project.db.models.patient_base import PatientRead
+from project.db.models.user import UserRead
 
 
-class EncounterResponse(DVUBaseModel):
+class EncounterRead(DVUBaseModel):
     type: EncounterTypeEnum
     status: EncounterStatusEnum
-    start: datetime
-    end: datetime
+    start: str
+    end: str
     reason: str
-    patientId: str
+    patientId: int
+
+
+class EncounterResponse(EncounterRead):
+    location: str
+    createdById: int
+
+
+class EncounterListResponse(EncounterRead):
+    patient: PatientRead
+    createdBy: UserRead
 
 
 class PaginatedEncounterResponse(BaseModel):
-    total: int
-    page: int
-    limit: int
-    encounters: list[EncounterResponse]
+    encounters: list[EncounterListResponse]
+    pagination: PaginationResponse
