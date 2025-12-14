@@ -1,0 +1,9 @@
+.diapedis-search-row {
+    display: grid;
+    gap: 0;
+    margin-bottom: 4px;
+}
+
+.diapedis-search-row > * {
+    padding: 8px;
+}
