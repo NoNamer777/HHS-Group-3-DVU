@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
+    "bier": "npx orval --config orval.config.ts",
     "start": "npx vite",
     "build": "npx vite build",
     "docker:build": "docker build -f .docker/Dockerfile -t diabeticum-pedis/front-end:latest .",
@@ -15,9 +16,13 @@
     "test:dev": "npx vitest",
     "lint": "npx eslint \"**/*\"",
     "format:check": "npx prettier -l .",
-    "format:write": "npx prettier -w ."
+    "format:write": "npx prettier -w .",
+    "generate:api": "orval",
+    "generate:api:watch": "orval --watch"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.13.2",
     "bootstrap": "~5.3.0",
     "react-router-dom": "~7.9.0"
   },
@@ -35,6 +40,7 @@
     "eslint-plugin-react-hooks": "~7.0.0",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "~16.5.0",
+    "orval": "^7.17.0",
     "playwright": "~1.57.0",
     "prettier": "~3.7.0",
     "prettier-plugin-organize-imports": "~4.3.0",
