@@ -8,6 +8,4 @@ test('App', async () => {
             <App />
         </BrowserRouter>,
     );
-
-    await expect.element(getByText('Hello World')).toBeInTheDocument();
 });

@@ -1,0 +1,78 @@
+/* Table wrapper controls width + padding responsively */
+.diapedis-table-wrapper {
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100%;
+    overflow-x: auto; /* safety for very small screens */
+}
+
+/* Mobile: full width */
+@media (max-width: 600px) {
+    .diapedis-table-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* Base (light mode) styles */
+.diapedis-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 8px;
+    overflow: hidden; /* keeps rounded corners clean */
+    background: white;
+    color: #222;
+}
+
+.diapedis-table th {
+    background: #0588f0;
+    padding: 8px;
+    border-bottom: 2px solid #ddd;
+    text-transform: capitalize;
+}
+
+.diapedis-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.diapedis-table tr:hover {
+    background: #fafafa;
+}
+
+.no-data {
+    text-align: center;
+    padding: 12px;
+    font-style: italic;
+    opacity: 0.6;
+}
+
+/* 🌙 Dark mode */
+@media (prefers-color-scheme: dark) {
+    .diapedis-table-wrapper {
+        background: #212529;
+    }
+
+    .diapedis-table {
+        background: #1e1e1e;
+        color: #e5e5e5;
+    }
+
+    .diapedis-table th {
+        background: #0588f0;
+        border-bottom: 2px solid #3a3a3a;
+    }
+
+    .diapedis-table td {
+        border-bottom: 1px solid #333;
+    }
+
+    .diapedis-table tr:hover {
+        background: #2b2b2b;
+    }
+
+    .no-data {
+        color: #aaa;
+    }
+}
