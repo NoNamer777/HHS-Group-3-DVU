@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const instance = <T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
   const instance = axios.create({
-    baseURL: "localhost:8000",
+    baseURL: "http://localhost:8000/api",
   });
 
   instance.interceptors.request.use(
