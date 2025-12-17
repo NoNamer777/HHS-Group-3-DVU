@@ -19,7 +19,7 @@ router = APIRouter(
 
 @router.post("/login/", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def create_token(
-    form_data: Annotated[Auth, Depends()],
+    form_data: Auth,
 ) -> TokenResponse:
     """
     Create token for the user

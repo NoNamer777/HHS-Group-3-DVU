@@ -30,7 +30,7 @@ def create_header(token: str) -> dict:
 
 
 async def create_token_service(
-    form_data: Annotated[Auth, Depends()],
+    form_data: Auth,
 ) -> TokenResponse:
     """
     Create token for the user using form data
