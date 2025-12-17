@@ -4,7 +4,8 @@ export default defineConfig({
     api: {
         // point to the actual OpenAPI JSON/YAML endpoint or a local file
         input: {
-            target: process.env.OPENAPI_URL || `http://localhost:8000/openapi.json`,
+            target:
+                process.env.OPENAPI_URL || `http://localhost:8000/openapi.json`,
         },
         output: {
             mode: 'split',
