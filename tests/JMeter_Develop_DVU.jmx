@@ -82,7 +82,7 @@
         <stringProp name="TestPlan.comments">docker compose up -d --build</stringProp>
       </ResultCollector>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group - DVU" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group - DVU">
         <stringProp name="TestPlan.comments">docker compose up -d</stringProp>
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
@@ -102,7 +102,7 @@
           </collectionProp>
         </ModuleController>
         <hashTree/>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - EPD" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - EPD" enabled="false">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
             <stringProp name="764597751">Test Plan</stringProp>
@@ -745,7 +745,7 @@
         <stringProp name="TestPlan.comments">Hiervoor word of ingelogd, of een account gemaakt</stringProp>
       </TestFragmentController>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Frontend-GETS" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Frontend-GETS"/>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET hi">
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
@@ -931,7 +931,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST login">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST login" enabled="false">
             <stringProp name="TestPlan.comments"> </stringProp>
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
             <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
@@ -1095,108 +1095,19 @@
               </collectionProp>
             </HeaderManager>
             <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET  patient" enabled="false">
-            <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
-            <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
-            <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
-            <stringProp name="HTTPSampler.path">/auth/patient</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
-              <collectionProp name="Arguments.arguments"/>
-            </elementProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - json" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">application/json, text/plain, */*</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value"> gzip, deflate, br, zstd</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value"> en-GB,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value"> max-age=0</stringProp>
-                </elementProp>
-                <elementProp name="Cookie" elementType="Header">
-                  <stringProp name="Header.name">Cookie</stringProp>
-                  <stringProp name="Header.value"></stringProp>
-                </elementProp>
-                <elementProp name="Priority" elementType="Header">
-                  <stringProp name="Header.name">Priority</stringProp>
-                  <stringProp name="Header.value"> u=0, i</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua</stringProp>
-                  <stringProp name="Header.value"> &quot;Chromium&quot;;v=&quot;124&quot;, &quot;Brave&quot;;v=&quot;124&quot;, &quot;Not-A.Brand&quot;;v=&quot;99&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Mobile" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Mobile</stringProp>
-                  <stringProp name="Header.value"> ?0</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Model" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Model</stringProp>
-                  <stringProp name="Header.value"> &quot;&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform</stringProp>
-                  <stringProp name="Header.value"> &quot;Windows&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform-Version" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform-Version</stringProp>
-                  <stringProp name="Header.value"> &quot;10.0.0&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Dest" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Dest</stringProp>
-                  <stringProp name="Header.value">document</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Mode" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Mode</stringProp>
-                  <stringProp name="Header.value">navigate</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Site" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Site</stringProp>
-                  <stringProp name="Header.value"> same-origin</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-User" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-User</stringProp>
-                  <stringProp name="Header.value"> ?1</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Gpc" elementType="Header">
-                  <stringProp name="Header.name">Sec-Gpc</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
-                  <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value"> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</stringProp>
-                </elementProp>
-                <elementProp name="" elementType="Header">
-                  <stringProp name="Header.name">content-type</stringProp>
-                  <stringProp name="Header.value">application/json</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor">
+              <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$..accessToken</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+            </JSONPostProcessor>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET  patient" enabled="false">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET  patient">
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
             <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
             <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
-            <stringProp name="HTTPSampler.path">api</stringProp>
+            <stringProp name="HTTPSampler.path">/api/patient/</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -1206,79 +1117,31 @@
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="false">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - json">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value"> text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
                 </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value"> gzip, deflate, br, zstd</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-encoding</stringProp>
+                  <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
                 </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value"> en-GB,en;q=0.5</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-language</stringProp>
+                  <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
                 </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value"> max-age=0</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">cache-control</stringProp>
+                  <stringProp name="Header.value">no-cache</stringProp>
                 </elementProp>
-                <elementProp name="Cookie" elementType="Header">
-                  <stringProp name="Header.name">Cookie</stringProp>
-                  <stringProp name="Header.value"></stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">connection</stringProp>
+                  <stringProp name="Header.value">keep-alive</stringProp>
                 </elementProp>
-                <elementProp name="Priority" elementType="Header">
-                  <stringProp name="Header.name">Priority</stringProp>
-                  <stringProp name="Header.value"> u=0, i</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua</stringProp>
-                  <stringProp name="Header.value"> &quot;Chromium&quot;;v=&quot;124&quot;, &quot;Brave&quot;;v=&quot;124&quot;, &quot;Not-A.Brand&quot;;v=&quot;99&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Mobile" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Mobile</stringProp>
-                  <stringProp name="Header.value"> ?0</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Model" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Model</stringProp>
-                  <stringProp name="Header.value"> &quot;&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform</stringProp>
-                  <stringProp name="Header.value"> &quot;Windows&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform-Version" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform-Version</stringProp>
-                  <stringProp name="Header.value"> &quot;10.0.0&quot;</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Dest" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Dest</stringProp>
-                  <stringProp name="Header.value">document</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Mode" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Mode</stringProp>
-                  <stringProp name="Header.value">navigate</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Site" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Site</stringProp>
-                  <stringProp name="Header.value"> same-origin</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-User" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-User</stringProp>
-                  <stringProp name="Header.value"> ?1</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Gpc" elementType="Header">
-                  <stringProp name="Header.name">Sec-Gpc</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
-                  <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value"> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${DVU_AccessToken}</stringProp>
                 </elementProp>
               </collectionProp>
             </HeaderManager>
