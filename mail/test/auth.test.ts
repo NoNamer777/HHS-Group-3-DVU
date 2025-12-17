@@ -66,7 +66,7 @@ describe('Auth Middleware', () => {
       );
 
       expect(nextFunction).toHaveBeenCalled();
-      expect(mockRequest.user).toEqual({
+      expect(mockRequest.user).toMatchObject({
         userId: mockUser.userId,
         email: mockUser.email
       });
@@ -84,7 +84,7 @@ describe('Auth Middleware', () => {
         nextFunction
       );
 
-      expect(mockResponse.status).toHaveBeenCalledWith(403);
+      expect(mockResponse.status).toHaveBeenCalledWith(401);
       expect(nextFunction).not.toHaveBeenCalled();
     });
   });

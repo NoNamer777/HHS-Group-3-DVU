@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken, validateUserAccess, AuthRequest } from './middleware/auth';
+import authRoutes from './routes/auth';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use(express.json());
 app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'mail-service' });
 });
+
+// Auth routes
+app.use('/api/auth', authRoutes);
 
 // Get all mails for a user (protected)
 app.get('/api/mails/user/:userId', authenticateToken, validateUserAccess, async (req: AuthRequest, res: Response) => {

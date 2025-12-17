@@ -56,6 +56,22 @@ if ($setup -eq "y") {
     
     Write-Host ""
     Write-Host "SUCCESS: Database setup complete"
+    
+    # Seed database
+    Write-Host ""
+    $seed = Read-Host "Add mock data? (y/n)"
+    if ($seed -eq "y") {
+        Write-Host ""
+        Write-Host "Seeding database with test data..."
+        npm run prisma:seed
+        
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "WARNING: Database seeding failed"
+        } else {
+            Write-Host ""
+            Write-Host "SUCCESS: Database seeded with test data"
+        }
+    }
 }
 
 # Start service
