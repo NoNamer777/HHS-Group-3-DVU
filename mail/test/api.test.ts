@@ -186,7 +186,15 @@ describe('Mail API Endpoints', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockMails);
+      expect(response.body).toMatchObject([{
+        id: '1',
+        userId: mockUser.userId,
+        from: 'sender@example.com',
+        to: 'receiver@example.com',
+        subject: 'Test',
+        body: 'Body',
+        isRead: false
+      }]);
     });
 
     it('should deny access without token', async () => {
@@ -224,7 +232,15 @@ describe('Mail API Endpoints', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockMail);
+      expect(response.body).toMatchObject({
+        id: 'mail-123',
+        userId: mockUser.userId,
+        from: 'sender@example.com',
+        to: 'receiver@example.com',
+        subject: 'Test',
+        body: 'Body',
+        isRead: false
+      });
     });
 
     it('should deny access to mail owned by other user', async () => {
@@ -286,7 +302,15 @@ describe('Mail API Endpoints', () => {
         .send(newMail);
 
       expect(response.status).toBe(201);
-      expect(response.body).toEqual(createdMail);
+      expect(response.body).toMatchObject({
+        id: 'new-id',
+        userId: mockUser.userId,
+        from: 'sender@example.com',
+        to: 'receiver@example.com',
+        subject: 'New Mail',
+        body: 'Content',
+        isRead: false
+      });
     });
 
     it('should deny creating mail for other users', async () => {

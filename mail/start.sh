@@ -57,6 +57,22 @@ if [ "$setup" = "y" ]; then
     
     echo ""
     echo "SUCCESS: Database setup complete"
+    
+    # Seed database
+    echo ""
+    read -p "Add mock data? (y/n) " seed
+    if [ "$seed" = "y" ]; then
+        echo ""
+        echo "Seeding database with test data..."
+        npm run prisma:seed
+        
+        if [ $? -ne 0 ]; then
+            echo "WARNING: Database seeding failed"
+        else
+            echo ""
+            echo "SUCCESS: Database seeded with test data"
+        fi
+    fi
 fi
 
 # Start service

@@ -1,0 +1,587 @@
+openapi: 3.0.3
+info:
+  title: Mail Service API (Mock)
+  description: |
+    Mock mail service voor EPD integratie met JWT authenticatie.
+    
+    **Let op**: Dit is een mock service voor testing/development. 
+    - Er worden GEEN echte emails verstuurd
+    - Alle "mails" zijn mock data opgeslagen in een database
+    - De service simuleert een mailbox voor demo doeleinden
+  version: 1.0.0
+  contact:
+    name: Mail Service Team
+
+servers:
+  - url: http://localhost:3001
+    description: Development server
+
+tags:
+  - name: Auth
+    description: Authenticatie en gebruikersbeheer
+  - name: Mail
+    description: Mail operaties
+  - name: Health
+    description: Service health check
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token voor authenticatie
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+          nullable: true
+      required:
+        - id
+        - email
+
+    LoginRequest:
+      type: object
+      properties:
+        emailOrUsername:
+          type: string
+          description: Email address of gebruikersnaam
+        password:
+          type: string
+          format: password
+      required:
+        - emailOrUsername
+        - password
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        username:
+          type: string
+          nullable: true
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accessToken:
+          type: string
+          description: JWT access token (15 minuten geldig)
+        refreshToken:
+          type: string
+          description: Refresh token (7 dagen geldig)
+      required:
+        - user
+        - accessToken
+        - refreshToken
+
+    RefreshRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+      required:
+        - refreshToken
+
+    RefreshResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+      required:
+        - accessToken
+        - refreshToken
+
+    Mail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        from:
+          type: string
+          format: email
+        to:
+          type: string
+          format: email
+        subject:
+          type: string
+        body:
+          type: string
+        isRead:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreateMailRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        from:
+          type: string
+          format: email
+        to:
+          type: string
+          format: email
+        subject:
+          type: string
+        body:
+          type: string
+      required:
+        - userId
+        - from
+        - to
+        - subject
+        - body
+
+    MailCount:
+      type: object
+      properties:
+        unreadCount:
+          type: integer
+        totalCount:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Controleert of de service actief is
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                    example: mail-service
+
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registreer nieuwe gebruiker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Gebruiker succesvol geregistreerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Validatie fout of gebruiker bestaat al
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Inloggen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Succesvol ingelogd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Ongeldige credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Vernieuw access token
+      description: Gebruik refresh token om nieuwe access en refresh tokens te krijgen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Tokens succesvol vernieuwd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+        '401':
+          description: Ongeldige of verlopen refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Uitloggen
+      description: Revoke refresh token (access token blijft geldig tot expiratie)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Succesvol uitgelogd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Refresh token ontbreekt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/logout-all:
+    post:
+      tags:
+        - Auth
+      summary: Uitloggen op alle apparaten
+      description: Revoke alle refresh tokens van de gebruiker
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Succesvol uitgelogd op alle apparaten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/me:
+    get:
+      tags:
+        - Auth
+      summary: Haal huidige gebruiker op
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Gebruikersinformatie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      email:
+                        type: string
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/mails/user/{userId}:
+    get:
+      tags:
+        - Mail
+      summary: Haal alle mails van een gebruiker op
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Lijst van mails
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mail'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Geen toegang tot deze gebruiker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/mails/{id}:
+    get:
+      tags:
+        - Mail
+      summary: Haal een specifieke mail op
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Mail details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Geen toegang tot deze mail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Mail niet gevonden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Mail
+      summary: Verwijder een mail
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Mail succesvol verwijderd
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Geen toegang tot deze mail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Mail niet gevonden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/mails:
+    post:
+      tags:
+        - Mail
+      summary: Maak een mock mail
+      description: |
+        Maakt een nieuwe mock mail record in de database.
+        **Let op**: Er wordt GEEN echte email verstuurd. Dit is alleen voor test/demo doeleinden.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMailRequest'
+      responses:
+        '201':
+          description: Mail succesvol verstuurd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: Validatie fout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Kan geen mail sturen voor andere gebruikers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/mails/{id}/read:
+    patch:
+      tags:
+        - Mail
+      summary: Markeer mail als gelezen
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Mail gemarkeerd als gelezen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Geen toegang tot deze mail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Mail niet gevonden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/mails/user/{userId}/count:
+    get:
+      tags:
+        - Mail
+      summary: Haal mail aantallen op
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Mail aantallen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailCount'
+        '401':
+          description: Niet geauthenticeerd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Geen toegang tot deze gebruiker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
