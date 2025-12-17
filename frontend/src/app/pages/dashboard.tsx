@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
+import { useGetPatientsPatientGet } from '../../api/fetchers';
 import SearchInput from '../shared/components/searchinput';
 import DiapedisTable from '../shared/components/table';
-import { useGetPatientsPatientGet } from '../../api/fetchers';
 
 const columns = ['id', 'name', 'email'];
 
@@ -14,8 +14,8 @@ const data = [
 ];
 
 export default function Dashboard() {
-    const {data:epddata} = useGetPatientsPatientGet();
-    console.log("epddata:", epddata);
+    const { data: epddata } = useGetPatientsPatientGet();
+    console.log('epddata:', epddata);
 
     const [filters, setFilters] = useState<Record<string, string>>({});
 
