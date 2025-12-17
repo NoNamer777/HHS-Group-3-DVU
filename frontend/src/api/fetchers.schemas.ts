@@ -16,6 +16,11 @@ export interface Allergies {
     patientId: number;
 }
 
+export interface Auth {
+    email: string;
+    password: string;
+}
+
 export type DiagnosesResponseCreatedAt = string | null;
 
 export type DiagnosesResponseResolved = string | null;
@@ -289,6 +294,20 @@ export interface User {
     role?: UserRole;
 }
 
+export type UserCreateCreatedAt = string | null;
+
+export type UserCreateRole = UserRoleEnum | null;
+
+export interface UserCreate {
+    id: number;
+    createdAt?: UserCreateCreatedAt;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role?: UserCreateRole;
+    password: string;
+}
+
 export type UserReadCreatedAt = string | null;
 
 export interface UserRead {
@@ -315,21 +334,6 @@ export interface ValidationError {
     msg: string;
     type: string;
 }
-
-export type CreateTokenAuthLoginPostParams = {
-    email: string;
-    password: string;
-};
-
-export type RegisterUserAuthRegisterPostParams = {
-    id: number;
-    createdAt?: string | null;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role?: UserRoleEnum | null;
-    password: string;
-};
 
 export type GetEncountersEncountersGetParams = {
     page?: number | null;

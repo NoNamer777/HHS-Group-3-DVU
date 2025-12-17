@@ -21,9 +21,9 @@ import type {
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import type {
+    Auth,
     CreateEncounterEncountersPostParams,
     CreatePatientPatientPostParams,
-    CreateTokenAuthLoginPostParams,
     EncounterDetailResponse,
     GetEncountersEncountersGetParams,
     GetPatientsPatientGetParams,
@@ -31,12 +31,12 @@ import type {
     PaginatedEncounterResponse,
     PaginatedPatientResponse,
     PatientDetailResponse,
-    RegisterUserAuthRegisterPostParams,
     RootGet200,
     TokenResponse,
     UpdateEncounterEncountersEncounterIdPutParams,
     UpdatePatientPatientPatientIdPutParams,
     User,
+    UserCreate,
 } from './fetchers.schemas';
 
 import { customInstance } from './instance';
@@ -45,14 +45,12 @@ import { customInstance } from './instance';
  * Create token for the user
  * @summary Create Token
  */
-export const createTokenAuthLoginPost = (
-    params: CreateTokenAuthLoginPostParams,
-    signal?: AbortSignal,
-) => {
+export const createTokenAuthLoginPost = (auth: Auth, signal?: AbortSignal) => {
     return customInstance<TokenResponse>({
         url: `/auth/login/`,
         method: 'POST',
-        params,
+        headers: { 'Content-Type': 'application/json' },
+        data: auth,
         signal,
     });
 };
@@ -64,13 +62,13 @@ export const getCreateTokenAuthLoginPostMutationOptions = <
     mutation?: UseMutationOptions<
         Awaited<ReturnType<typeof createTokenAuthLoginPost>>,
         TError,
-        { params: CreateTokenAuthLoginPostParams },
+        { data: Auth },
         TContext
     >;
 }): UseMutationOptions<
     Awaited<ReturnType<typeof createTokenAuthLoginPost>>,
     TError,
-    { params: CreateTokenAuthLoginPostParams },
+    { data: Auth },
     TContext
 > => {
     const mutationKey = ['createTokenAuthLoginPost'];
@@ -84,11 +82,11 @@ export const getCreateTokenAuthLoginPostMutationOptions = <
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<typeof createTokenAuthLoginPost>>,
-        { params: CreateTokenAuthLoginPostParams }
+        { data: Auth }
     > = (props) => {
-        const { params } = props ?? {};
+        const { data } = props ?? {};
 
-        return createTokenAuthLoginPost(params);
+        return createTokenAuthLoginPost(data);
     };
 
     return { mutationFn, ...mutationOptions };
@@ -97,7 +95,7 @@ export const getCreateTokenAuthLoginPostMutationOptions = <
 export type CreateTokenAuthLoginPostMutationResult = NonNullable<
     Awaited<ReturnType<typeof createTokenAuthLoginPost>>
 >;
-
+export type CreateTokenAuthLoginPostMutationBody = Auth;
 export type CreateTokenAuthLoginPostMutationError = void | HTTPValidationError;
 
 /**
@@ -111,7 +109,7 @@ export const useCreateTokenAuthLoginPost = <
         mutation?: UseMutationOptions<
             Awaited<ReturnType<typeof createTokenAuthLoginPost>>,
             TError,
-            { params: CreateTokenAuthLoginPostParams },
+            { data: Auth },
             TContext
         >;
     },
@@ -119,7 +117,7 @@ export const useCreateTokenAuthLoginPost = <
 ): UseMutationResult<
     Awaited<ReturnType<typeof createTokenAuthLoginPost>>,
     TError,
-    { params: CreateTokenAuthLoginPostParams },
+    { data: Auth },
     TContext
 > => {
     const mutationOptions = getCreateTokenAuthLoginPostMutationOptions(options);
@@ -132,13 +130,14 @@ export const useCreateTokenAuthLoginPost = <
  * @summary Register User
  */
 export const registerUserAuthRegisterPost = (
-    params: RegisterUserAuthRegisterPostParams,
+    userCreate: UserCreate,
     signal?: AbortSignal,
 ) => {
     return customInstance<TokenResponse>({
         url: `/auth/register`,
         method: 'POST',
-        params,
+        headers: { 'Content-Type': 'application/json' },
+        data: userCreate,
         signal,
     });
 };
@@ -150,13 +149,13 @@ export const getRegisterUserAuthRegisterPostMutationOptions = <
     mutation?: UseMutationOptions<
         Awaited<ReturnType<typeof registerUserAuthRegisterPost>>,
         TError,
-        { params: RegisterUserAuthRegisterPostParams },
+        { data: UserCreate },
         TContext
     >;
 }): UseMutationOptions<
     Awaited<ReturnType<typeof registerUserAuthRegisterPost>>,
     TError,
-    { params: RegisterUserAuthRegisterPostParams },
+    { data: UserCreate },
     TContext
 > => {
     const mutationKey = ['registerUserAuthRegisterPost'];
@@ -170,11 +169,11 @@ export const getRegisterUserAuthRegisterPostMutationOptions = <
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<typeof registerUserAuthRegisterPost>>,
-        { params: RegisterUserAuthRegisterPostParams }
+        { data: UserCreate }
     > = (props) => {
-        const { params } = props ?? {};
+        const { data } = props ?? {};
 
-        return registerUserAuthRegisterPost(params);
+        return registerUserAuthRegisterPost(data);
     };
 
     return { mutationFn, ...mutationOptions };
@@ -183,7 +182,7 @@ export const getRegisterUserAuthRegisterPostMutationOptions = <
 export type RegisterUserAuthRegisterPostMutationResult = NonNullable<
     Awaited<ReturnType<typeof registerUserAuthRegisterPost>>
 >;
-
+export type RegisterUserAuthRegisterPostMutationBody = UserCreate;
 export type RegisterUserAuthRegisterPostMutationError =
     void | HTTPValidationError;
 
@@ -198,7 +197,7 @@ export const useRegisterUserAuthRegisterPost = <
         mutation?: UseMutationOptions<
             Awaited<ReturnType<typeof registerUserAuthRegisterPost>>,
             TError,
-            { params: RegisterUserAuthRegisterPostParams },
+            { data: UserCreate },
             TContext
         >;
     },
@@ -206,7 +205,7 @@ export const useRegisterUserAuthRegisterPost = <
 ): UseMutationResult<
     Awaited<ReturnType<typeof registerUserAuthRegisterPost>>,
     TError,
-    { params: RegisterUserAuthRegisterPostParams },
+    { data: UserCreate },
     TContext
 > => {
     const mutationOptions =

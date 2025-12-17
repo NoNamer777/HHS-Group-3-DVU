@@ -22,9 +22,35 @@ chmod +x start.sh
 This script:
 - Builds Docker containers (PostgreSQL + backend)
 - Starts the containers
-- Runs database migrations **inside Docker**
-- Seeds the database with test data **inside Docker**
+- Runs database migrations **inside Docker** (unless skipped)
+- Seeds the database with test data **inside Docker** (unless skipped)
 - Backend runs automatically in Docker with hot reloading
+
+#### Automatic migrations & SKIP_MIGRATIONS
+
+The EPD backend container runs an entrypoint script that will automatically:
+- generate the Prisma client
+- run `prisma migrate deploy` (with a fallback to `prisma db push`)
+- run the seed script if present
+
+If you want to skip automatic migrations and seeding (for example, when you do not want the container to modify the DB), set the `SKIP_MIGRATIONS` environment variable to `true`.
+
+- To skip in `docker-compose.yml` (dev convenience):
+
+```yaml
+services:
+  backend:
+    environment:
+      SKIP_MIGRATIONS: "true"
+```
+
+- Or override when running compose:
+
+```bash
+SKIP_MIGRATIONS=true docker compose up -d --build
+```
+
+This makes it easy to control migration behavior per environment.
 
 ### Starting the stack:
 

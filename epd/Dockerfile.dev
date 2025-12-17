@@ -28,11 +28,18 @@ RUN npx prisma generate
 # Copy source code
 COPY backend ./backend
 
+# Add entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Change ownership to non-root user
 RUN chown -R nodejs:nodejs /app
 
 # Switch to non-root user
 USER nodejs
+
+# Make the entrypoint available as the container entrypoint so migrations run on start
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 EXPOSE 3001
 
