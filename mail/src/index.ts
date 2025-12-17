@@ -8,7 +8,12 @@ import authRoutes from './routes/auth';
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
+
+// Singleton pattern to avoid multiple Prisma instances
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const prisma = globalForPrisma.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
 const PORT = process.env.PORT || 3001;
 
 // Middleware
@@ -33,6 +38,7 @@ app.get('/api/mails/user/:userId', authenticateToken, validateUserAccess, async 
     });
     res.json(mails);
   } catch (error) {
+    console.error('Error fetching mails:', error);
     res.status(500).json({ error: 'Failed to fetch mails' });
   }
 });
@@ -161,13 +167,18 @@ app.get('/api/mails/user/:userId/count', authenticateToken, validateUserAccess, 
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Mail service running on http://localhost:${PORT}`);
-});
+// Start server only if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Mail service running on http://localhost:${PORT}`);
+  });
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  await prisma.$disconnect();
-  process.exit(0);
-});
+  // Graceful shutdown
+  process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+}
+
+// Export for testing
+export { app, prisma };

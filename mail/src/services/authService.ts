@@ -2,7 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+// Singleton pattern to avoid multiple Prisma instances
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const prisma = globalForPrisma.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 interface TokenPayload {
   userId: string;
@@ -53,6 +56,17 @@ export class AuthService {
   }
 
   async register(email: string, password: string, username?: string): Promise<LoginResult> {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new Error('Invalid email format');
+    }
+
+    // Validate password strength
+    if (password.length < 8) {
+      throw new Error('Password must be at least 8 characters long');
+    }
+
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where: {

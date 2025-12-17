@@ -19,6 +19,7 @@ router.post('/register', async (req: Request, res: Response) => {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });
     } else {
+      console.error('Registration error:', error);
       res.status(500).json({ error: 'Registration failed' });
     }
   }
@@ -39,6 +40,7 @@ router.post('/login', async (req: Request, res: Response) => {
     if (error instanceof Error) {
       res.status(401).json({ error: error.message });
     } else {
+      console.error('Login error:', error);
       res.status(500).json({ error: 'Login failed' });
     }
   }
