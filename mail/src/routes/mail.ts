@@ -1,35 +1,16 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import { Router, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { authenticateToken, validateUserAccess, AuthRequest } from './middleware/auth';
-import authRoutes from './routes/auth';
+import { authenticateToken, validateUserAccess, AuthRequest } from '../middleware/auth';
 
-dotenv.config();
-
-const app = express();
+const router = Router();
 
 // Singleton pattern to avoid multiple Prisma instances
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-const PORT = process.env.PORT || 3001;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Health check (no auth required)
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', service: 'mail-service' });
-});
-
-// Auth routes
-app.use('/api/auth', authRoutes);
-
 // Get all mails for a user (protected)
-app.get('/api/mails/user/:userId', authenticateToken, validateUserAccess, async (req: AuthRequest, res: Response) => {
+router.get('/user/:userId', authenticateToken, validateUserAccess, async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.params;
     const mails = await prisma.mail.findMany({
@@ -44,7 +25,7 @@ app.get('/api/mails/user/:userId', authenticateToken, validateUserAccess, async 
 });
 
 // Get a specific mail (protected, with ownership check)
-app.get('/api/mails/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.get('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const mail = await prisma.mail.findUnique({
@@ -62,18 +43,24 @@ app.get('/api/mails/:id', authenticateToken, async (req: AuthRequest, res: Respo
     
     res.json(mail);
   } catch (error) {
+    console.error('Error fetching mail:', error);
     res.status(500).json({ error: 'Failed to fetch mail' });
   }
 });
 
-// Create a new mock mail (protected)
-// Note: This does NOT send a real email, it only stores mock data in the database
-app.post('/api/mails', authenticateToken, async (req: AuthRequest, res: Response) => {
+// Create a new mail (protected)
+router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { userId, from, to, subject, body } = req.body;
     
     if (!userId || !from || !to || !subject || !body) {
       return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(from) || !emailRegex.test(to)) {
+      return res.status(400).json({ error: 'Invalid email format' });
     }
     
     // Users can only create mails for themselves
@@ -93,12 +80,13 @@ app.post('/api/mails', authenticateToken, async (req: AuthRequest, res: Response
     
     res.status(201).json(mail);
   } catch (error) {
+    console.error('Error creating mail:', error);
     res.status(500).json({ error: 'Failed to create mail' });
   }
 });
 
 // Mark mail as read (protected, with ownership check)
-app.patch('/api/mails/:id/read', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.patch('/:id/read', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -121,12 +109,13 @@ app.patch('/api/mails/:id/read', authenticateToken, async (req: AuthRequest, res
     });
     res.json(mail);
   } catch (error) {
+    console.error('Error updating mail:', error);
     res.status(500).json({ error: 'Failed to update mail' });
   }
 });
 
 // Delete a mail (protected, with ownership check)
-app.delete('/api/mails/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -148,12 +137,13 @@ app.delete('/api/mails/:id', authenticateToken, async (req: AuthRequest, res: Re
     });
     res.status(204).send();
   } catch (error) {
+    console.error('Error deleting mail:', error);
     res.status(500).json({ error: 'Failed to delete mail' });
   }
 });
 
 // Get mail count for user (protected)
-app.get('/api/mails/user/:userId/count', authenticateToken, validateUserAccess, async (req: AuthRequest, res: Response) => {
+router.get('/user/:userId/count', authenticateToken, validateUserAccess, async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.params;
     const unreadCount = await prisma.mail.count({
@@ -164,22 +154,9 @@ app.get('/api/mails/user/:userId/count', authenticateToken, validateUserAccess, 
     });
     res.json({ unreadCount, totalCount });
   } catch (error) {
+    console.error('Error counting mails:', error);
     res.status(500).json({ error: 'Failed to count mails' });
   }
 });
 
-// Start server only if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Mail service running on http://localhost:${PORT}`);
-  });
-
-  // Graceful shutdown
-  process.on('SIGINT', async () => {
-    await prisma.$disconnect();
-    process.exit(0);
-  });
-}
-
-// Export for testing
-export { app, prisma };
+export default router;

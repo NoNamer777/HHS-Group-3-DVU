@@ -1,7 +1,13 @@
 openapi: 3.0.3
 info:
-  title: Mail Service API
-  description: Mock mail service voor EPD integratie met JWT authenticatie
+  title: Mail Service API (Mock)
+  description: |
+    Mock mail service voor EPD integratie met JWT authenticatie.
+    
+    **Let op**: Dit is een mock service voor testing/development. 
+    - Er worden GEEN echte emails verstuurd
+    - Alle "mails" zijn mock data opgeslagen in een database
+    - De service simuleert een mailbox voor demo doeleinden
   version: 1.0.0
   contact:
     name: Mail Service Team
@@ -468,7 +474,10 @@ paths:
     post:
       tags:
         - Mail
-      summary: Verstuur een nieuwe mail
+      summary: Maak een mock mail
+      description: |
+        Maakt een nieuwe mock mail record in de database.
+        **Let op**: Er wordt GEEN echte email verstuurd. Dit is alleen voor test/demo doeleinden.
       security:
         - bearerAuth: []
       requestBody:
