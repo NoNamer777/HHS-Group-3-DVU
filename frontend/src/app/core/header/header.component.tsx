@@ -6,16 +6,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
-import { getAuthenticatedUser } from '../../auth';
-import { StorageKeys, StorageService } from '../../shared';
+import { useAuth } from '../../auth/auth.context.ts';
 import './header.component.css';
 
 export default function HeaderComponent() {
-    const user = getAuthenticatedUser();
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
-    function onLogOut() {
-        StorageService.instance().removeItem(StorageKeys.ACCESS_TOKEN);
+    async function onLogOut() {
+        await logout();
         navigate('/login');
     }
 
