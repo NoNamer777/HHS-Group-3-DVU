@@ -99,7 +99,19 @@ export default function AddPatientModalComponent() {
             >
                 <div className="modal-dialog">
                     <div className="modal-content">
-                        <div className="modal-header"></div>
+                        <div className="modal-header d-flex align-items-center gap-3">
+                            <div className="text-primary bg-primary-subtle rounded-4 p-2 d-flex align-items-center justify-content-between">
+                                <FontAwesomeIcon icon={faUserPlus} size="2x" />
+                            </div>
+                            <div>
+                                <h3 className="h5 m-0">
+                                    Nieuwe patiënt toevoegen
+                                </h3>
+                                <h4 className="h6 text-muted m-0">
+                                    Vul de gegevens van de nieuwe patiënt in
+                                </h4>
+                            </div>
+                        </div>
                         <div className="modal-body">
                             <form action={onAddPatient}>
                                 <div className="mb-3">
