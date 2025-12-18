@@ -48,7 +48,7 @@ export default function HeaderComponent() {
                     <ul className="navbar-nav ms-auto align-items-center gap-2">
                         <li className="nav-item">
                             <button
-                                role="button"
+                                type="button"
                                 className="btn btn-primary"
                                 onClick={onNavigateToDashboard}
                             >
@@ -67,7 +67,7 @@ export default function HeaderComponent() {
                         </li>
                         <li className="nav-item">
                             <button
-                                role="button"
+                                type="button"
                                 className="btn btn-primary"
                                 onClick={onShowSyncDialog}
                             >
@@ -87,7 +87,7 @@ export default function HeaderComponent() {
                             </div>
                             <button
                                 className="nav-link"
-                                role="button"
+                                type="button"
                                 onClick={onLogOut}
                             >
                                 <FontAwesomeIcon
