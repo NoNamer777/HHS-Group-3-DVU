@@ -7,7 +7,7 @@ import {
 
 export const patients: Patient[] = [
     {
-        id: 'P001',
+        id: '2t6j6EWk6H-pQGy7c3un2',
         name: 'Alice Smith',
         dateOfBirth: new Date('1985-03-15'),
         gender: Genders.FEMALE,
@@ -16,7 +16,7 @@ export const patients: Patient[] = [
         status: PatientStatuses.STABLE,
     },
     {
-        id: 'P002',
+        id: 'ZBn1Kmn-J7B4mE5Y0ZtxQ',
         name: 'Bob Johnson',
         dateOfBirth: new Date('1970-11-22'),
         gender: Genders.MALE,
@@ -25,7 +25,7 @@ export const patients: Patient[] = [
         status: PatientStatuses.MONITORING,
     },
     {
-        id: 'P003',
+        id: 'I8y_dSGl0b8QLGEbL7DMk',
         name: 'Charlie Brown',
         dateOfBirth: new Date('1992-07-01'),
         gender: Genders.MALE,
@@ -34,7 +34,7 @@ export const patients: Patient[] = [
         status: PatientStatuses.CRITICAL,
     },
     {
-        id: 'P004',
+        id: 'VMGG7cVFJDNZXlhm54P4N',
         name: 'Diana Prince',
         dateOfBirth: new Date('1960-01-01'),
         gender: Genders.FEMALE,
@@ -43,7 +43,7 @@ export const patients: Patient[] = [
         status: PatientStatuses.STABLE,
     },
     {
-        id: 'P005',
+        id: 'NTDqsTjZ2YoxJS3r_PDdY',
         name: 'Eve Adams',
         dateOfBirth: new Date('2000-05-10'),
         gender: Genders.FEMALE,
