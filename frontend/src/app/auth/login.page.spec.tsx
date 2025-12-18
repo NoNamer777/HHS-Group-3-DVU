@@ -4,5 +4,5 @@ import LoginPage from './login.page.tsx';
 test('Login', async () => {
     const { getByText } = await render(<LoginPage />);
 
-    await expect.element(getByText('Hello Oscar')).toBeInTheDocument();
+    await expect.element(getByText('Inloggen')).toBeInTheDocument();
 });
