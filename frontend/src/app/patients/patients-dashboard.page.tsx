@@ -7,20 +7,23 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { instanceToPlain } from 'class-transformer';
 import { type ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
 import {
     Patient,
     PatientsService,
     PatientStatuses,
     setPatients,
+    setSelectedPatient,
 } from './index.ts';
 import './patients-dashboard.page.css';
 
 export default function PatientsDashboardPage() {
     const patientsService = PatientsService.instance();
 
-    const patients = useAppSelector((state) => state.patients.patients);
+    const { patients } = useAppSelector((state) => state.patients);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [query, setQuery] = useState('');
 
@@ -33,7 +36,8 @@ export default function PatientsDashboardPage() {
     }
 
     function onOpenPatientDossier(patientId: string) {
-        console.warn(`OPENING DOSSIER OF PATIENT WITH ID "${patientId}"`);
+        dispatch(setSelectedPatient(patientId));
+        navigate(`/patients/${patientId}`);
     }
 
     useEffect(() => {
