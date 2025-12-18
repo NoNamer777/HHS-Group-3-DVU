@@ -5,15 +5,24 @@ import {
     faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { instanceToPlain } from 'class-transformer';
 import { type ChangeEvent, useEffect, useState } from 'react';
-import { type Patient, PatientsService, PatientStatuses } from '../patients';
+import { useAppDispatch, useAppSelector } from '../hooks.ts';
+import {
+    Patient,
+    PatientsService,
+    PatientStatuses,
+    setPatients,
+} from '../patients';
 import './dashboard.page.css';
 
 export default function DashboardPage() {
     const patientsService = PatientsService.instance();
 
+    const patients = useAppSelector((state) => state.patients.patients);
+    const dispatch = useAppDispatch();
+
     const [query, setQuery] = useState('');
-    const [patients, setPatients] = useState<Patient[]>([]);
 
     function onQueryChange(event: ChangeEvent) {
         setQuery((event.target as HTMLInputElement).value);
@@ -30,10 +39,9 @@ export default function DashboardPage() {
     useEffect(() => {
         (async () => {
             const patients = await patientsService.getAll();
-
-            setPatients(patients);
+            dispatch(setPatients(instanceToPlain(patients) as Patient[]));
         })();
-    }, [patientsService]);
+    }, [patientsService, dispatch]);
 
     return (
         <article className="container-fluid">

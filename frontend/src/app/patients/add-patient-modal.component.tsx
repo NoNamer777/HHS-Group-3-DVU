@@ -2,6 +2,7 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'bootstrap';
 import { type ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { parse } from '../shared';
 import {
     type Gender,
@@ -15,6 +16,7 @@ import {
     PatientStatuses,
 } from './models.ts';
 import { PatientsService } from './patients.service.ts';
+import { addPatient } from './patients.slice.ts';
 
 export default function AddPatientModalComponent() {
     const [name, setName] = useState('');
@@ -24,6 +26,8 @@ export default function AddPatientModalComponent() {
     const [patientStatus, setPatientStatus] = useState<PatientStatus>(
         PatientStatuses.STABLE,
     );
+
+    const dispatch = useDispatch();
 
     const patientsService = PatientsService.instance();
 
@@ -61,6 +65,7 @@ export default function AddPatientModalComponent() {
         });
 
         await patientsService.create(patient);
+        dispatch(addPatient(patient));
 
         // Reset form
         setName('');
