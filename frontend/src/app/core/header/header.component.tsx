@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import './header.css';
+import './header.component.css';
 
-export default function Header() {
+export default function HeaderComponent() {
     return (
         <header>
             <nav className="navbar navbar-diapedis navbar-expand-lg px-3">

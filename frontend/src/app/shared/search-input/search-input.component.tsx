@@ -1,14 +1,14 @@
 import type { ChangeEvent } from 'react';
-import './searchinput.css';
+import './search-input.component.css';
 
-type SearchInputProps = {
+interface SearchInputProps {
     column: string;
     value: string;
     onChange: (column: string, value: string) => void;
     placeholder?: string;
-};
+}
 
-export default function SearchInput({
+export default function SearchInputComponent({
     column,
     value,
     onChange,

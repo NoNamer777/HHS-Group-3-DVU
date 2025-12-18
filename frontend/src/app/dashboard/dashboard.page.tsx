@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import SearchInput from '../shared/components/searchinput';
-import DiapedisTable from '../shared/components/table';
+import SearchInputComponent from '../shared/search-input/search-input.component.tsx';
+import TableComponent from '../shared/table/table.component.tsx';
+import './dashboard.page.css';
 
 const columns = ['id', 'name', 'email'];
 
@@ -12,7 +13,7 @@ const data = [
     { id: 5, name: 'Arie', email: 'b@test.com' },
 ];
 
-export default function Dashboard() {
+export default function DashboardPage() {
     const [filters, setFilters] = useState<Record<string, string>>({});
 
     const handleFilterChange = (column: string, value: string) => {
@@ -48,7 +49,7 @@ export default function Dashboard() {
                 }}
             >
                 {columns.map((column) => (
-                    <SearchInput
+                    <SearchInputComponent
                         key={column}
                         column={column}
                         value={filters[column] ?? ''}
@@ -57,7 +58,7 @@ export default function Dashboard() {
                 ))}
             </div>
 
-            <DiapedisTable columns={columns} data={filteredData} />
+            <TableComponent columns={columns} data={filteredData} />
         </div>
     );
 }

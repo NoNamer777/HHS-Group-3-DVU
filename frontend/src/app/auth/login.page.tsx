@@ -1,6 +1,6 @@
 import viteLogo from '/vite.svg';
 
-export default function Login() {
+export default function LoginPage() {
     return (
         <main>
             <div>

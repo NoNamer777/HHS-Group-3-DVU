@@ -1,11 +1,11 @@
 import { BrowserRouter } from 'react-router-dom';
 import { render } from 'vitest-browser-react';
-import Header from './header.tsx';
+import HeaderComponent from './header.component.tsx';
 
 test('Navbar', async () => {
     const { getByText } = await render(
         <BrowserRouter>
-            <Header />
+            <HeaderComponent />
         </BrowserRouter>,
     );
 

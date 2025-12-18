@@ -1,11 +1,16 @@
-import './table.css';
+import './table.component.css';
 
-type DiapedisTableProps = {
-    columns: string[]; // kolommen zoals: id, naam, datum
-    data: Array<Record<string, unknown> | null>; // patient data
-};
+type Patient = Record<string, unknown>;
 
-export default function DiapedisTable({ columns, data }: DiapedisTableProps) {
+interface TableProps {
+    /** e.g., id, name, date */
+    columns: string[];
+
+    /** Patient data */
+    data: Patient[];
+}
+
+export default function TableComponent({ columns, data }: TableProps) {
     return (
         <div className="diapedis-table-wrapper">
             <table className="diapedis-table">
