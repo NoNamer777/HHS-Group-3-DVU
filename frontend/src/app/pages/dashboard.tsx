@@ -29,6 +29,8 @@ export default function Dashboard() {
     const filteredData = useMemo(() => {
         return data.filter((row) =>
             columns.every((column) => {
+                // TODO #66: Rens van der Meijs
+                // Remove this after all works in the API
                 const filterValue = filters[column];
                 if (!filterValue) return true;
 
