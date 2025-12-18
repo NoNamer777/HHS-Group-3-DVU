@@ -13,10 +13,10 @@ import {
     PatientsService,
     PatientStatuses,
     setPatients,
-} from '../patients';
-import './dashboard.page.css';
+} from './index.ts';
+import './patients-dashboard.page.css';
 
-export default function DashboardPage() {
+export default function PatientsDashboardPage() {
     const patientsService = PatientsService.instance();
 
     const patients = useAppSelector((state) => state.patients.patients);
