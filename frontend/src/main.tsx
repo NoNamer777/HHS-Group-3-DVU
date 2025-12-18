@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'reflect-metadata';
 import '../public/style.css';
 import App from './app/app.tsx';
+import AuthProvider from './app/auth/auth.provider.tsx';
 
 const rootElement = document.getElementById('root');
 
@@ -17,7 +18,9 @@ if (!rootElement) {
 createRoot(rootElement).render(
     <StrictMode>
         <BrowserRouter>
-            <App />
+            <AuthProvider>
+                <App />
+            </AuthProvider>
         </BrowserRouter>
     </StrictMode>,
 );
