@@ -1,34 +1,105 @@
-import { Link } from 'react-router-dom';
+import {
+    faArrowRightFromBracket,
+    faFileImport,
+    faUserPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../../../public/logo.png';
+import { getAuthenticatedUser } from '../../auth';
+import { StorageKeys, StorageService } from '../../shared';
 import './header.component.css';
 
 export default function HeaderComponent() {
+    const user = getAuthenticatedUser();
+    const navigate = useNavigate();
+
+    function onLogOut() {
+        StorageService.instance().removeItem(StorageKeys.ACCESS_TOKEN);
+        navigate('/login');
+    }
+
+    function onNavigateToDashboard() {
+        navigate('/dashboard');
+    }
+
+    function onAddPatient() {
+        console.warn('ADDING PATIENT');
+    }
+
+    function onShowSyncDialog() {
+        console.warn('SHOWING SYNC DIALOG');
+    }
+
     return (
-        <header>
-            <nav className="navbar navbar-diapedis navbar-expand-lg px-3">
-                <Link className="navbar-brand text-white fw-bold" to="/home">
-                    Diabeticum Pedis
+        <nav className="navbar navbar-expand-lg bg-primary-subtle text-bg-primary">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/dashboard">
+                    <img
+                        src={logo}
+                        alt="logo.png"
+                        width="60"
+                        height="60"
+                        className="bg-primary rounded-4 border p-1 navbar-brand"
+                    />
+                    Zorgverleners-tool
                 </Link>
 
-                <section className="collapse navbar-collapse" id="navbarMenu">
-                    <ul className="navbar-nav ms-auto text-center">
+                <div className="navbar-collapse">
+                    <ul className="navbar-nav ms-auto align-items-center gap-2">
                         <li className="nav-item">
-                            <Link
-                                className="nav-link text-white"
-                                to="/dashboard"
+                            <button
+                                role="button"
+                                className="btn btn-primary"
+                                onClick={onNavigateToDashboard}
                             >
-                                Dashboard
-                            </Link>
+                                Patiënten
+                            </button>
                         </li>
-                    </ul>
-                    <ul className="navbar-nav ms-auto text-end">
                         <li className="nav-item">
-                            <Link className="nav-link text-white" to="/login">
-                                Inloggen
-                            </Link>
+                            <button
+                                role="button"
+                                className="btn btn-primary d-flex gap-1 align-items-center"
+                                onClick={onAddPatient}
+                            >
+                                <FontAwesomeIcon icon={faUserPlus} />
+                                Patiënt toevoegen
+                            </button>
+                        </li>
+                        <li className="nav-item">
+                            <button
+                                role="button"
+                                className="btn btn-primary"
+                                onClick={onShowSyncDialog}
+                            >
+                                <FontAwesomeIcon icon={faFileImport} />
+                                Import / Export
+                            </button>
+                        </li>
+                        <li className="nav-item border-start border-dark-subtle border-2 align-self-stretch"></li>
+                        <li className="nav-item d-flex">
+                            <div className="d-flex flex-column align-items-center p-1">
+                                <span className="navbar-text fw-bold flex-grow-0 p-0">
+                                    {user.email}
+                                </span>
+                                <span className="navbar-text text-sm ms-auto flex-grow-0 p-0">
+                                    {user.role}
+                                </span>
+                            </div>
+                            <button
+                                className="nav-link"
+                                role="button"
+                                onClick={onLogOut}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faArrowRightFromBracket}
+                                    size="3x"
+                                />
+                            </button>
                         </li>
                     </ul>
-                </section>
-            </nav>
-        </header>
+                </div>
+            </div>
+        </nav>
     );
 }
