@@ -7,12 +7,14 @@ import Dashboard from './pages/dashboard.tsx';
 export default function App() {
     return (
         <>
-            <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
             <Header />
+            <main className={'bg-body'}>
+                <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Routes>
+            </main>
         </>
     );
 }
