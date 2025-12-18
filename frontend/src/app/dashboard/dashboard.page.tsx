@@ -181,7 +181,7 @@ export default function DashboardPage() {
                                     ])}
                                 </td>
                                 <td className="p-3">{patient.gender}</td>
-                                <td className="p-3">{patient.diabetesType}</td>
+                                <td className="p-3">{patient.condition}</td>
                                 <td className="p-3">
                                     {patient.lastUpdated.toLocaleString(['nl'])}
                                 </td>
