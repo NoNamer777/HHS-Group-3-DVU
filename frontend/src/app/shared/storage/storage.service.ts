@@ -14,7 +14,7 @@ export class StorageService {
 
     public getItem<T = unknown>(key: StorageKey) {
         const stored = this.storage.getItem(key);
-        const { data: parsed, error } = tryCatch(JSON.parse(stored));
+        const { data: parsed, error } = tryCatch(() => JSON.parse(stored));
 
         if (error) {
             console.warn('Invalid JSON value stored. Removing stored value');
