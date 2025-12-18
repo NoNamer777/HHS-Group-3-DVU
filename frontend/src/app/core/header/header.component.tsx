@@ -1,12 +1,12 @@
 import {
     faArrowRightFromBracket,
     faFileImport,
-    faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
 import { useAuth } from '../../auth/auth.context.ts';
+import AddPatientModalComponent from '../../patients/add-patient-modal.component.tsx';
 import './header.component.css';
 
 export default function HeaderComponent() {
@@ -20,10 +20,6 @@ export default function HeaderComponent() {
 
     function onNavigateToDashboard() {
         navigate('/dashboard');
-    }
-
-    function onAddPatient() {
-        console.warn('ADDING PATIENT');
     }
 
     function onShowSyncDialog() {
@@ -56,14 +52,7 @@ export default function HeaderComponent() {
                             </button>
                         </li>
                         <li className="nav-item">
-                            <button
-                                role="button"
-                                className="btn btn-primary d-flex gap-1 align-items-center"
-                                onClick={onAddPatient}
-                            >
-                                <FontAwesomeIcon icon={faUserPlus} />
-                                Patiënt toevoegen
-                            </button>
+                            <AddPatientModalComponent />
                         </li>
                         <li className="nav-item">
                             <button
