@@ -1,6 +1,7 @@
-import { delay, parseAll } from '../shared';
+import { nanoid } from 'nanoid';
+import { delay, parse, parseAll } from '../shared';
 import { patients } from './data.ts';
-import { Patient } from './models.ts';
+import { type CreatePatientData, Patient } from './models.ts';
 
 export class PatientsService {
     public static instance() {
@@ -14,5 +15,17 @@ export class PatientsService {
     public async getAll() {
         await delay(200);
         return parseAll<Patient>(Patient, patients);
+    }
+
+    public async create(data: CreatePatientData) {
+        const patient = parse<Patient>(Patient, data);
+
+        patient.lastUpdated = new Date();
+        patient.id = nanoid();
+
+        patients.push(patient);
+        await delay(200);
+
+        return patient;
     }
 }
