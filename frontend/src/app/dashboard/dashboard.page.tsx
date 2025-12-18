@@ -1,64 +1,219 @@
-import { useMemo, useState } from 'react';
-import SearchInputComponent from '../shared/search-input/search-input.component.tsx';
-import TableComponent from '../shared/table/table.component.tsx';
+import {
+    faCircleCheck,
+    faHeartPulse,
+    faMagnifyingGlass,
+    faTriangleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { type ChangeEvent, useEffect, useState } from 'react';
+import { type Patient, PatientsService, PatientStatuses } from '../patients';
 import './dashboard.page.css';
 
-const columns = ['id', 'name', 'email'];
-
-const data = [
-    { id: 1, name: 'Alice', email: 'a@test.com' },
-    { id: 2, name: 'Bob', email: 'b@test.com' },
-    { id: 3, name: 'Pietje Bell', email: 'b@test.com' },
-    { id: 4, name: 'Mosselman', email: 'b@test.com' },
-    { id: 5, name: 'Arie', email: 'b@test.com' },
-];
-
 export default function DashboardPage() {
-    const [filters, setFilters] = useState<Record<string, string>>({});
+    const patientsService = PatientsService.instance();
 
-    const handleFilterChange = (column: string, value: string) => {
-        setFilters((prev) => ({
-            ...prev,
-            [column]: value,
-        }));
-    };
+    const [query, setQuery] = useState('');
+    const [patients, setPatients] = useState<Patient[]>([]);
 
-    const filteredData = useMemo(() => {
-        return data.filter((row) =>
-            columns.every((column) => {
-                const filterValue = filters[column];
-                if (!filterValue) return true;
+    function onQueryChange(event: ChangeEvent) {
+        setQuery((event.target as HTMLInputElement).value);
+    }
 
-                const cellValue = (row as Record<string, unknown>)[column];
-                return String(cellValue)
-                    .toLowerCase()
-                    .includes(filterValue.toLowerCase());
-            }),
-        );
-    }, [filters]);
+    function onQuery() {
+        console.log({ query });
+    }
+
+    function onOpenPatientDossier(patientId: string) {
+        console.warn(`OPENING DOSSIER OF PATIENT WITH ID "${patientId}"`);
+    }
+
+    useEffect(() => {
+        (async () => {
+            const patients = await patientsService.getAll();
+
+            setPatients(patients);
+        })();
+    }, [patientsService]);
 
     return (
-        <div>
-            <h3 className="diapedis-header3">Patienten</h3>
-
-            {/* Search row aligned to table columns via giving both the diapedis-table-wrapper css*/}
-            <div
-                className="diapedis-table-wrapper diapedis-search-row"
-                style={{
-                    gridTemplateColumns: `repeat(${columns.length}, 1fr)`,
-                }}
-            >
-                {columns.map((column) => (
-                    <SearchInputComponent
-                        key={column}
-                        column={column}
-                        value={filters[column] ?? ''}
-                        onChange={handleFilterChange}
-                    />
-                ))}
+        <article className="container-fluid">
+            {/*Query input*/}
+            <div className="bg-body p-2 shadow-sm rounded-3 mb-5">
+                <form action={onQuery}>
+                    <label
+                        htmlFor="query-input"
+                        className="form-label visually-hidden"
+                    >
+                        Zoek
+                    </label>
+                    <div className="input-group input-group-lg">
+                        <span className="input-group-text">
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        </span>
+                        <input
+                            type="search"
+                            className="form-control"
+                            id="query-input"
+                            placeholder="Zoek op naam..."
+                            value={query}
+                            onChange={onQueryChange}
+                        />
+                    </div>
+                </form>
             </div>
 
-            <TableComponent columns={columns} data={filteredData} />
-        </div>
+            {/*Information Cards*/}
+            <div className="d-flex align-items-center justify-content-between px-5 mb-5">
+                <div className="card rounded-4 shadow-sm">
+                    <div className="card-body">
+                        <h3 className="card-title text-muted h6">
+                            Totaal Patienten
+                        </h3>
+                        <h4 className="h2">{patients.length}</h4>
+                    </div>
+                </div>
+                <div className="card rounded-4 shadow-sm">
+                    <div className="card-body d-flex justify-content-between">
+                        <section>
+                            <h3 className="card-title text-muted h6">
+                                Stabiel
+                            </h3>
+                            <h4 className="h2">
+                                {
+                                    patients.filter(
+                                        (patient) =>
+                                            patient.status ===
+                                            PatientStatuses.STABLE,
+                                    ).length
+                                }
+                            </h4>
+                        </section>
+                        <FontAwesomeIcon
+                            icon={faCircleCheck}
+                            size="5x"
+                            className="text-success"
+                        />
+                    </div>
+                </div>
+                <div className="card rounded-4 shadow-sm">
+                    <div className="card-body d-flex justify-content-between">
+                        <section>
+                            <h3 className="card-title text-muted h6">
+                                Monitoren
+                            </h3>
+                            <h4 className="h2">
+                                {
+                                    patients.filter(
+                                        (patient) =>
+                                            patient.status ===
+                                            PatientStatuses.MONITORING,
+                                    ).length
+                                }
+                            </h4>
+                        </section>
+                        <FontAwesomeIcon
+                            icon={faHeartPulse}
+                            size="5x"
+                            className="text-warning"
+                        />
+                    </div>
+                </div>
+                <div className="card rounded-4 shadow-sm">
+                    <div className="card-body d-flex justify-content-between">
+                        <section>
+                            <h3 className="card-title text-muted h6">
+                                Kritiek
+                            </h3>
+                            <h4 className="h2">
+                                {
+                                    patients.filter(
+                                        (patient) =>
+                                            patient.status ===
+                                            PatientStatuses.CRITICAL,
+                                    ).length
+                                }
+                            </h4>
+                        </section>
+                        <FontAwesomeIcon
+                            icon={faTriangleExclamation}
+                            size="5x"
+                            className="text-danger"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/*Table*/}
+            <div className="border rounded">
+                <table className="table table-hover">
+                    <thead className="table-secondary">
+                        <tr>
+                            <th scope="col" className="p-3">
+                                Naam
+                            </th>
+                            <th scope="col" className="p-3">
+                                Geboortedatum
+                            </th>
+                            <th scope="col" className="p-3">
+                                Geslacht
+                            </th>
+                            <th scope="col" className="p-3">
+                                Aandoening
+                            </th>
+                            <th scope="col" className="p-3">
+                                Laatst bijgewerkt
+                            </th>
+                            <th scope="col" className="p-3">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="table-group-divider">
+                        {patients.map((patient) => (
+                            <tr
+                                key={patient.id}
+                                onClick={() => onOpenPatientDossier(patient.id)}
+                            >
+                                <td className="p-3">{patient.name}</td>
+                                <td className="p-3">
+                                    {patient.dateOfBirth.toLocaleDateString([
+                                        'nl',
+                                    ])}
+                                </td>
+                                <td className="p-3">{patient.gender}</td>
+                                <td className="p-3">{patient.diabetesType}</td>
+                                <td className="p-3">
+                                    {patient.lastUpdated.toLocaleString(['nl'])}
+                                </td>
+                                <td className="p-3 d-flex gap-2 align-items-center">
+                                    {patient.status ===
+                                        PatientStatuses.STABLE && (
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            className="text-success"
+                                        />
+                                    )}
+                                    {patient.status ===
+                                        PatientStatuses.MONITORING && (
+                                        <FontAwesomeIcon
+                                            icon={faHeartPulse}
+                                            className="text-warning"
+                                        />
+                                    )}
+                                    {patient.status ===
+                                        PatientStatuses.CRITICAL && (
+                                        <FontAwesomeIcon
+                                            icon={faTriangleExclamation}
+                                            className="text-danger"
+                                        />
+                                    )}
+                                    {patient.status}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </article>
     );
 }
