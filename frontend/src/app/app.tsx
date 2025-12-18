@@ -14,7 +14,7 @@ export default function App() {
             {!loading && (
                 <>
                     {user && (
-                        <header>
+                        <header className="mb-3">
                             <HeaderComponent />
                         </header>
                     )}
