@@ -4,6 +4,7 @@ import { useAuth } from './auth/auth.context.ts';
 import LoginPage from './auth/login.page.tsx';
 import HeaderComponent from './core/header/header.component.tsx';
 import RootPage from './core/root/root.page.tsx';
+import PatientInfoPage from './patients/patient-info.page.tsx';
 import PatientsDashboardPage from './patients/patients-dashboard.page.tsx';
 
 export default function App() {
@@ -25,6 +26,10 @@ export default function App() {
                             <Route
                                 path="/dashboard"
                                 element={<PatientsDashboardPage />}
+                            />
+                            <Route
+                                path="/patients/:patientId"
+                                element={<PatientInfoPage />}
                             />
                         </Routes>
                     </main>
