@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken, validateUserAccess, AuthRequest } from '../middleware/auth';
+import { isValidEmail } from '../utils/validation';
 
 const router = Router();
 
@@ -58,8 +59,7 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
     }
     
     // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(from) || !emailRegex.test(to)) {
+    if (!isValidEmail(from) || !isValidEmail(to)) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
     

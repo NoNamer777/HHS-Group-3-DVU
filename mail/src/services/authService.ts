@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { isValidEmail, isValidPassword } from '../utils/validation';
 
 // Singleton pattern to avoid multiple Prisma instances
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
@@ -26,7 +27,8 @@ export class AuthService {
   private getAccessTokenSecret(): string {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      throw new Error('JWT_SECRET not configured');
+      console.error('Configuration error: JWT_SECRET not configured');
+      throw new Error('Authentication service configuration error');
     }
     return secret;
   }
@@ -34,7 +36,8 @@ export class AuthService {
   private getRefreshTokenSecret(): string {
     const secret = process.env.JWT_REFRESH_SECRET;
     if (!secret) {
-      throw new Error('JWT_REFRESH_SECRET not configured');
+      console.error('Configuration error: JWT_REFRESH_SECRET not configured');
+      throw new Error('Authentication service configuration error');
     }
     return secret;
   }
@@ -57,13 +60,12 @@ export class AuthService {
 
   async register(email: string, password: string, username?: string): Promise<LoginResult> {
     // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       throw new Error('Invalid email format');
     }
 
     // Validate password strength
-    if (password.length < 8) {
+    if (!isValidPassword(password)) {
       throw new Error('Password must be at least 8 characters long');
     }
 
@@ -187,8 +189,13 @@ export class AuthService {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken
       };
-    } catch (error) {
-      throw new Error('Invalid or expired refresh token');
+    } catch (error: unknown) {
+      const originalError = error instanceof Error ? error : undefined;
+      const messageSuffix = originalError?.message ? `: ${originalError.message}` : '';
+      throw new Error(
+        `Invalid or expired refresh token${messageSuffix}`,
+        originalError ? { cause: originalError } : undefined
+      );
     }
   }
 

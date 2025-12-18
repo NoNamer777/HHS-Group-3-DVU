@@ -61,6 +61,7 @@ router.post('/refresh', async (req: Request, res: Response) => {
     if (error instanceof Error) {
       res.status(401).json({ error: error.message });
     } else {
+      console.error('Token refresh error:', error);
       res.status(500).json({ error: 'Token refresh failed' });
     }
   }
@@ -78,6 +79,7 @@ router.post('/logout', async (req: Request, res: Response) => {
     await authService.logout(refreshToken);
     res.json({ message: 'Logged out successfully' });
   } catch (error) {
+    console.error('Logout error:', error);
     res.status(500).json({ error: 'Logout failed' });
   }
 });
@@ -92,6 +94,7 @@ router.post('/logout-all', authenticateToken, async (req: AuthRequest, res: Resp
     await authService.logoutAll(req.user.userId);
     res.json({ message: 'Logged out from all devices successfully' });
   } catch (error) {
+    console.error('Logout all error:', error);
     res.status(500).json({ error: 'Logout failed' });
   }
 });
@@ -105,6 +108,7 @@ router.get('/me', authenticateToken, async (req: AuthRequest, res: Response) => 
 
     res.json({ user: req.user });
   } catch (error) {
+    console.error('Get user info error:', error);
     res.status(500).json({ error: 'Failed to get user info' });
   }
 });

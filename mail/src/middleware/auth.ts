@@ -23,7 +23,8 @@ export const authenticateToken = (
   try {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      throw new Error('JWT_SECRET not configured');
+      console.error('Configuration error: JWT_SECRET not configured');
+      return res.status(500).json({ error: 'Authentication service unavailable' });
     }
 
     const decoded = jwt.verify(token, secret) as {
