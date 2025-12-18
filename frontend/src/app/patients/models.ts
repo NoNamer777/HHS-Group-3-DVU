@@ -51,11 +51,11 @@ export const PATIENT_STATUS_OPTIONS = [
 export class Patient {
     id: string;
     name: string;
-    dateOfBirth: Date;
+    dateOfBirth: number;
     gender: Gender;
     condition: string;
     status: PatientStatus;
-    lastUpdated: Date;
+    lastUpdated: number;
 }
 
 export type CreatePatientData = Exclude<Patient, 'id' | 'lastUpdated'>;

@@ -20,7 +20,7 @@ export class PatientsService {
     public async create(data: CreatePatientData) {
         const patient = parse<Patient>(Patient, data);
 
-        patient.lastUpdated = new Date();
+        patient.lastUpdated = new Date().getTime();
         patient.id = nanoid();
 
         patients.push(patient);

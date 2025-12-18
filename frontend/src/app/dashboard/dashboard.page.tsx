@@ -176,14 +176,16 @@ export default function DashboardPage() {
                             >
                                 <td className="p-3">{patient.name}</td>
                                 <td className="p-3">
-                                    {patient.dateOfBirth.toLocaleDateString([
-                                        'nl',
-                                    ])}
+                                    {new Date(
+                                        patient.dateOfBirth,
+                                    ).toLocaleDateString(['nl'])}
                                 </td>
                                 <td className="p-3">{patient.gender}</td>
                                 <td className="p-3">{patient.condition}</td>
                                 <td className="p-3">
-                                    {patient.lastUpdated.toLocaleString(['nl'])}
+                                    {new Date(
+                                        patient.lastUpdated,
+                                    ).toLocaleString(['nl'])}
                                 </td>
                                 <td className="p-3 d-flex gap-2 align-items-center">
                                     {patient.status ===
