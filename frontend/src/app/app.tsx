@@ -18,7 +18,7 @@ export default function App() {
                             <HeaderComponent />
                         </header>
                     )}
-                    <main className="bg-body">
+                    <main>
                         <Routes>
                             <Route path="/" element={<RootPage />} />
                             <Route path="/login" element={<LoginPage />} />
