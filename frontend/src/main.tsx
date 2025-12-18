@@ -2,11 +2,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import 'reflect-metadata';
 import '../public/style.css';
 import App from './app/app.tsx';
 import AuthProvider from './app/auth/auth.provider.tsx';
+import store from './app/store.ts';
 
 const rootElement = document.getElementById('root');
 
@@ -19,7 +21,9 @@ createRoot(rootElement).render(
     <StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                <App />
+                <Provider store={store}>
+                    <App />
+                </Provider>
             </AuthProvider>
         </BrowserRouter>
     </StrictMode>,
