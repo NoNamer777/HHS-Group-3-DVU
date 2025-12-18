@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import './app.css';
 import { isAuthenticated } from './auth';
 import LoginPage from './auth/login.page.tsx';
 import HeaderComponent from './core/header/header.component.tsx';
@@ -13,7 +14,7 @@ export default function App() {
                     <HeaderComponent />
                 </header>
             )}
-            <main className={'bg-body'}>
+            <main className="bg-body">
                 <Routes>
                     <Route path="/" element={<RootPage />} />
                     <Route path="/login" element={<LoginPage />} />
