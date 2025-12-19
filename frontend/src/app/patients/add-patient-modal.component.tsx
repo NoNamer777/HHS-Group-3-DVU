@@ -13,9 +13,7 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'bootstrap';
 import { type ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { patientsService } from './patients.service.ts';
-import { addPatient } from './patients.slice.ts';
+import { useCreatePatientMutation } from './patients.api.ts';
 
 export default function AddPatientModalComponent() {
     const [name, setName] = useState('');
@@ -26,7 +24,7 @@ export default function AddPatientModalComponent() {
         PatientStatuses.STABLE,
     );
 
-    const dispatch = useDispatch();
+    const [createPatient] = useCreatePatientMutation();
 
     function onNameChange(event: ChangeEvent) {
         setName((event.target as HTMLInputElement).value);
@@ -53,16 +51,14 @@ export default function AddPatientModalComponent() {
     async function onAddPatient() {
         const modal = new Modal(document.getElementById('add-patient-modal'));
 
-        const patient = {
+        const data: CreatePatientData = {
             name: name,
             dateOfBirth: dateOfBirth.getTime(),
             gender: gender,
             condition: condition,
             status: patientStatus,
-        } as CreatePatientData;
-
-        await patientsService.create(patient);
-        dispatch(addPatient(patient));
+        };
+        await createPatient(data);
 
         // Reset form
         setName('');

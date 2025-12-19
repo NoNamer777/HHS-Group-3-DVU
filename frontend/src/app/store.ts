@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import patientReducers from './patients/patients.slice.ts';
+import { patientsApi } from './patients';
 
 const store = configureStore({
     reducer: {
-        patients: patientReducers,
+        [patientsApi.reducerPath]: patientsApi.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(patientsApi.middleware),
 });
 
 export default store;

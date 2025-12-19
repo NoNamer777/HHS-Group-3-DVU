@@ -6,15 +6,13 @@ import {
     faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { type ChangeEvent, useEffect, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks.ts';
 import './patients-dashboard.page.css';
-import { fetchAllPatients } from './patients.slice.ts';
+import { useGetPatientsQuery } from './patients.api.ts';
 
 export default function PatientsDashboardPage() {
-    const { patients } = useAppSelector((state) => state.patients);
-    const dispatch = useAppDispatch();
+    const { data: patients } = useGetPatientsQuery();
     const navigate = useNavigate();
 
     const [query, setQuery] = useState('');
@@ -30,10 +28,6 @@ export default function PatientsDashboardPage() {
     function onOpenPatientDossier(patientId: string) {
         navigate(`/patients/${patientId}`);
     }
-
-    useEffect(() => {
-        dispatch(fetchAllPatients());
-    }, [dispatch]);
 
     return (
         <article className="container-fluid">
@@ -69,7 +63,7 @@ export default function PatientsDashboardPage() {
                         <h3 className="card-title text-muted h6">
                             Totaal Patienten
                         </h3>
-                        <h4 className="h2">{patients.length}</h4>
+                        <h4 className="h2">{(patients ?? []).length}</h4>
                     </div>
                 </div>
                 <div className="card rounded-4 shadow-sm">
@@ -80,7 +74,7 @@ export default function PatientsDashboardPage() {
                             </h3>
                             <h4 className="h2">
                                 {
-                                    patients.filter(
+                                    (patients ?? []).filter(
                                         (patient) =>
                                             patient.status ===
                                             PatientStatuses.STABLE,
@@ -103,7 +97,7 @@ export default function PatientsDashboardPage() {
                             </h3>
                             <h4 className="h2">
                                 {
-                                    patients.filter(
+                                    (patients ?? []).filter(
                                         (patient) =>
                                             patient.status ===
                                             PatientStatuses.MONITORING,
@@ -126,7 +120,7 @@ export default function PatientsDashboardPage() {
                             </h3>
                             <h4 className="h2">
                                 {
-                                    patients.filter(
+                                    (patients ?? []).filter(
                                         (patient) =>
                                             patient.status ===
                                             PatientStatuses.CRITICAL,
@@ -169,7 +163,7 @@ export default function PatientsDashboardPage() {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {patients.map((patient) => (
+                        {(patients ?? []).map((patient) => (
                             <tr
                                 key={patient.id}
                                 onClick={() => onOpenPatientDossier(patient.id)}

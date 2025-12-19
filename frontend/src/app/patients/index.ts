@@ -1,3 +1,1 @@
-export * from './models';
-export * from './patients.service';
-export * from './patients.slice.ts';
+export * from './patients.api.ts';
