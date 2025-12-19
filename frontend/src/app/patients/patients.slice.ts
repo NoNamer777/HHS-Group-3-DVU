@@ -1,9 +1,9 @@
+import { Patient } from '@/models';
 import {
     createSlice,
     type PayloadAction,
     type WritableDraft,
 } from '@reduxjs/toolkit';
-import type { Patient } from './models.ts';
 
 interface PatientsState {
     patients: Patient[];

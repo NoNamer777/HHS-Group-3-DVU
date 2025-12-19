@@ -1,9 +1,3 @@
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal } from 'bootstrap';
-import { type ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { parse } from '../shared';
 import {
     type Gender,
     GENDER_OPTIONS,
@@ -14,7 +8,13 @@ import {
     type PatientStatus,
     patientStatusAttribute,
     PatientStatuses,
-} from './models.ts';
+} from '@/models';
+import { parse } from '@/utils';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Modal } from 'bootstrap';
+import { type ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { PatientsService } from './patients.service.ts';
 import { addPatient } from './patients.slice.ts';
 

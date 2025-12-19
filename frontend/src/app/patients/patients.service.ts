@@ -1,7 +1,7 @@
+import { type CreatePatientData, Patient } from '@/models';
 import { nanoid } from 'nanoid';
 import { delay, parse, parseAll } from '../shared';
 import { patients } from './data.ts';
-import { type CreatePatientData, Patient } from './models.ts';
 
 export class PatientsService {
     public static instance() {

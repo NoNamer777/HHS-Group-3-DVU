@@ -1,3 +1,4 @@
+import { Patient, PatientStatuses } from '@/models';
 import {
     faCircleCheck,
     faHeartPulse,
@@ -9,7 +10,6 @@ import { instanceToPlain } from 'class-transformer';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
-import { Patient, PatientStatuses } from './models';
 import './patients-dashboard.page.css';
 import { PatientsService } from './patients.service.ts';
 import { setPatients } from './patients.slice.ts';
