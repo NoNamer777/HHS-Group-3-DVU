@@ -1,4 +1,4 @@
-import { initializeWorker } from '@/test';
+import { initializeWorker, resetWorker } from '@/test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { StrictMode } from 'react';
@@ -18,6 +18,7 @@ if (!rootElement) {
 }
 if (import.meta.env['DEV']) {
     await initializeWorker();
+    resetWorker();
 }
 
 // Create React root and render
