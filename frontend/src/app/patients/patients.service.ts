@@ -1,25 +1,41 @@
 import { type CreatePatientData, Patient } from '@/models';
 import { parse, parseAll } from '@/utils';
-import { nanoid } from 'nanoid';
-import { delay } from '../shared';
-import { patients } from './data.ts';
+import { apiService } from '../shared';
 
 export class PatientsService {
+    private readonly endPoint = '/patients';
+
     public async getAll() {
-        await delay(200);
-        return parseAll<Patient>(Patient, patients);
+        const response = await apiService.get(this.endPoint);
+        return parseAll<Patient>(Patient, await response.json());
     }
 
     public async create(data: CreatePatientData) {
-        const patient = parse<Patient>(Patient, data);
+        const response = await apiService.post(this.endPoint, data);
+        return parse<Patient>(Patient, await response.json());
+    }
 
-        patient.lastUpdated = new Date().getTime();
-        patient.id = nanoid();
+    public async getById(patientId: string) {
+        const response = await apiService.get(
+            this.buildPatientEndPoint(patientId),
+        );
+        return parse<Patient>(Patient, await response.json());
+    }
 
-        patients.push(patient);
-        await delay(200);
+    public async update(data: Patient) {
+        const response = await apiService.put(
+            this.buildPatientEndPoint(data.id),
+            data,
+        );
+        return parse<Patient>(Patient, await response.json());
+    }
 
-        return patient;
+    public async remove(patientId: string) {
+        await apiService.delete(this.buildPatientEndPoint(patientId));
+    }
+
+    private buildPatientEndPoint(patientId: string) {
+        return `${this.endPoint}${patientId}`;
     }
 }
 

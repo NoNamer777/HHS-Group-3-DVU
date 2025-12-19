@@ -1,7 +1,8 @@
 import { requestService } from './request.service.ts';
 
 export class ApiService {
-    private readonly baseUrl = 'http://localhost:8000/api';
+    private readonly baseUrl =
+        import.meta.env['BASE_URL'] || 'http://localhost:8000/api';
 
     public async get(endPoint: string) {
         return await requestService.get(`${this.baseUrl}${endPoint}`);
