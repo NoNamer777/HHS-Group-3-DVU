@@ -7,27 +7,13 @@ import {
     faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useGetPatientByIdQuery } from '../patients.api.ts';
 import './patient-info.page.css';
 
-const InfoSections = {
-    OVERVIEW: 'Overzicht',
-    LAB_RESULTS: 'Meetwaarden',
-    CONVERSATIONS: 'Gesprekken',
-    IMAGES: 'Afbeeldingen',
-} as const;
-
-type InfoSection = (typeof InfoSections)[keyof typeof InfoSections];
-
 export default function PatientInfoPage() {
     const { patientId } = useParams();
     const navigate = useNavigate();
-
-    const [shownSection, setShownSection] = useState<InfoSection>(
-        InfoSections.OVERVIEW,
-    );
 
     const { data: patient, isLoading } = useGetPatientByIdQuery(patientId);
 
