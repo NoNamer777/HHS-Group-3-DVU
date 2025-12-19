@@ -1,4 +1,5 @@
 import { type SetupWorker, setupWorker } from 'msw/browser';
+import { resetMockDatabases } from '../db';
 import { doctorHandlers, patientHandlers } from './handlers';
 
 let worker: SetupWorker;
@@ -19,4 +20,5 @@ export function stopWorker() {
 
 export function resetWorker() {
     worker.resetHandlers();
+    resetMockDatabases();
 }
