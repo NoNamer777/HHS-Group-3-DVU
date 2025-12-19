@@ -22,6 +22,22 @@ export default defineConfig(({ mode }) => {
         plugins: [react(), tsconfigPaths()],
         publicDir: resolve(__dirname, 'public'),
         root: resolve(__dirname, 'src'),
+        ...(mode === 'development' || mode === 'test'
+            ? {
+                  server: {
+                      proxy: {
+                          '/mockServiceWorker.js': {
+                              target: '',
+                              bypass: () =>
+                                  resolve(
+                                      __dirname,
+                                      '.msw/mockServiceWorker.js',
+                                  ),
+                          },
+                      },
+                  },
+              }
+            : {}),
         test: {
             browser: {
                 enabled: true,
