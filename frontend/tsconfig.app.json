@@ -5,6 +5,7 @@
         "src/**/*.tsx",
         "src/**/*.ts",
         "models/**/*.ts",
+        "utils/**/*.ts"
     ],
     "exclude": ["src/**/*.spec.tsx"],
     "compilerOptions": {

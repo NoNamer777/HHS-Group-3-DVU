@@ -1,6 +1,7 @@
 import { type CreatePatientData, Patient } from '@/models';
+import { parse, parseAll } from '@/utils';
 import { nanoid } from 'nanoid';
-import { delay, parse, parseAll } from '../shared';
+import { delay } from '../shared';
 import { patients } from './data.ts';
 
 export class PatientsService {

@@ -25,6 +25,7 @@
         "noUnusedParameters": true,
         "paths": {
             "@/models": ["models/index.ts"],
+            "@/utils": ["utils/index.ts"]
         },
         "skipLibCheck": true,
         "strictBindCallApply": true,
