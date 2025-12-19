@@ -4,24 +4,24 @@ import { apiService } from '../shared';
 export class PatientsService {
     private readonly endPoint = '/patients';
 
-    public async getAll() {
+    public async getAll(): Promise<Patient[]> {
         const response = await apiService.get(this.endPoint);
         return await response.json();
     }
 
-    public async create(data: CreatePatientData) {
+    public async create(data: CreatePatientData): Promise<Patient> {
         const response = await apiService.post(this.endPoint, data);
         return await response.json();
     }
 
-    public async getById(patientId: string) {
+    public async getById(patientId: string): Promise<Patient> {
         const response = await apiService.get(
             this.buildPatientEndPoint(patientId),
         );
         return await response.json();
     }
 
-    public async update(data: Patient) {
+    public async update(data: Patient): Promise<Patient> {
         const response = await apiService.put(
             this.buildPatientEndPoint(data.id),
             data,
@@ -29,7 +29,7 @@ export class PatientsService {
         return await response.json();
     }
 
-    public async remove(patientId: string) {
+    public async remove(patientId: string): Promise<void> {
         await apiService.delete(this.buildPatientEndPoint(patientId));
     }
 
