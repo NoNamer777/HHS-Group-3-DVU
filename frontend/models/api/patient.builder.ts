@@ -1,12 +1,17 @@
-import type { Gender } from './gender.ts';
-import type { PatientStatus } from './patient-status.ts';
-import { Patient } from './patient.model.ts';
+import { nanoid } from 'nanoid';
+import { type Gender, Genders } from './gender.ts';
+import { type PatientStatus, PatientStatuses } from './patient-status.ts';
+import { type Patient } from './patient.model.ts';
 
 export class PatientBuilder {
     private readonly patient: Patient;
 
     public constructor(id?: string) {
-        this.patient = new Patient(id ? id : undefined);
+        this.patient = {
+            id: id ? id : nanoid(),
+            gender: Genders.MALE,
+            status: PatientStatuses.STABLE,
+        } as Patient;
     }
 
     public build() {

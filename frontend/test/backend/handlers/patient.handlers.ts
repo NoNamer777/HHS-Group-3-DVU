@@ -2,7 +2,7 @@ import {
     type CreatePatientData,
     HttpStatusCodes,
     HttpStatusNames,
-    Patient,
+    type Patient,
 } from '@/models';
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { mockPatientsDB } from '../../db';

@@ -2,11 +2,10 @@ import {
     type CreatePatientData,
     DiabetesTypes,
     Genders,
-    Patient,
+    type Patient,
     PatientBuilder,
     PatientStatuses,
 } from '@/models';
-import { parse } from '@/utils';
 import { nanoid } from 'nanoid';
 import { type Records } from '../backend/handlers/types';
 
@@ -59,9 +58,11 @@ class MockPatientsDB {
     }
 
     public create(data: CreatePatientData) {
-        const patient = parse<Patient>(Patient, { ...data, id: nanoid() });
-
-        patient.lastUpdated = new Date().getTime();
+        const patient: Patient = {
+            ...data,
+            id: nanoid(),
+            lastUpdated: new Date().getTime(),
+        };
         this.records[patient.id] = patient;
 
         return patient;

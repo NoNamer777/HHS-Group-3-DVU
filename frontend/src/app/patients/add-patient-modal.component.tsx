@@ -1,15 +1,14 @@
 import {
+    type CreatePatientData,
     type Gender,
     GENDER_OPTIONS,
     genderAttribute,
     Genders,
-    Patient,
     PATIENT_STATUS_OPTIONS,
     type PatientStatus,
     patientStatusAttribute,
     PatientStatuses,
 } from '@/models';
-import { parse } from '@/utils';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'bootstrap';
@@ -54,13 +53,13 @@ export default function AddPatientModalComponent() {
     async function onAddPatient() {
         const modal = new Modal(document.getElementById('add-patient-modal'));
 
-        const patient = parse<Patient>(Patient, {
+        const patient = {
             name: name,
-            dateOfBirth: dateOfBirth,
+            dateOfBirth: dateOfBirth.getTime(),
             gender: gender,
             condition: condition,
             status: patientStatus,
-        });
+        } as CreatePatientData;
 
         await patientsService.create(patient);
         dispatch(addPatient(patient));

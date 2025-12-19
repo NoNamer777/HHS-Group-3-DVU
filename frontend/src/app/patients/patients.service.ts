@@ -1,5 +1,4 @@
-import { type CreatePatientData, Patient } from '@/models';
-import { parse, parseAll } from '@/utils';
+import type { CreatePatientData, Patient } from '@/models';
 import { apiService } from '../shared';
 
 export class PatientsService {
@@ -7,19 +6,19 @@ export class PatientsService {
 
     public async getAll() {
         const response = await apiService.get(this.endPoint);
-        return parseAll<Patient>(Patient, await response.json());
+        return await response.json();
     }
 
     public async create(data: CreatePatientData) {
         const response = await apiService.post(this.endPoint, data);
-        return parse<Patient>(Patient, await response.json());
+        return await response.json();
     }
 
     public async getById(patientId: string) {
         const response = await apiService.get(
             this.buildPatientEndPoint(patientId),
         );
-        return parse<Patient>(Patient, await response.json());
+        return await response.json();
     }
 
     public async update(data: Patient) {
@@ -27,7 +26,7 @@ export class PatientsService {
             this.buildPatientEndPoint(data.id),
             data,
         );
-        return parse<Patient>(Patient, await response.json());
+        return await response.json();
     }
 
     public async remove(patientId: string) {

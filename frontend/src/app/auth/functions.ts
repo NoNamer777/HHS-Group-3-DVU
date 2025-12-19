@@ -1,4 +1,3 @@
-import { parse } from '@/utils';
 import { StorageKeys, storageService } from '../shared';
 import { User } from './models.ts';
 
@@ -8,7 +7,5 @@ export function isAuthenticated() {
 
 export function getAuthenticatedUser() {
     if (!isAuthenticated()) return null;
-    const storedValue = storageService.getItem(StorageKeys.ACCESS_TOKEN);
-
-    return parse<User>(User, storedValue);
+    return storageService.getItem(StorageKeys.ACCESS_TOKEN) as User;
 }
