@@ -10,7 +10,7 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
 import './patients-dashboard.page.css';
-import { fetchPatients } from './patients.slice.ts';
+import { fetchAllPatients } from './patients.slice.ts';
 
 export default function PatientsDashboardPage() {
     const { patients } = useAppSelector((state) => state.patients);
@@ -32,7 +32,7 @@ export default function PatientsDashboardPage() {
     }
 
     useEffect(() => {
-        dispatch(fetchPatients());
+        dispatch(fetchAllPatients());
     }, [dispatch]);
 
     return (

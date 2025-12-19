@@ -22,7 +22,7 @@ const initialState: PatientsState = {
     error: null,
 };
 
-export const fetchPatients = createAsyncThunk(
+export const fetchAllPatients = createAsyncThunk(
     'patients/fetchAllPatients',
     async () => await patientsService.getAll(),
 );
@@ -60,15 +60,15 @@ export const patientsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchPatients.pending, (state) => {
+            .addCase(fetchAllPatients.pending, (state) => {
                 state.error = null;
                 state.status = FetchStatuses.PENDING;
             })
-            .addCase(fetchPatients.fulfilled, (state, action) => {
+            .addCase(fetchAllPatients.fulfilled, (state, action) => {
                 state.status = FetchStatuses.SUCCEEDED;
                 state.patients = [...action.payload];
             })
-            .addCase(fetchPatients.rejected, (state, action) => {
+            .addCase(fetchAllPatients.rejected, (state, action) => {
                 state.status = FetchStatuses.FAILED;
                 state.error = action.payload as ErrorResponse;
             });
