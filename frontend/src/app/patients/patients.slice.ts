@@ -1,19 +1,31 @@
-import { Patient } from '@/models';
+import type { ErrorResponse, Patient } from '@/models';
 import {
+    createAsyncThunk,
     createSlice,
     type PayloadAction,
     type WritableDraft,
 } from '@reduxjs/toolkit';
+import { type FetchStatus, FetchStatuses } from '../shared/store';
+import { patientsService } from './patients.service.ts';
 
 interface PatientsState {
     patients: Patient[];
+    status: FetchStatus;
+    error: ErrorResponse;
 }
 
 export const PATIENT_SLICE_NAME = 'patients' as const;
 
 const initialState: PatientsState = {
     patients: [],
+    status: FetchStatuses.IDLE,
+    error: null,
 };
+
+export const fetchPatients = createAsyncThunk(
+    'patients/fetchAllPatients',
+    async () => await patientsService.getAll(),
+);
 
 export const patientsSlice = createSlice({
     name: PATIENT_SLICE_NAME,
@@ -45,6 +57,21 @@ export const patientsSlice = createSlice({
                 return action.payload;
             });
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchPatients.pending, (state) => {
+                state.error = null;
+                state.status = FetchStatuses.PENDING;
+            })
+            .addCase(fetchPatients.fulfilled, (state, action) => {
+                state.status = FetchStatuses.SUCCEEDED;
+                state.patients = [...action.payload];
+            })
+            .addCase(fetchPatients.rejected, (state, action) => {
+                state.status = FetchStatuses.FAILED;
+                state.error = action.payload as ErrorResponse;
+            });
     },
 });
 

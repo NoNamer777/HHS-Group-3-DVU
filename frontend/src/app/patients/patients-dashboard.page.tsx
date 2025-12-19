@@ -1,4 +1,4 @@
-import { Patient, PatientStatuses } from '@/models';
+import { PatientStatuses } from '@/models';
 import {
     faCircleCheck,
     faHeartPulse,
@@ -6,13 +6,11 @@ import {
     faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { instanceToPlain } from 'class-transformer';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
 import './patients-dashboard.page.css';
-import { patientsService } from './patients.service.ts';
-import { setPatients } from './patients.slice.ts';
+import { fetchPatients } from './patients.slice.ts';
 
 export default function PatientsDashboardPage() {
     const { patients } = useAppSelector((state) => state.patients);
@@ -34,10 +32,7 @@ export default function PatientsDashboardPage() {
     }
 
     useEffect(() => {
-        (async () => {
-            const patients = await patientsService.getAll();
-            dispatch(setPatients(instanceToPlain(patients) as Patient[]));
-        })();
+        dispatch(fetchPatients());
     }, [dispatch]);
 
     return (
