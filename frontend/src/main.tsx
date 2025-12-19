@@ -1,3 +1,4 @@
+import { initializeWorker } from '@/test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { StrictMode } from 'react';
@@ -14,6 +15,9 @@ const rootElement = document.getElementById('root');
 
 if (!rootElement) {
     throw new Error("Root element '#root' not found in index.html");
+}
+if (import.meta.env['DEV']) {
+    await initializeWorker();
 }
 
 // Create React root and render
