@@ -9,14 +9,10 @@ import { instanceToPlain } from 'class-transformer';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
-import {
-    Patient,
-    PatientsService,
-    PatientStatuses,
-    setPatients,
-    setSelectedPatient,
-} from './index.ts';
+import { Patient, PatientStatuses } from './models';
 import './patients-dashboard.page.css';
+import { PatientsService } from './patients.service.ts';
+import { setPatients } from './patients.slice.ts';
 
 export default function PatientsDashboardPage() {
     const patientsService = PatientsService.instance();
@@ -36,7 +32,6 @@ export default function PatientsDashboardPage() {
     }
 
     function onOpenPatientDossier(patientId: string) {
-        dispatch(setSelectedPatient(patientId));
         navigate(`/patients/${patientId}`);
     }
 

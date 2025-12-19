@@ -7,14 +7,12 @@ import type { Patient } from './models.ts';
 
 interface PatientsState {
     patients: Patient[];
-    selectedPatientId: string;
 }
 
 export const PATIENT_SLICE_NAME = 'patients' as const;
 
 const initialState: PatientsState = {
     patients: [],
-    selectedPatientId: null,
 };
 
 export const patientsSlice = createSlice({
@@ -47,21 +45,10 @@ export const patientsSlice = createSlice({
                 return action.payload;
             });
         },
-        setSelectedPatient: (
-            state: PatientsState,
-            action: PayloadAction<string>,
-        ) => {
-            state.selectedPatientId = action.payload;
-        },
     },
 });
 
-export const {
-    setPatients,
-    addPatient,
-    removePatient,
-    updatePatient,
-    setSelectedPatient,
-} = patientsSlice.actions;
+export const { setPatients, addPatient, removePatient, updatePatient } =
+    patientsSlice.actions;
 
 export default patientsSlice.reducer;
