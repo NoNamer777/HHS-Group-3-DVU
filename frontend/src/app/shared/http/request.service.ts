@@ -1,12 +1,4 @@
-export const RequestMethods = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
-};
-
-export type RequestMethod =
-    (typeof RequestMethods)[keyof typeof RequestMethods];
+import { type RequestMethod, RequestMethods } from '@/models';
 
 interface RequestParams<RequestData = unknown> {
     url: string;
