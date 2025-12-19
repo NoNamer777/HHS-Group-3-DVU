@@ -1,4 +1,5 @@
 import {
+    BASE_URL,
     type CreatePatientData,
     HttpStatusCodes,
     HttpStatusNames,
@@ -6,7 +7,6 @@ import {
 } from '@/models';
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { mockPatientsDB } from '../../db';
-import { BASE_URL } from './constants.ts';
 import { throwErrorResponse } from './error-response.ts';
 
 const endPoint = `${BASE_URL}/patients`;
