@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { DiabetesTypes } from './diabetes-types.ts';
 import { type Gender, Genders } from './gender.ts';
 import { type PatientStatus, PatientStatuses } from './patient-status.ts';
 import { type Patient } from './patient.model.ts';
@@ -10,6 +11,7 @@ export class PatientBuilder {
         this.patient = {
             id: id ? id : nanoid(),
             gender: Genders.MALE,
+            condition: DiabetesTypes.TYPE_1,
             status: PatientStatuses.STABLE,
         } as Patient;
     }
