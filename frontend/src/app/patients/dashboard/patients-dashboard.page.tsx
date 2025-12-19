@@ -8,8 +8,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { type ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGetPatientsQuery } from '../patients.api.ts';
 import './patients-dashboard.page.css';
-import { useGetPatientsQuery } from './patients.api.ts';
 
 export default function PatientsDashboardPage() {
     const { data: patients } = useGetPatientsQuery();
@@ -26,7 +26,7 @@ export default function PatientsDashboardPage() {
     }
 
     function onOpenPatientDossier(patientId: string) {
-        navigate(`/patients/${patientId}`);
+        navigate(`/patienten/${patientId}`);
     }
 
     return (

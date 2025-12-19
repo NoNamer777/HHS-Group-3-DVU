@@ -1,12 +1,26 @@
 import { faArrowLeft, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useGetPatientByIdQuery } from '../patients.api.ts';
 import './patient-info.page.css';
-import { useGetPatientByIdQuery } from './patients.api.ts';
+
+const InfoSections = {
+    OVERVIEW: 'Overzicht',
+    LAB_RESULTS: 'Meetwaarden',
+    CONVERSATIONS: 'Gesprekken',
+    IMAGES: 'Afbeeldingen',
+} as const;
+
+type InfoSection = (typeof InfoSections)[keyof typeof InfoSections];
 
 export default function PatientInfoPage() {
     const { patientId } = useParams();
     const navigate = useNavigate();
+
+    const [shownSection, setShownSection] = useState<InfoSection>(
+        InfoSections.OVERVIEW,
+    );
 
     const { data: patient, isLoading } = useGetPatientByIdQuery(patientId);
 
@@ -16,6 +30,7 @@ export default function PatientInfoPage() {
 
     return (
         <article className="container-fluid">
+            {/*Back button*/}
             <button
                 type="button"
                 className="btn btn-light d-flex align-items-center gap-3 mb-5"
@@ -24,7 +39,9 @@ export default function PatientInfoPage() {
                 <FontAwesomeIcon icon={faArrowLeft} />
                 <span className="h5 m-0">Terug naar het dashboard</span>
             </button>
-            <div className="card shadow-sm w-100 rounded-4">
+
+            {/*Patient info*/}
+            <div className="card shadow-sm w-100 rounded-4 mb-5">
                 <div className="card-body">
                     {isLoading && (
                         <div className="d-flex justify-content-center align-items-center py-6">
@@ -64,6 +81,15 @@ export default function PatientInfoPage() {
                     )}
                 </div>
             </div>
+
+            {/*Sections*/}
+            <ul className="nav nav-tabs">
+                <li className="nav-item">
+                    <Link className="nav-link" to="overzicht">
+                        Overzicht
+                    </Link>
+                </li>
+            </ul>
         </article>
     );
 }

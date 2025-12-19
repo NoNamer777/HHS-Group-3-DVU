@@ -13,7 +13,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'bootstrap';
 import { type ChangeEvent, useState } from 'react';
-import { useCreatePatientMutation } from './patients.api.ts';
+import { useCreatePatientMutation } from '../patients.api.ts';
+import './add-patient-modal.component.css';
 
 export default function AddPatientModalComponent() {
     const [name, setName] = useState('');

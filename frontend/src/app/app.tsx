@@ -4,8 +4,8 @@ import { useAuth } from './auth/auth.context.ts';
 import LoginPage from './auth/login.page.tsx';
 import HeaderComponent from './core/header/header.component.tsx';
 import RootPage from './core/root/root.page.tsx';
-import PatientInfoPage from './patients/patient-info.page.tsx';
-import PatientsDashboardPage from './patients/patients-dashboard.page.tsx';
+import PatientsDashboardPage from './patients/dashboard/patients-dashboard.page.tsx';
+import PatientInfoPage from './patients/patient-info/patient-info.page.tsx';
 
 export default function App() {
     const { loading, user } = useAuth();
@@ -28,7 +28,7 @@ export default function App() {
                                 element={<PatientsDashboardPage />}
                             />
                             <Route
-                                path="/patients/:patientId"
+                                path="/patienten/:patientId"
                                 element={<PatientInfoPage />}
                             />
                         </Routes>

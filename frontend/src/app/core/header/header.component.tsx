@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
 import { useAuth } from '../../auth/auth.context.ts';
-import AddPatientModalComponent from '../../patients/add-patient-modal.component.tsx';
+import AddPatientModalComponent from '../../patients/add-patient-modal/add-patient-modal.component.tsx';
 import './header.component.css';
 
 export default function HeaderComponent() {
