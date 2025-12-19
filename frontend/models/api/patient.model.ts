@@ -11,4 +11,4 @@ export interface Patient {
     lastUpdated: number;
 }
 
-export type CreatePatientData = Exclude<Patient, 'id' | 'lastUpdated'>;
+export type CreatePatientData = Omit<Patient, 'id' | 'lastUpdated'>;
