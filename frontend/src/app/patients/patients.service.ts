@@ -34,7 +34,7 @@ export class PatientsService {
     }
 
     private buildPatientEndPoint(patientId: string) {
-        return `${this.endPoint}${patientId}`;
+        return `${this.endPoint}/${patientId}`;
     }
 }
 
