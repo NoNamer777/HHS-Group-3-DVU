@@ -26,7 +26,7 @@ export default function PatientsDashboardPage() {
     }
 
     function onOpenPatientDossier(patientId: string) {
-        navigate(`/patienten/${patientId}`);
+        navigate(`/patienten/${patientId}/overzicht`);
     }
 
     return (
