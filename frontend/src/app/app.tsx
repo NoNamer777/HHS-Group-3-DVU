@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './app.css';
-import { useAuth } from './auth/auth.context.ts';
-import LoginPage from './auth/login.page.tsx';
+import { useAuth } from './auth/context/auth.context.ts';
+import LoginPage from './auth/login/login.page.tsx';
 import HeaderComponent from './core/header/header.component.tsx';
 import RootPage from './core/root/root.page.tsx';
 import PatientsDashboardPage from './patients/dashboard/patients-dashboard.page.tsx';

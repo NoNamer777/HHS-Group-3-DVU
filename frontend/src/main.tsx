@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import '../public/style.css';
 import App from './app/app.tsx';
-import AuthProvider from './app/auth/auth.provider.tsx';
+import AuthProvider from './app/auth/context/auth.provider.tsx';
 import store from './app/store.ts';
 
 const rootElement = document.getElementById('root');

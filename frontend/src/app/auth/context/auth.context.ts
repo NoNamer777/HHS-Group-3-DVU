@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { LoginData, User } from './models.ts';
+import type { LoginData, User } from '../models.ts';
 
 export interface AuthContext {
     user: User;

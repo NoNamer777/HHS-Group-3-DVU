@@ -5,10 +5,10 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { delay, StorageKeys, storageService } from '../shared';
+import { delay, StorageKeys, storageService } from '../../shared';
+import { getAuthenticatedUser } from '../functions.ts';
+import { type LoginData, User } from '../models.ts';
 import { AuthContext } from './auth.context.ts';
-import { getAuthenticatedUser } from './functions.ts';
-import { type LoginData, User } from './models.ts';
 
 const AUTH_CHECK_DELAY = 500 as const;
 

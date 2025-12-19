@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../auth/auth.context.ts';
+import { useAuth } from '../../auth';
 import './root.page.css';
 
 export default function RootPage() {
