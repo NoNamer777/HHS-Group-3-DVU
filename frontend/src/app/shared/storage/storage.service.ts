@@ -1,15 +1,7 @@
-import { tryCatch } from '../try-catch.ts';
+import { tryCatch } from '@/utils';
 import type { StorageKey } from './storage-keys.ts';
 
 export class StorageService {
-    public static instance() {
-        if (this._instance) return this._instance;
-        this._instance = new StorageService();
-
-        return this._instance;
-    }
-    private static _instance: StorageService;
-
     private readonly storage = localStorage;
 
     public getItem<T = unknown>(key: StorageKey) {
@@ -36,3 +28,5 @@ export class StorageService {
         this.storage.clear();
     }
 }
+
+export const storageService = new StorageService();

@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'bootstrap';
 import { type ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { PatientsService } from './patients.service.ts';
+import { patientsService } from './patients.service.ts';
 import { addPatient } from './patients.slice.ts';
 
 export default function AddPatientModalComponent() {
@@ -28,8 +28,6 @@ export default function AddPatientModalComponent() {
     );
 
     const dispatch = useDispatch();
-
-    const patientsService = PatientsService.instance();
 
     function onNameChange(event: ChangeEvent) {
         setName((event.target as HTMLInputElement).value);

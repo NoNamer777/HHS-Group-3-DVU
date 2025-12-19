@@ -11,12 +11,10 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks.ts';
 import './patients-dashboard.page.css';
-import { PatientsService } from './patients.service.ts';
+import { patientsService } from './patients.service.ts';
 import { setPatients } from './patients.slice.ts';
 
 export default function PatientsDashboardPage() {
-    const patientsService = PatientsService.instance();
-
     const { patients } = useAppSelector((state) => state.patients);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -40,7 +38,7 @@ export default function PatientsDashboardPage() {
             const patients = await patientsService.getAll();
             dispatch(setPatients(instanceToPlain(patients) as Patient[]));
         })();
-    }, [patientsService, dispatch]);
+    }, [dispatch]);
 
     return (
         <article className="container-fluid">

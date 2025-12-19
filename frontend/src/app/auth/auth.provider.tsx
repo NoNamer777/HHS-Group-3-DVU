@@ -5,7 +5,7 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { delay, StorageKeys, StorageService } from '../shared';
+import { delay, StorageKeys, storageService } from '../shared';
 import { AuthContext } from './auth.context.ts';
 import { getAuthenticatedUser } from './functions.ts';
 import { type LoginData, User } from './models.ts';
@@ -16,29 +16,24 @@ export default function AuthProvider(props: { children: ReactNode }) {
     const [user, setUser] = useState<User>(null);
     const [loading, setLoading] = useState(true);
 
-    const storageService = StorageService.instance();
+    const login = useCallback(async (loginData: LoginData) => {
+        await delay(AUTH_CHECK_DELAY);
 
-    const login = useCallback(
-        async (loginData: LoginData) => {
-            await delay(AUTH_CHECK_DELAY);
+        const user = new User();
+        user.role = 'Zorgverlener';
+        user.email = loginData.email;
 
-            const user = new User();
-            user.role = 'Zorgverlener';
-            user.email = loginData.email;
-
-            storageService.setItem(StorageKeys.ACCESS_TOKEN, user);
-            setUser(user);
-            return user;
-        },
-        [storageService],
-    );
+        storageService.setItem(StorageKeys.ACCESS_TOKEN, user);
+        setUser(user);
+        return user;
+    }, []);
 
     const logout = useCallback(async () => {
         await delay(AUTH_CHECK_DELAY);
 
         storageService.removeItem(StorageKeys.ACCESS_TOKEN);
         setUser(null);
-    }, [storageService]);
+    }, []);
 
     const context = useMemo<AuthContext>(
         () => ({
