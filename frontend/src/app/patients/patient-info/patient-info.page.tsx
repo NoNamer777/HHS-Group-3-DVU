@@ -1,7 +1,14 @@
-import { faArrowLeft, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowLeft,
+    faComments,
+    faFlaskVial,
+    faImages,
+    faUser,
+    faUserCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useGetPatientByIdQuery } from '../patients.api.ts';
 import './patient-info.page.css';
 
@@ -83,13 +90,54 @@ export default function PatientInfoPage() {
             </div>
 
             {/*Sections*/}
-            <ul className="nav nav-tabs">
+            <ul className="nav nav-tabs mb-3">
                 <li className="nav-item">
-                    <Link className="nav-link" to="overzicht">
-                        Overzicht
-                    </Link>
+                    <NavLink
+                        className={({ isActive }) =>
+                            `nav-link ${isActive ? 'active' : ''}`
+                        }
+                        to="overzicht"
+                    >
+                        <FontAwesomeIcon icon={faUser} />
+                        <span>Overzicht</span>
+                    </NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink
+                        className={({ isActive }) =>
+                            `nav-link ${isActive ? 'active' : ''}`
+                        }
+                        to="meetwaarden"
+                    >
+                        <FontAwesomeIcon icon={faFlaskVial} />
+                        <span>Meetwaarden</span>
+                    </NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink
+                        className={({ isActive }) =>
+                            `nav-link ${isActive ? 'active' : ''}`
+                        }
+                        to="gesprekken"
+                    >
+                        <FontAwesomeIcon icon={faComments} />
+                        <span>Gesprekken</span>
+                    </NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink
+                        className={({ isActive }) =>
+                            `nav-link ${isActive ? 'active' : ''}`
+                        }
+                        to="afbeeldingen"
+                    >
+                        <FontAwesomeIcon icon={faImages} />
+                        <span>Afbeeldingen</span>
+                    </NavLink>
                 </li>
             </ul>
+
+            <Outlet />
         </article>
     );
 }
