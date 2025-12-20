@@ -1,1 +1,1 @@
-export * from './doctor.model.ts';
+export * from './doctor.model';
