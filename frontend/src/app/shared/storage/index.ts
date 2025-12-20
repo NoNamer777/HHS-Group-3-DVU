@@ -1,2 +1,2 @@
-export * from './storage-keys.ts';
-export * from './storage.service.ts';
+export * from './storage-keys';
+export * from './storage.service';

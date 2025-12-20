@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { type ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetPatientsQuery } from '../patients.api.ts';
+import { useGetPatientsQuery } from '../patients.api';
 import './patients-dashboard.page.css';
 
 export default function PatientsDashboardPage() {

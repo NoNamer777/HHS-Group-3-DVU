@@ -1,1 +1,1 @@
-export * from './backend-handlers.ts';
+export * from './backend-handlers';

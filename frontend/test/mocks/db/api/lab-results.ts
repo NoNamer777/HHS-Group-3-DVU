@@ -1,5 +1,5 @@
-import type { Records } from '../../types.ts';
 import type { LabResult } from '@/models';
+import type { Records } from '../../types';
 
 class MockLabResultsDB {
     private records: Records<LabResult> = {};

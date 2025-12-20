@@ -1,5 +1,5 @@
 import { tryCatch } from '@/utils';
-import type { StorageKey } from './storage-keys.ts';
+import type { StorageKey } from './storage-keys';
 
 export class StorageService {
     private readonly storage = localStorage;

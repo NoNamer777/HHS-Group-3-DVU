@@ -1,5 +1,5 @@
 import { StorageKeys, storageService } from '../shared';
-import { User } from './models.ts';
+import { User } from './models';
 
 export function isAuthenticated() {
     return Boolean(storageService.getItem(StorageKeys.ACCESS_TOKEN));

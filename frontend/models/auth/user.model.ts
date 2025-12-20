@@ -1,4 +1,4 @@
-import type { UserRole } from './role.enum.ts';
+import type { UserRole } from './role.enum';
 
 export interface User {
     id: string;

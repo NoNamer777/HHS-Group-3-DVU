@@ -1,5 +1,5 @@
 import { render } from 'vitest-browser-react';
-import LoginPage from './login.page.tsx';
+import LoginPage from './login.page';
 
 test('Login', async () => {
     const { getByText } = await render(<LoginPage />);

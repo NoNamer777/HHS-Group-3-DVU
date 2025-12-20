@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
-import { useGetPatientByIdQuery } from '../patients.api.ts';
+import { useGetPatientByIdQuery } from '../patients.api';
 import './patient-info.page.css';
 
 export default function PatientInfoPage() {

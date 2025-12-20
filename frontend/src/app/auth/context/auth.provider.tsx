@@ -6,9 +6,9 @@ import {
     useState,
 } from 'react';
 import { delay, StorageKeys, storageService } from '../../shared';
-import { getAuthenticatedUser } from '../functions.ts';
-import { type LoginData, User } from '../models.ts';
-import { AuthContext } from './auth.context.ts';
+import { getAuthenticatedUser } from '../functions';
+import { type LoginData, User } from '../models';
+import { AuthContext } from './auth.context';
 
 const AUTH_CHECK_DELAY = 500 as const;
 

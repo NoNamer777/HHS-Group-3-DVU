@@ -6,9 +6,9 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import '../public/style.css';
-import App from './app/app.tsx';
-import AuthProvider from './app/auth/context/auth.provider.tsx';
-import store from './app/store.ts';
+import App from './app/app';
+import AuthProvider from './app/auth/context/auth.provider';
+import store from './app/store';
 
 const rootElement = document.getElementById('root');
 

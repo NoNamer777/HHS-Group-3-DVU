@@ -1,6 +1,6 @@
 import type { User } from '../../auth';
-import type { Gender } from './gender.enum.ts';
-import type { PatientStatus } from './patient-status.enum.ts';
+import type { Gender } from './gender.enum';
+import type { PatientStatus } from './patient-status.enum';
 
 export interface Patient extends User {
     gender: Gender;

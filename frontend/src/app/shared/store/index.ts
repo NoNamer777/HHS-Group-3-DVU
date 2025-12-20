@@ -1,1 +1,1 @@
-export * from './fetch-status.ts';
+export * from './fetch-status';

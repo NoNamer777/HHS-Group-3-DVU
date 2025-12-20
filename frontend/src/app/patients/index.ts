@@ -1,1 +1,1 @@
-export * from './patients.api.ts';
+export * from './patients.api';

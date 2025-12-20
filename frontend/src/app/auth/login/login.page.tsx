@@ -1,8 +1,8 @@
 import { type ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
-import { useAuth } from '../context/auth.context.ts';
-import { type LoginData } from '../models.ts';
+import { useAuth } from '../context';
+import { type LoginData } from '../models';
 import './login.page.css';
 
 export default function LoginPage() {

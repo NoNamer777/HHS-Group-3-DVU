@@ -1,7 +1,7 @@
 import { BASE_URL, HttpStatusCodes } from '@/models';
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { mockDoctorsDB } from '../../../db';
-import { throwErrorResponse } from '../error-response.ts';
+import { throwErrorResponse } from '../error-response';
 
 const endPoint = `${BASE_URL}/api/doctors`;
 
