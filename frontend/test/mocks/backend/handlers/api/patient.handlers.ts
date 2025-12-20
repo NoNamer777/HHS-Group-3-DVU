@@ -6,8 +6,8 @@ import {
     type Patient,
 } from '@/models';
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
-import { mockPatientsDB } from '../../db';
-import { throwErrorResponse } from './error-response.ts';
+import { mockPatientsDB } from '../../../db';
+import { throwErrorResponse } from '../error-response.ts';
 
 const endPoint = `${BASE_URL}/patients`;
 
