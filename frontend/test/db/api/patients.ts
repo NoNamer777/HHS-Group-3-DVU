@@ -7,7 +7,7 @@ import {
     PatientStatuses,
 } from '@/models';
 import { nanoid } from 'nanoid';
-import { type Records } from '../backend/handlers/types';
+import { type Records } from '../../types.ts';
 
 const defaultPatients: Patient[] = [
     new PatientBuilder('2t6j6EWk6H-pQGy7c3un2')
