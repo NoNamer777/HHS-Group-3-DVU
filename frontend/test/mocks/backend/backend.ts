@@ -1,6 +1,6 @@
 import { type SetupWorker, setupWorker } from 'msw/browser';
 import { resetMockDatabases } from '../db';
-import { doctorsHandlers, patientsHandlers } from './handlers';
+import { backendHandlers } from './handlers';
 
 let worker: SetupWorker;
 
@@ -9,7 +9,7 @@ export function getWorker() {
 }
 
 export async function initializeWorker() {
-    worker = setupWorker(...doctorsHandlers, ...patientsHandlers);
+    worker = setupWorker(...backendHandlers);
 
     await worker.start();
 }
