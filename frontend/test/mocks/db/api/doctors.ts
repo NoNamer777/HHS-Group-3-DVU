@@ -8,6 +8,10 @@ class MockDoctorsDB {
         return Object.values(this.records);
     }
 
+    public getById(doctorId: string) {
+        return this.records[doctorId];
+    }
+
     public reset() {
         this.records = {};
     }
