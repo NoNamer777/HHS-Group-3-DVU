@@ -9,9 +9,9 @@ import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { mockPatientsDB } from '../../../db';
 import { throwErrorResponse } from '../error-response.ts';
 
-const endPoint = `${BASE_URL}/patients`;
+const endPoint = `${BASE_URL}/api/patients`;
 
-export const patientHandlers: RequestHandler[] = [
+export const patientsHandlers: RequestHandler[] = [
     http.get(endPoint, async () => {
         await delay();
 

@@ -1,2 +1,2 @@
-export * from './doctor.handlers.ts';
-export * from './patient.handlers.ts';
+export * from './doctors.handlers.ts';
+export * from './patients.handlers.ts';

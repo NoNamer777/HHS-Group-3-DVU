@@ -6,7 +6,7 @@ import {
 } from '@/models';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const END_POINT = '/patients' as const;
+export const END_POINT = '/api/patients' as const;
 
 const TAG_TYPE = 'Patient' as const;
 const TAG_LIST_ID = 'LIST' as const;
