@@ -53,10 +53,16 @@ async function cleanupTestUser() {
   try {
     await prisma.user.delete({
       where: { id: 'test-123' }
-    }).catch(() => {});
+    });
     console.log('✅ Test user verwijderd');
   } catch (error: any) {
-    console.log('   Test user was al verwijderd');
+    // Prisma "record not found" error (user already deleted)
+    if (error && error.code === 'P2025') {
+      console.log('   Test user was al verwijderd');
+    } else {
+      console.error('❌ Fout bij verwijderen test user:', error?.message || error);
+      throw error;
+    }
   } finally {
     await prisma.$disconnect();
   }

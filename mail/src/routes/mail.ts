@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { authenticateM2M, requirePermission, AuthRequest } from '../middleware/auth';
+import { authenticateM2M, AuthRequest } from '../middleware/auth';
 import { isValidEmail } from '../utils/validation';
 
 const router = Router();
