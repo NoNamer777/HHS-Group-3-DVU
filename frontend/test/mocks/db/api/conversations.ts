@@ -1,4 +1,5 @@
 import type { Conversation } from '@/models';
+import { defaultConversations } from '../../data';
 import type { Records } from '../../types';
 
 class MockConversationsDB {
@@ -9,7 +10,13 @@ class MockConversationsDB {
     }
 
     public reset() {
-        this.records = {};
+        this.records = [...defaultConversations].reduce(
+            (records, conversation) => {
+                records[conversation.id] = conversation;
+                return records;
+            },
+            {} as Records<Conversation>,
+        );
     }
 }
 

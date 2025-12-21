@@ -1,4 +1,5 @@
 import type { Doctor } from '@/models';
+import { defaultDoctors } from '../../data';
 import type { Records } from '../../types';
 
 class MockDoctorsDB {
@@ -13,7 +14,10 @@ class MockDoctorsDB {
     }
 
     public reset() {
-        this.records = {};
+        this.records = [...defaultDoctors].reduce((records, doctor) => {
+            records[doctor.id] = doctor;
+            return records;
+        }, {} as Records<Doctor>);
     }
 }
 
