@@ -1,24 +1,21 @@
 import {
     BASE_URL,
+    buildResourceEndPoint,
     type CreatePatientData,
     type Patient,
     RequestMethods,
+    TAG_LIST_ID,
 } from '@/models';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const END_POINT = '/api/patients' as const;
+const END_POINT = '/api/patients' as const;
 
 const TAG_TYPE = 'Patient' as const;
-const TAG_LIST_ID = 'LIST' as const;
-
-function buildPatientEndPoint(patientId: string) {
-    return `${END_POINT}/${patientId}`;
-}
 
 export const patientsApi = createApi({
     reducerPath: 'patientsApi',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-    tagTypes: ['Patient'],
+    tagTypes: [TAG_TYPE],
     endpoints: (build) => ({
         getPatients: build.query<Patient[], void>({
             query: () => END_POINT,
@@ -44,13 +41,13 @@ export const patientsApi = createApi({
         }),
 
         getPatientById: build.query<Patient, string>({
-            query: (patientId) => buildPatientEndPoint(patientId),
+            query: (patientId) => buildResourceEndPoint(END_POINT, patientId),
             providesTags: (patient) => [{ type: TAG_TYPE, id: patient.id }],
         }),
 
         updatePatient: build.mutation<Patient, Patient>({
             query: ({ id: patientId, ...patient }) => ({
-                url: buildPatientEndPoint(patientId),
+                url: buildResourceEndPoint(END_POINT, patientId),
                 method: RequestMethods.PUT,
                 body: patient,
             }),
@@ -62,7 +59,7 @@ export const patientsApi = createApi({
 
         removePatient: build.mutation<void, string>({
             query: (patientId) => ({
-                url: buildPatientEndPoint(patientId),
+                url: buildResourceEndPoint(END_POINT, patientId),
                 method: RequestMethods.DELETE,
             }),
             invalidatesTags: (_result, _error, patientId) => [

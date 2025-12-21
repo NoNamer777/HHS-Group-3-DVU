@@ -52,13 +52,13 @@ export default function AddPatientModalComponent() {
     async function onAddPatient() {
         const modal = new Modal(document.getElementById('add-patient-modal'));
 
-        const data: CreatePatientData = {
+        const data = {
             name: name,
             dateOfBirth: dateOfBirth.getTime(),
             gender: gender,
             condition: condition,
             status: patientStatus,
-        };
+        } as CreatePatientData;
         await createPatient(data);
 
         // Reset form
