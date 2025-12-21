@@ -7,3 +7,5 @@ export interface Conversation {
     message: string;
     timestamp: number; // Date
 }
+
+export type CreateConversationData = Omit<Conversation, 'id' | 'timestamp'>;
