@@ -1,13 +1,12 @@
-import { type User, type UserRole, UserRoles } from '@/models';
+import { type User, type UserRole } from '@/models';
 import { nanoid } from 'nanoid';
 
 export class UserBuilder {
-    private readonly user: User;
+    protected readonly user: User;
 
-    public constructor(id?: string) {
+    public constructor(id = nanoid()) {
         this.user = {
-            id: id ? id : nanoid(),
-            role: UserRoles.PATIENT,
+            id: id,
         } as User;
     }
 
