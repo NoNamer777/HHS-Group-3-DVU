@@ -118,20 +118,6 @@ model User {
   medicationOrders MedicationOrder[]
   labResults       LabResult[]
   appointments     Appointment[]
-  refreshTokens    RefreshToken[]
-}
-
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  revokedAt DateTime?
-  
-  @@index([userId])
-  @@index([token])
 }
 
 model Patient {
