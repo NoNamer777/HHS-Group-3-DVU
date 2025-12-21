@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useGetPatientsPatientGet } from '../../api/fetchers';
 import SearchInput from '../shared/components/searchinput';
 import DiapedisTable from '../shared/components/table';
 
@@ -13,6 +14,9 @@ const data = [
 ];
 
 export default function Dashboard() {
+    const { data: epddata } = useGetPatientsPatientGet();
+    console.log('epddata:', epddata);
+
     const [filters, setFilters] = useState<Record<string, string>>({});
 
     const handleFilterChange = (column: string, value: string) => {
@@ -25,6 +29,8 @@ export default function Dashboard() {
     const filteredData = useMemo(() => {
         return data.filter((row) =>
             columns.every((column) => {
+                // TODO #66: Rens van der Meijs
+                // Remove this after all works in the API
                 const filterValue = filters[column];
                 if (!filterValue) return true;
 

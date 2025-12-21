@@ -32,6 +32,8 @@ services:
       PORT: 3001
       NODE_ENV: development
       JWT_SECRET: change-this-secret-in-production
+      # Set SKIP_MIGRATIONS=true to skip automatic migrations/seed on container start (dev convenience)
+      SKIP_MIGRATIONS: "false"
     depends_on:
       postgres:
         condition: service_healthy

@@ -31,7 +31,7 @@ async def create_token(
 @router.post(
     "/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
 )
-async def register_user(form_data: Annotated[UserCreate, Depends()]) -> TokenResponse:
+async def register_user(form_data: UserCreate) -> TokenResponse:
     """
     Register a new user
     """
