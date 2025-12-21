@@ -4,14 +4,17 @@
 
 import axios from 'axios';
 import { PrismaClient } from '@prisma/client';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
 
-// Auth0 M2M credentials
-const AUTH0_DOMAIN = 'diabeticum-pedis.eu.auth0.com';
-const AUTH0_CLIENT_ID = 'kAkBi3uCdRukaoNMvspCrEK2wKvn12qK';
-const AUTH0_CLIENT_SECRET = 'xSQAUEg7VfraRL9Kb9RKILcu3iLG1a-eT6QVSZ0Yhj0b_up4Fjk2zookk4X-FyF1';
-const AUTH0_AUDIENCE = 'https://api.mail-service.local';
+// Auth0 M2M credentials uit environment variables
+const AUTH0_DOMAIN = process.env.AUTH0_ISSUER_BASE_URL?.replace('https://', '') || '';
+const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID || '';
+const AUTH0_CLIENT_SECRET = process.env.AUTH0_CLIENT_SECRET || '';
+const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE || '';
 
 const MAIL_SERVICE_URL = 'http://localhost:3001';
 

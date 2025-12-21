@@ -10,6 +10,23 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
+// Get mail count for user (protected met M2M token) - MOET VOOR /user/:userId
+router.get('/user/:userId/count', authenticateM2M, async (req: AuthRequest, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const unreadCount = await prisma.mail.count({
+      where: { userId, isRead: false }
+    });
+    const totalCount = await prisma.mail.count({
+      where: { userId }
+    });
+    res.json({ unreadCount, totalCount });
+  } catch (error) {
+    console.error('Error counting mails:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Get all mails for a user (protected met M2M token)
 router.get('/user/:userId', authenticateM2M, async (req: AuthRequest, res: Response) => {
   try {
@@ -21,7 +38,7 @@ router.get('/user/:userId', authenticateM2M, async (req: AuthRequest, res: Respo
     res.json(mails);
   } catch (error) {
     console.error('Error fetching mails:', error);
-    res.status(500).json({ error: 'Failed to fetch mails' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -40,7 +57,7 @@ router.get('/:id', authenticateM2M, async (req: AuthRequest, res: Response) => {
     res.json(mail);
   } catch (error) {
     console.error('Error fetching mail:', error);
-    res.status(500).json({ error: 'Failed to fetch mail' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -71,7 +88,7 @@ router.post('/', authenticateM2M, async (req: AuthRequest, res: Response) => {
     res.status(201).json(mail);
   } catch (error) {
     console.error('Error creating mail:', error);
-    res.status(500).json({ error: 'Failed to create mail' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -96,7 +113,7 @@ router.patch('/:id/read', authenticateM2M, async (req: AuthRequest, res: Respons
     res.json(mail);
   } catch (error) {
     console.error('Error updating mail:', error);
-    res.status(500).json({ error: 'Failed to update mail' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -120,24 +137,7 @@ router.delete('/:id', authenticateM2M, async (req: AuthRequest, res: Response) =
     res.status(204).send();
   } catch (error) {
     console.error('Error deleting mail:', error);
-    res.status(500).json({ error: 'Failed to delete mail' });
-  }
-});
-
-// Get mail count for user (protected met M2M token)
-router.get('/user/:userId/count', authenticateM2M, async (req: AuthRequest, res: Response) => {
-  try {
-    const { userId } = req.params;
-    const unreadCount = await prisma.mail.count({
-      where: { userId, isRead: false }
-    });
-    const totalCount = await prisma.mail.count({
-      where: { userId }
-    });
-    res.json({ unreadCount, totalCount });
-  } catch (error) {
-    console.error('Error counting mails:', error);
-    res.status(500).json({ error: 'Failed to count mails' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
