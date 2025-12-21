@@ -1,28 +1,29 @@
 import { nanoid } from 'nanoid';
-import { DiabetesTypes } from './diabetes-types.ts';
-import { type Gender, Genders } from './gender.ts';
-import { type PatientStatus, PatientStatuses } from './patient-status.ts';
-import { type Patient } from './patient.model.ts';
+import { UserBuilder, UserRoles } from '../../auth';
+import { DiabetesTypes } from './diabetes-types.enum';
+import { type Gender, Genders } from './gender.enum';
+import { type PatientStatus, PatientStatuses } from './patient-status.enum';
+import type { Patient } from './patient.model';
 
-export class PatientBuilder {
+export class PatientBuilder extends UserBuilder {
     private readonly patient: Patient;
 
-    public constructor(id?: string) {
+    public constructor(id = nanoid()) {
+        super(id);
+
+        this.user.role = UserRoles.PATIENT;
         this.patient = {
-            id: id ? id : nanoid(),
             gender: Genders.MALE,
             condition: DiabetesTypes.TYPE_1,
             status: PatientStatuses.STABLE,
         } as Patient;
     }
 
-    public build() {
-        return this.patient;
-    }
-
-    public withName(name: string) {
-        this.patient.name = name;
-        return this;
+    public override build() {
+        return {
+            ...this.patient,
+            ...this.user,
+        } as Patient;
     }
 
     public withDateOfBirth(dateOfBirth: Date) {
