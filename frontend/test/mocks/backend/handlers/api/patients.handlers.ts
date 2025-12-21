@@ -1,5 +1,6 @@
 import {
     BASE_URL,
+    buildResourceEndPoint,
     type CreatePatientData,
     HttpStatusCodes,
     HttpStatusNames,
@@ -36,7 +37,7 @@ export const patientsHandlers: RequestHandler[] = [
         });
     }),
     http.get<{ patientId: string }>(
-        `${endPoint}/:patientId`,
+        buildResourceEndPoint(endPoint, ':patientId'),
         async ({ params }) => {
             await delay();
 
@@ -53,7 +54,7 @@ export const patientsHandlers: RequestHandler[] = [
         },
     ),
     http.put<{ patientId: string }, Patient>(
-        `${endPoint}/:patientId`,
+        buildResourceEndPoint(endPoint, ':patientId'),
         async ({ params, request }) => {
             await delay();
 
@@ -78,7 +79,7 @@ export const patientsHandlers: RequestHandler[] = [
         },
     ),
     http.delete<{ patientId: string }>(
-        `${endPoint}/:patientId`,
+        buildResourceEndPoint(endPoint, ':patientId'),
         async ({ params }) => {
             await delay();
 

@@ -1,4 +1,4 @@
-import { BASE_URL, HttpStatusCodes } from '@/models';
+import { BASE_URL, buildResourceEndPoint, HttpStatusCodes } from '@/models';
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { mockDoctorsDB } from '../../../db';
 import { throwErrorResponse } from '../error-response';
@@ -12,7 +12,7 @@ export const doctorsHandlers: RequestHandler[] = [
         return HttpResponse.json(mockDoctorsDB.getAll());
     }),
     http.get<{ doctorId: string }>(
-        `${endPoint}:doctorId`,
+        buildResourceEndPoint(endPoint, ':doctorId'),
         async ({ params }) => {
             await delay();
 
