@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from project.db.models.user import Auth, TokenResponse, User, UserCreate
+from project.db.models.user import TokenResponse, User, UserCreate
 from project.services.auth_service import (
     create_token_service,
     get_bearer_token,
@@ -18,13 +18,11 @@ router = APIRouter(
 
 
 @router.post("/login/", response_model=TokenResponse, status_code=status.HTTP_200_OK)
-async def create_token(
-    form_data: Auth,
-) -> TokenResponse:
+async def create_token() -> TokenResponse:
     """
     Create token for the user
     """
-    token = await create_token_service(form_data=form_data)
+    token = await create_token_service()
     return token
 
 

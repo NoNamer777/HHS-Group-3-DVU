@@ -6,11 +6,6 @@ from project.db.models.basemodel import DVUBaseModel
 from project.db.models.enums import UserRoleEnum
 
 
-class Auth(BaseModel):
-    email: str
-    password: str
-
-
 class UserRead(DVUBaseModel):
     firstName: str
     lastName: str
@@ -24,11 +19,10 @@ class User(DVUBaseModel):
 
 
 class TokenResponse(BaseModel):
-    message: str
-    accessToken: str
-    refreshToken: str
-    expiresIn: str
-    user: User
+    access_token: str
+    token_type: str
+    expires_in: int
+    scope: Optional[str] = None
 
 
 class UserCreate(User):

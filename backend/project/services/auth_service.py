@@ -7,8 +7,15 @@ from fastapi.security import (
     HTTPBearer,
 )
 
-from project.db.models.user import Auth, TokenResponse, User, UserCreate
-from project.globals import EPD_URL
+from project.auth_setup import auth0
+from project.db.models.user import TokenResponse, User, UserCreate
+from project.globals import (
+    AUTH0_API_AUDIENCE,
+    AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET,
+    AUTH0_DOMAIN,
+    EPD_URL,
+)
 
 route_prefix = f"{EPD_URL}/api/auth"
 bearer_scheme = HTTPBearer(auto_error=True)
@@ -16,6 +23,7 @@ bearer_scheme = HTTPBearer(auto_error=True)
 
 def get_bearer_token(
     token: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    _: dict = Depends(auth0.require_auth()),
 ) -> str:
     if token.scheme.lower() != "bearer":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -29,23 +37,26 @@ def create_header(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-async def create_token_service(
-    form_data: Auth,
-) -> TokenResponse:
+async def create_token_service() -> TokenResponse:
     """
-    Create token for the user using form data
+    Create token for the user (only for debug)
     """
 
-    epd_url = f"{route_prefix}/login"
-    payload = {"email": form_data.email, "password": form_data.password}
+    url = f"https://{AUTH0_DOMAIN}/oauth/token"
+    payload = {
+        "grant_type": "client_credentials",
+        "client_id": AUTH0_CLIENT_ID,
+        "client_secret": AUTH0_CLIENT_SECRET,
+        "audience": AUTH0_API_AUDIENCE,
+    }
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.post(epd_url, json=payload)
+            response = await client.post(url, data=payload)
             response.raise_for_status()
     except httpx.RequestError as exc:
         raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY, detail="EPD niet bereikbaar"
+            status_code=status.HTTP_502_BAD_GATEWAY, detail="Auth0 niet bereikbaar"
         ) from exc
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
