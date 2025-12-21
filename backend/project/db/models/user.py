@@ -23,7 +23,3 @@ class TokenResponse(BaseModel):
     token_type: str
     expires_in: int
     scope: Optional[str] = None
-
-
-class UserCreate(User):
-    password: str
