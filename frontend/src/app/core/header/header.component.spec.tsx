@@ -9,5 +9,5 @@ test('Navbar', async () => {
         </BrowserRouter>,
     );
 
-    await expect.element(getByText('Inloggen')).toBeInTheDocument();
+    await expect.element(getByText('Diabeticum Pedis')).toBeInTheDocument();
 });

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mail-postgres
+    environment:
+      POSTGRES_USER: mailuser
+      POSTGRES_PASSWORD: mailpass
+      POSTGRES_DB: maildb
+    ports:
+      - "5433:5432"
+    volumes:
+      - mail-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mailuser -d maildb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mail-postgres-data:
