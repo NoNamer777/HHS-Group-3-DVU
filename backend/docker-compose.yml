@@ -1,0 +1,15 @@
+version: "1.0"
+
+services:
+  backend:
+    container_name: DVU-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+      - "5678:5678"
+    env_file:
+      - .env
+    volumes:
+      - .:/backend
