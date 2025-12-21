@@ -10,7 +10,10 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-// Get mail count for user (protected met M2M token) - MOET VOOR /user/:userId
+// Get mail count for user (protected with M2M token).
+// IMPORTANT: This route must be defined BEFORE `/user/:userId` because Express matches routes in order.
+// If `/user/:userId` comes first, a request to `/user/:userId/count` would be captured by that route
+// with `userId = "count"`, and this count endpoint would never be reached.
 router.get('/user/:userId/count', authenticateM2M, async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.params;

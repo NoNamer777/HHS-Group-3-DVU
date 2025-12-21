@@ -213,7 +213,7 @@ async function runTests() {
     const token = await getM2MToken();
     
     await testGetMails(token);
-    const mailId = await testCreateMail(token);
+    await testCreateMail(token);
     await testMailCount(token);
     
     console.log('\n✅ Alle tests geslaagd!');
