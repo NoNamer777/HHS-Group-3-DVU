@@ -1,58 +1,43 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { auth, AuthResult, UnauthorizedError, InvalidTokenError } from 'express-oauth2-jwt-bearer';
 
-export interface AuthRequest extends Request {
-  user?: {
-    userId: string;
-    email: string;
-  };
-}
+// Auth0 M2M token validator
+const validateM2MToken = auth({
+  audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+  tokenSigningAlg: 'RS256'
+});
 
-export const authenticateToken = (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
-
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  try {
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      console.error('Configuration error: JWT_SECRET not configured');
-      return res.status(500).json({ error: 'Authentication service unavailable' });
-    }
-
-    const decoded = jwt.verify(token, secret) as {
-      userId: string;
-      email: string;
-    };
-
-    req.user = decoded;
-    next();
-  } catch (error) {
-    return res.status(403).json({ error: 'Invalid or expired token' });
-  }
+export type AuthRequest = Request & {
+  auth?: AuthResult;
 };
 
-export const validateUserAccess = (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { userId } = req.params;
-  
-  if (!req.user) {
-    return res.status(401).json({ error: 'Not authenticated' });
-  }
+// Middleware voor M2M authenticatie met betere error handling
+export const authenticateM2M = (req: Request, res: Response, next: NextFunction) => {
+  validateM2MToken(req, res, (err: any) => {
+    if (err) {
+      // Convert alle errors naar 401 Unauthorized
+      return res.status(401).json({ 
+        error: 'Unauthorized',
+        message: 'Valid M2M token required'
+      });
+    }
+    next();
+  });
+};
 
-  if (userId && userId !== req.user.userId) {
-    return res.status(403).json({ error: 'Access denied to this user\'s data' });
-  }
-
-  next();
+// Optionele middleware om te checken op specifieke permissions
+export const requirePermission = (permission: string) => {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    const permissions = (req.auth?.payload?.permissions || []) as string[];
+    
+    if (!permissions.includes(permission)) {
+      return res.status(403).json({ 
+        error: 'Insufficient permissions',
+        required: permission 
+      });
+    }
+    
+    next();
+  };
 };
