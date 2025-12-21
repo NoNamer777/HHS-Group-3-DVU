@@ -22,6 +22,7 @@ export default function PatientsDashboardPage() {
     }
 
     function onQuery() {
+        // TODO: Actually query the patients
         console.log({ query });
     }
 
