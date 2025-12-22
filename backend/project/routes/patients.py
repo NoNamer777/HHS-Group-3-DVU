@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
+from project.auth_setup import auth0
 from project.db.models.details import PatientDetailResponse
 from project.db.models.enums import PatientStatusEnum
 from project.db.models.patient import PaginatedPatientResponse
@@ -19,6 +20,7 @@ router = APIRouter(
     prefix="/patient",
     responses={404: {"description": "Patient not found"}},
     tags=["Patients"],
+    dependencies=[Depends(auth0.require_auth())],
 )
 
 

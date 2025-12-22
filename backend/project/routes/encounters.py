@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
+from project.auth_setup import auth0
 from project.db.models.details import EncounterDetailResponse
 from project.db.models.encounter import (
     EncounterResponse,
@@ -21,6 +22,7 @@ router = APIRouter(
     prefix="/encounters",
     responses={404: {"description": "Encounter not found"}},
     tags=["Encounters"],
+    dependencies=[Depends(auth0.require_auth())],
 )
 
 
