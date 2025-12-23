@@ -2,12 +2,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from project.auth_setup import auth0
 from project.db.models.details import PatientDetailResponse
 from project.db.models.enums import PatientStatusEnum
 from project.db.models.patient import PaginatedPatientResponse
 from project.db.models.patient_base import PatientResponse
-from project.services.auth_service import get_bearer_token
+from project.services.auth_service import check_scope, get_bearer_token
 from project.services.patients_service import (
     create_patient_service,
     delete_patient_service,
@@ -20,12 +19,14 @@ router = APIRouter(
     prefix="/patient",
     responses={404: {"description": "Patient not found"}},
     tags=["Patients"],
-    dependencies=[Depends(auth0.require_auth())],
 )
 
 
 @router.get(
-    "/", response_model=PaginatedPatientResponse, status_code=status.HTTP_200_OK
+    "/",
+    response_model=PaginatedPatientResponse,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("patients:get"))],
 )
 async def get_patients(
     token: str = Depends(get_bearer_token),
@@ -48,6 +49,7 @@ async def get_patients(
     "/{patient_id}",
     response_model=PatientDetailResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("patients:get"))],
 )
 async def get_patient(
     patient_id: int, token: str = Depends(get_bearer_token)
@@ -57,7 +59,10 @@ async def get_patient(
 
 
 @router.post(
-    "/", response_model=PatientDetailResponse, status_code=status.HTTP_201_CREATED
+    "/",
+    response_model=PatientDetailResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(check_scope("patients:create"))],
 )
 async def create_patient(
     form_data: Annotated[PatientResponse, Depends()],
@@ -71,6 +76,7 @@ async def create_patient(
     "/{patient_id}",
     response_model=PatientDetailResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("patients:update"))],
 )
 async def update_patient(
     patient_id: int,
@@ -83,7 +89,11 @@ async def update_patient(
     return patient
 
 
-@router.delete("/{patient_id}", status_code=status.HTTP_200_OK)
+@router.delete(
+    "/{patient_id}",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("patients:remove"))],
+)
 async def delete_patient(
     patient_id: int, token: str = Depends(get_bearer_token)
 ) -> None:

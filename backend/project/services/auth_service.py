@@ -33,6 +33,18 @@ def create_header(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
+def check_scope(required: str):
+    async def dep(claims: dict = Depends(auth0.require_auth())):
+        scopes = set((claims.get("scope") or "").split())
+        if required not in scopes:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
+            )
+        return claims
+
+    return dep
+
+
 async def create_token_service() -> TokenResponse:
     """
     Create token for the user (only for debug)

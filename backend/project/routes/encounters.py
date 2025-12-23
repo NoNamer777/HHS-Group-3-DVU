@@ -2,14 +2,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from project.auth_setup import auth0
 from project.db.models.details import EncounterDetailResponse
 from project.db.models.encounter import (
     EncounterResponse,
     PaginatedEncounterResponse,
 )
 from project.db.models.enums import EncounterStatusEnum, EncounterTypeEnum
-from project.services.auth_service import get_bearer_token
+from project.services.auth_service import check_scope, get_bearer_token
 from project.services.encounter_service import (
     create_encounter_service,
     delete_encounter_service,
@@ -22,12 +21,14 @@ router = APIRouter(
     prefix="/encounters",
     responses={404: {"description": "Encounter not found"}},
     tags=["Encounters"],
-    dependencies=[Depends(auth0.require_auth())],
 )
 
 
 @router.get(
-    "/", response_model=PaginatedEncounterResponse, status_code=status.HTTP_200_OK
+    "/",
+    response_model=PaginatedEncounterResponse,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("encounters:get"))],
 )
 async def get_encounters(
     token: str = Depends(get_bearer_token),
@@ -52,6 +53,7 @@ async def get_encounters(
     "/{encounter_id}",
     response_model=EncounterDetailResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("encounters:get"))],
 )
 async def get_encounter(
     encounter_id: int, token: str = Depends(get_bearer_token)
@@ -63,7 +65,10 @@ async def get_encounter(
 
 
 @router.post(
-    "/", response_model=EncounterDetailResponse, status_code=status.HTTP_201_CREATED
+    "/",
+    response_model=EncounterDetailResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(check_scope("encounters:create"))],
 )
 async def create_encounter(
     form_data: Annotated[EncounterResponse, Depends()],
@@ -77,6 +82,7 @@ async def create_encounter(
     "/{encounter_id}",
     response_model=EncounterDetailResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("encounters:update"))],
 )
 async def update_encounter(
     encounter_id: int,
@@ -89,7 +95,11 @@ async def update_encounter(
     return encounter
 
 
-@router.delete("/{encounter_id}", status_code=status.HTTP_200_OK)
+@router.delete(
+    "/{encounter_id}",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("encounters:remove"))],
+)
 async def delete_encounter(
     encounter_id: int, token: str = Depends(get_bearer_token)
 ) -> None:
