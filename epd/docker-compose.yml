@@ -32,6 +32,7 @@ services:
       PORT: 3001
       NODE_ENV: development
       JWT_SECRET: change-this-secret-in-production
+      SKIP_MIGRATIONS: "false"
     depends_on:
       postgres:
         condition: service_healthy
