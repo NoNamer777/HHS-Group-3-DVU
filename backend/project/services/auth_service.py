@@ -6,6 +6,7 @@ from fastapi.security import (
 )
 
 from project.auth_setup import auth0
+from project.config import get_settings
 from project.db.models.user import TokenResponse
 from project.globals import (
     AUTH0_API_AUDIENCE,
@@ -14,14 +15,21 @@ from project.globals import (
     AUTH0_DOMAIN,
 )
 
-bearer_scheme = HTTPBearer(auto_error=True)
+settings = get_settings()
+
+# Use non-throwing bearer scheme so we can support a no-auth dev mode
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 def get_bearer_token(
-    token: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    token: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     _: dict = Depends(auth0.require_auth()),
 ) -> str:
-    if token.scheme.lower() != "bearer":
+    # If Auth0 is not configured, return an empty token for dev mode
+    if not settings.is_auth_configured():
+        return ""
+
+    if not token or token.scheme.lower() != "bearer":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     return token.credentials
 
