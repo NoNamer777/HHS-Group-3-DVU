@@ -42,7 +42,7 @@
         <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
       </AuthManager>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -104,7 +104,7 @@
           <boolProp name="UserParameters.per_iteration">false</boolProp>
         </UserParameters>
         <hashTree/>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - Backend" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - Backend">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
             <stringProp name="764597751">Test Plan</stringProp>
@@ -162,7 +162,7 @@
             </ModuleController>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="New User Login" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="New User Login"/>
           <hashTree>
             <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Call - API New User" enabled="true">
               <collectionProp name="ModuleController.node_path">
@@ -860,7 +860,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST login">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - login">
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
             <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
             <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
@@ -883,7 +883,7 @@
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="Accept" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
@@ -916,7 +916,7 @@
               </collectionProp>
             </HeaderManager>
             <hashTree/>
-            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor">
               <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
               <stringProp name="JSONPostProcessor.jsonPathExprs">$..accessToken</stringProp>
               <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
@@ -1170,7 +1170,7 @@
           </hashTree>
         </hashTree>
       </hashTree>
-      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables - EPD">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables - EPD" enabled="false">
         <collectionProp name="Arguments.arguments">
           <elementProp name="EPD_HTTPBase" elementType="Argument">
             <stringProp name="Argument.name">EPD_HTTPBase</stringProp>
