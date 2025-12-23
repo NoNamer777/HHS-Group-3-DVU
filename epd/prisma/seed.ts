@@ -1,5 +1,4 @@
 import { PrismaClient, UserRole, Sex, PatientStatus, EncounterType, EncounterStatus, MedicalRecordType, DiagnosisType, MedicationStatus, VitalType, AppointmentStatus, InsuranceStatus, LabResultStatus } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -21,14 +20,13 @@ async function main() {
   await prisma.user.deleteMany();
 
   // Create Users
-  const hashedPassword = await bcrypt.hash('password123', 10);
-
+  // Note: Password not used anymore since we use Auth0 for authentication
   const doctor = await prisma.user.create({
     data: {
       firstName: 'Jan',
       lastName: 'de Vries',
       email: 'jan.devries@ziekenhuis.nl',
-      password: hashedPassword,
+      password: 'not-used-with-auth0',
       role: UserRole.DOCTOR
     }
   });
@@ -38,7 +36,7 @@ async function main() {
       firstName: 'Maria',
       lastName: 'Jansen',
       email: 'maria.jansen@ziekenhuis.nl',
-      password: hashedPassword,
+      password: 'not-used-with-auth0',
       role: UserRole.NURSE
     }
   });
@@ -48,7 +46,7 @@ async function main() {
       firstName: 'Pieter',
       lastName: 'Bakker',
       email: 'pieter.bakker@ziekenhuis.nl',
-      password: hashedPassword,
+      password: 'not-used-with-auth0',
       role: UserRole.ASSISTANT
     }
   });
@@ -58,7 +56,7 @@ async function main() {
       firstName: 'Admin',
       lastName: 'User',
       email: 'admin@ziekenhuis.nl',
-      password: hashedPassword,
+      password: 'not-used-with-auth0',
       role: UserRole.ADMIN
     }
   });

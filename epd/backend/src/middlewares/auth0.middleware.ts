@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { auth, AuthResult, UnauthorizedError, InvalidTokenError } from 'express-oauth2-jwt-bearer';
 
+// Validate required environment variables
+if (!process.env.AUTH0_AUDIENCE || !process.env.AUTH0_ISSUER_BASE_URL) {
+  throw new Error('AUTH0_AUDIENCE and AUTH0_ISSUER_BASE_URL must be set in environment variables');
+}
+
 // Auth0 M2M token validator
 const validateM2MToken = auth({
   audience: process.env.AUTH0_AUDIENCE,
