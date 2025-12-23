@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
-import authRoutes from './routes/auth';
 import mailRoutes from './routes/mail';
 
 dotenv.config();
@@ -25,10 +24,7 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'mail-service' });
 });
 
-// Auth routes
-app.use('/api/auth', authRoutes);
-
-// Mail routes
+// Mail routes (protected with M2M auth)
 app.use('/api/mails', mailRoutes);
 
 // Start server only if not in test mode
