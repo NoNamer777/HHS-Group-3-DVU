@@ -1,17 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 import { auth, AuthResult, UnauthorizedError, InvalidTokenError } from 'express-oauth2-jwt-bearer';
 
-// Validate required environment variables
-if (!process.env.AUTH0_AUDIENCE || !process.env.AUTH0_ISSUER_BASE_URL) {
-  throw new Error('AUTH0_AUDIENCE and AUTH0_ISSUER_BASE_URL must be set in environment variables');
-}
+// Lazy initialization of Auth0 validator to allow for runtime configuration
+let validateM2MToken: ReturnType<typeof auth> | null = null;
 
-// Auth0 M2M token validator
-const validateM2MToken = auth({
-  audience: process.env.AUTH0_AUDIENCE,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-  tokenSigningAlg: 'RS256'
-});
+function getAuth0Validator() {
+  if (!validateM2MToken) {
+    // Validate required environment variables when first creating the validator
+    const audience = process.env.AUTH0_AUDIENCE;
+    const issuerBaseURL = process.env.AUTH0_ISSUER_BASE_URL;
+
+    if (!audience || !issuerBaseURL) {
+      throw new Error(
+        'Auth0 configuration missing. Please set the following environment variables:\n' +
+        '  - AUTH0_AUDIENCE (e.g., "https://api.epd-service.local")\n' +
+        '  - AUTH0_ISSUER_BASE_URL (e.g., "https://your-tenant.auth0.com")\n' +
+        'See .env.example for configuration template.'
+      );
+    }
+
+    validateM2MToken = auth({
+      audience,
+      issuerBaseURL,
+      tokenSigningAlg: 'RS256'
+    });
+  }
+  return validateM2MToken;
+}
 
 export type Auth0Request = Request & {
   auth?: AuthResult;
@@ -19,30 +34,40 @@ export type Auth0Request = Request & {
 
 // Middleware voor M2M authenticatie met betere error handling
 export const authenticateAuth0 = (req: Request, res: Response, next: NextFunction) => {
-  validateM2MToken(req, res, (err: any) => {
-    if (err) {
-      // Log specifieke authenticatiefouten server-side voor debugging
-      const errorType = err instanceof UnauthorizedError
-        ? 'UnauthorizedError'
-        : err instanceof InvalidTokenError
-        ? 'InvalidTokenError'
-        : 'UnknownAuthError';
-      
-      console.error('Auth0 M2M authentication failed', {
-        type: errorType,
-        name: err.name,
-        message: err.message,
-        code: err.code,
-      });
-      
-      // Convert alle errors naar 401 Unauthorized voor de client
-      return res.status(401).json({ 
-        error: 'Unauthorized',
-        message: 'Valid Auth0 M2M token required'
-      });
-    }
-    next();
-  });
+  try {
+    const validator = getAuth0Validator();
+    validator(req, res, (err: any) => {
+      if (err) {
+        // Log specifieke authenticatiefouten server-side voor debugging
+        const errorType = err instanceof UnauthorizedError
+          ? 'UnauthorizedError'
+          : err instanceof InvalidTokenError
+          ? 'InvalidTokenError'
+          : 'UnknownAuthError';
+        
+        console.error('Auth0 M2M authentication failed', {
+          type: errorType,
+          name: err.name,
+          message: err.message,
+          code: err.code,
+        });
+        
+        // Convert alle errors naar 401 Unauthorized voor de client
+        return res.status(401).json({ 
+          error: 'Unauthorized',
+          message: 'Valid Auth0 M2M token required'
+        });
+      }
+      next();
+    });
+  } catch (error: any) {
+    // Configuration error - return 500 Internal Server Error
+    console.error('Auth0 configuration error:', error.message);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Auth0 authentication not properly configured'
+    });
+  }
 };
 
 // Optionele middleware om te checken op specifieke permissions

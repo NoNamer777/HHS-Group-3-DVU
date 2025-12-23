@@ -107,7 +107,7 @@ model User {
   lastName  String
   email     String    @unique
   role      UserRole
-  password  String    // in echt: hash
+  password  String?   // Deprecated: Not used with Auth0. Legacy field kept for backward compatibility.
   createdAt DateTime  @default(now())
 
   // back-relaties

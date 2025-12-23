@@ -20,13 +20,13 @@ async function main() {
   await prisma.user.deleteMany();
 
   // Create Users
-  // Note: Password not used anymore since we use Auth0 for authentication
+  // Note: Auth0 handles authentication - password field is legacy and set to null
   const doctor = await prisma.user.create({
     data: {
       firstName: 'Jan',
       lastName: 'de Vries',
       email: 'jan.devries@ziekenhuis.nl',
-      password: 'not-used-with-auth0',
+      password: null,
       role: UserRole.DOCTOR
     }
   });
@@ -36,7 +36,7 @@ async function main() {
       firstName: 'Maria',
       lastName: 'Jansen',
       email: 'maria.jansen@ziekenhuis.nl',
-      password: 'not-used-with-auth0',
+      password: null,
       role: UserRole.NURSE
     }
   });
@@ -46,7 +46,7 @@ async function main() {
       firstName: 'Pieter',
       lastName: 'Bakker',
       email: 'pieter.bakker@ziekenhuis.nl',
-      password: 'not-used-with-auth0',
+      password: null,
       role: UserRole.ASSISTANT
     }
   });
@@ -56,7 +56,7 @@ async function main() {
       firstName: 'Admin',
       lastName: 'User',
       email: 'admin@ziekenhuis.nl',
-      password: 'not-used-with-auth0',
+      password: null,
       role: UserRole.ADMIN
     }
   });
