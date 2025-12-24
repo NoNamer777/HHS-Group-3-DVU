@@ -17,7 +17,6 @@ import vitalRoutes from './routes/vital.routes';
 import labResultRoutes from './routes/labResult.routes';
 import appointmentRoutes from './routes/appointment.routes';
 import insuranceRoutes from './routes/insurance.routes';
-import authRoutes from './routes/auth.routes';
 
 dotenv.config();
 
@@ -41,7 +40,6 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // API Routes
-app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/encounters', encounterRoutes);

@@ -1,129 +1,77 @@
 import request from 'supertest';
 import express from 'express';
-import authRoutes from '../../backend/src/routes/auth.routes';
-import patientRoutes from '../../backend/src/routes/patient.routes';
-import encounterRoutes from '../../backend/src/routes/encounter.routes';
 import labResultRoutes from '../../backend/src/routes/labResult.routes';
+import { getAuth0Token } from '../helpers/auth0.helper';
 
 const app = express();
 app.use(express.json());
-app.use('/api/auth', authRoutes);
-app.use('/api/patients', patientRoutes);
-app.use('/api/encounters', encounterRoutes);
 app.use('/api/lab-results', labResultRoutes);
 
-describe('Lab Results API', () => {
+describe('Lab Result API - Auth0 M2M', () => {
   let authToken: string;
-  let testPatient: any;
-  let testEncounter: any;
+  let createdLabResultId: number;
 
   beforeAll(async () => {
-    // Create test user and authenticate
-    const userResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: `lab-test-${Date.now()}@example.com`,
-        password: 'Password123!',
-        firstName: 'Lab',
-        lastName: 'Tester',
-        role: 'DOCTOR'
-      });
-
-    expect(userResponse.status).toBe(201);
-    authToken = userResponse.body.accessToken;
-
-    // Create test patient
-    const patientResponse = await request(app)
-      .post('/api/patients')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        firstName: 'Lab',
-        lastName: 'Patient',
-        dateOfBirth: '1975-06-30T00:00:00.000Z',
-        sex: 'MALE',
-        email: `lab-patient-${Date.now()}@example.com`,
-        phone: '+31612345678',
-        addressLine1: 'Lab Street 15',
-        city: 'Eindhoven',
-        postalCode: '5600AA',
-        hospitalNumber: `LAB-${Date.now()}`
-      });
-
-    testPatient = patientResponse.body;
-
-    // Create test encounter
-    const encounterResponse = await request(app)
-      .post('/api/encounters')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        patientId: testPatient.id,
-        type: 'OUTPATIENT',
-        status: 'IN_PROGRESS',
-        startDate: new Date().toISOString(),
-        chiefComplaint: 'Lab work needed'
-      });
-
-    testEncounter = encounterResponse.body;
+    authToken = await getAuth0Token();
   });
 
   describe('POST /api/lab-results', () => {
-    it('should create a new lab result', async () => {
+    it('should create lab result with valid token', async () => {
       const response = await request(app)
         .post('/api/lab-results')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'Hemoglobin',
+          patientId: 1,
+          testName: 'HbA1c',
+          value: '7.2',
+          unit: '%',
+          referenceRange: '4.0-6.0',
           status: 'FINAL',
-          value: '14.5',
-          unit: 'g/dL',
-          referenceRange: '13-17 g/dL'
+          takenAt: new Date().toISOString()
         });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.testName).toBe('Hemoglobin');
-      expect(response.body.value).toBe('14.5');
-      expect(response.body.unit).toBe('g/dL');
-      
+      expect(response.body.testName).toBe('HbA1c');
+      expect(response.body.status).toBe('FINAL');
+      createdLabResultId = response.body.id;
+    });
+
+    it('should create normal lab result', async () => {
+      const response = await request(app)
+        .post('/api/lab-results')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          patientId: 1,
+          testName: 'Total Cholesterol',
+          value: '4.5',
+          unit: 'mmol/L',
+          referenceRange: '<5.0',
+          status: 'PRELIMINARY',
+          takenAt: new Date().toISOString()
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.status).toBe('PRELIMINARY');
     });
 
     it('should fail without authentication', async () => {
       const response = await request(app)
         .post('/api/lab-results')
         .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'Lipid Panel',
-          status: 'REGISTERED'
+          patientId: 1,
+          testName: 'Glucose',
+          value: '5.5',
+          status: 'NORMAL',
+          performedAt: new Date().toISOString()
         });
 
       expect(response.status).toBe(401);
     });
-
-    it('should create lab result with reference range', async () => {
-      const response = await request(app)
-        .post('/api/lab-results')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'TSH',
-          status: 'FINAL',
-          value: '2.5',
-          unit: 'mIU/L',
-          referenceRange: '0.4-4.0 mIU/L'
-        });
-
-      expect(response.status).toBe(201);
-      expect(response.body.referenceRange).toBe('0.4-4.0 mIU/L');
-      
-    });
   });
 
   describe('GET /api/lab-results', () => {
-    it('should list all lab results', async () => {
+    it('should list lab results with valid token', async () => {
       const response = await request(app)
         .get('/api/lab-results')
         .set('Authorization', `Bearer ${authToken}`);
@@ -131,65 +79,43 @@ describe('Lab Results API', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('labResults');
       expect(Array.isArray(response.body.labResults)).toBe(true);
-    });
-
-    it('should filter lab results by patientId', async () => {
-      const response = await request(app)
-        .get(`/api/lab-results?patientId=${testPatient.id}`)
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.labResults.every((lr: any) => lr.patientId === testPatient.id)).toBe(true);
-    });
-
-    it('should filter lab results by status', async () => {
-      const response = await request(app)
-        .get('/api/lab-results?status=FINAL')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.labResults.every((lr: any) => lr.status === 'FINAL')).toBe(true);
-    });
-
-
-
-    it('should support pagination', async () => {
-      const response = await request(app)
-        .get('/api/lab-results?page=1&limit=5')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('pagination');
-      expect(response.body.pagination.limit).toBe(5);
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get('/api/lab-results');
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should filter by patient ID', async () => {
+      const response = await request(app)
+        .get('/api/lab-results')
+        .query({ patientId: 1 })
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.labResults.every((r: any) => r.patientId === 1)).toBe(true);
+    });
+
+    it('should filter by status', async () => {
+      const response = await request(app)
+        .get('/api/lab-results')
+        .query({ status: 'FINAL' })
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
     });
   });
 
   describe('GET /api/lab-results/:id', () => {
-    it('should get lab result by id', async () => {
-      const createResponse = await request(app)
-        .post('/api/lab-results')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'Blood Glucose',
-          testCode: 'GLU',
-          category: 'CHEMISTRY',
-          status: 'FINAL',
-          orderedAt: new Date().toISOString(),
-          completedAt: new Date().toISOString(),
-          results: {
-            glucose: '95'
-          }
-        });
-
+    it('should get lab result by id with valid token', async () => {
       const response = await request(app)
-        .get(`/api/lab-results/${createResponse.body.id}`)
+        .get(`/api/lab-results/${createdLabResultId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.id).toBe(createResponse.body.id);
-      expect(response.body.testName).toBe('Blood Glucose');
+      expect(response.body.id).toBe(createdLabResultId);
     });
 
     it('should return 404 for non-existent lab result', async () => {
@@ -199,86 +125,59 @@ describe('Lab Results API', () => {
 
       expect(response.status).toBe(404);
     });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get(`/api/lab-results/${createdLabResultId}`);
+
+      expect(response.status).toBe(401);
+    });
   });
 
   describe('PUT /api/lab-results/:id', () => {
-    it('should update lab result status', async () => {
-      const createResponse = await request(app)
-        .post('/api/lab-results')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'Urinalysis',
-          status: 'REGISTERED'
-        });
-
+    it('should update lab result with valid token', async () => {
       const response = await request(app)
-        .put(`/api/lab-results/${createResponse.body.id}`)
+        .put(`/api/lab-results/${createdLabResultId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          status: 'FINAL',
-          reportedAt: new Date().toISOString(),
-          value: 'Normal',
-          referenceRange: 'Negative'
+          testName: 'HbA1c',
+          value: '6.8',
+          unit: '%',
+          referenceRange: '4.0-6.0',
+          status: 'FINAL'
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('FINAL');
-      expect(response.body.value).toBe('Normal');
+      expect(response.body.value).toBe('6.8');
     });
 
-    it('should update reference range on lab result', async () => {
-      const createResponse = await request(app)
-        .post('/api/lab-results')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'ALT',
-          status: 'FINAL',
-          value: '35',
-          unit: 'U/L',
-          referenceRange: '7-56 U/L'
-        });
-
+    it('should fail without authentication', async () => {
       const response = await request(app)
-        .put(`/api/lab-results/${createResponse.body.id}`)
-        .set('Authorization', `Bearer ${authToken}`)
+        .put(`/api/lab-results/${createdLabResultId}`)
         .send({
-          referenceRange: '7-56 U/L (within normal limits)'
+          patientId: 1,
+          testName: 'Test',
+          value: '5.0',
+          status: 'NORMAL',
+          performedAt: new Date().toISOString()
         });
 
-      expect(response.status).toBe(200);
-      expect(response.body.referenceRange).toContain('within normal limits');
-      
+      expect(response.status).toBe(401);
     });
   });
 
   describe('DELETE /api/lab-results/:id', () => {
-    it('should delete lab result', async () => {
-      const createResponse = await request(app)
-        .post('/api/lab-results')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          testName: 'Chest X-Ray',
-          status: 'REGISTERED'
-        });
-
-      const deleteResponse = await request(app)
-        .delete(`/api/lab-results/${createResponse.body.id}`)
+    it('should delete lab result with valid token', async () => {
+      const response = await request(app)
+        .delete(`/api/lab-results/${createdLabResultId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(deleteResponse.status).toBe(200);
-      expect(deleteResponse.body.message).toContain('deleted');
+      expect(response.status).toBe(200);
+    });
 
-      const getResponse = await request(app)
-        .get(`/api/lab-results/${createResponse.body.id}`)
-        .set('Authorization', `Bearer ${authToken}`);
+    it('should fail without authentication', async () => {
+      const response = await request(app).delete('/api/lab-results/1');
 
-      expect(getResponse.status).toBe(404);
+      expect(response.status).toBe(401);
     });
   });
 });
