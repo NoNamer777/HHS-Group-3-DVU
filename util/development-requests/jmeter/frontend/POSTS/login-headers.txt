@@ -1,0 +1,7 @@
+Accept	 application/json
+Accept-Encoding	gzip, deflate, br, zstd
+Accept-Language	nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7
+Cache-Control	no-cache
+connection	keep-alive
+content-length	71
+content-type	application/json
