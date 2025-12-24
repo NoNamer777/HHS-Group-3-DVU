@@ -1,0 +1,1948 @@
+openapi: 3.0.3
+info:
+  title: EPD Service API
+  description: |
+    Electronic Patient Dossier (EPD) service voor het beheren van patiëntgegevens.
+    
+    **Authenticatie**: 
+    - Auth0 Machine-to-Machine (M2M) authenticatie
+    - Alle endpoints vereisen een geldig Auth0 access token
+    - Bearer token format in Authorization header
+    
+    **Kenmerken**:
+    - Volledige CRUD operaties voor patiënten, encounters, diagnoses, medicatie, etc.
+    - Paginatie voor alle lijst endpoints
+    - Filtering en zoekfunctionaliteit
+    - Audit trails via createdBy/authorId velden
+    
+  version: 1.0.0
+  contact:
+    name: EPD Service Team
+
+servers:
+  - url: http://localhost:3002
+    description: Development server
+
+tags:
+  - name: Health
+    description: Service health check
+  - name: Patients
+    description: Patiëntenbeheer
+  - name: Encounters
+    description: Zorgcontacten (opnames, consulten)
+  - name: Medical Records
+    description: Medische verslaglegging
+  - name: Diagnoses
+    description: Diagnoses en aandoeningen
+  - name: Medications
+    description: Medicatie voorschriften
+  - name: Allergies
+    description: Allergieën en intoleranties
+  - name: Vitals
+    description: Vitale parameters (bloeddruk, temperatuur, etc.)
+  - name: Lab Results
+    description: Laboratorium uitslagen
+  - name: Appointments
+    description: Afspraken
+  - name: Insurance
+    description: Verzekeringen
+
+components:
+  securitySchemes:
+    auth0Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Auth0 M2M access token. 
+        
+        Verkrijg een token via:
+        ```
+        POST https://diabeticum-pedis.eu.auth0.com/oauth/token
+        {
+          "client_id": "YOUR_CLIENT_ID",
+          "client_secret": "YOUR_CLIENT_SECRET",
+          "audience": "https://api.epd-service.local",
+          "grant_type": "client_credentials"
+        }
+        ```
+
+  schemas:
+    # Pagination
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 156
+        totalPages:
+          type: integer
+          example: 8
+
+    # Patient schemas
+    Patient:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        hospitalNumber:
+          type: string
+          example: "HN-2024-001234"
+          description: Uniek intern patiëntnummer
+        firstName:
+          type: string
+          example: "Jan"
+        lastName:
+          type: string
+          example: "Jansen"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1985-06-15"
+        sex:
+          type: string
+          enum: [MALE, FEMALE, OTHER, UNKNOWN]
+          example: "MALE"
+        phone:
+          type: string
+          nullable: true
+          example: "+31612345678"
+        email:
+          type: string
+          format: email
+          nullable: true
+          example: "jan.jansen@example.com"
+        addressLine1:
+          type: string
+          nullable: true
+          example: "Hoofdstraat 123"
+        addressLine2:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+          example: "Amsterdam"
+        postalCode:
+          type: string
+          nullable: true
+          example: "1012AB"
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, DECEASED]
+          example: "ACTIVE"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        createdById:
+          type: integer
+          nullable: true
+      required:
+        - id
+        - hospitalNumber
+        - firstName
+        - lastName
+        - dateOfBirth
+        - sex
+        - status
+
+    PatientCreate:
+      type: object
+      properties:
+        hospitalNumber:
+          type: string
+          example: "HN-2024-001234"
+        firstName:
+          type: string
+          example: "Jan"
+        lastName:
+          type: string
+          example: "Jansen"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1985-06-15"
+        sex:
+          type: string
+          enum: [MALE, FEMALE, OTHER, UNKNOWN]
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        addressLine1:
+          type: string
+          nullable: true
+        addressLine2:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, DECEASED]
+          default: ACTIVE
+      required:
+        - hospitalNumber
+        - firstName
+        - lastName
+        - dateOfBirth
+        - sex
+
+    PatientsResponse:
+      type: object
+      properties:
+        patients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Patient'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Encounter schemas
+    Encounter:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [INPATIENT, OUTPATIENT, EMERGENCY]
+        status:
+          type: string
+          enum: [PLANNED, IN_PROGRESS, FINISHED, CANCELLED]
+        reason:
+          type: string
+          nullable: true
+          example: "Routine check-up"
+        location:
+          type: string
+          nullable: true
+          example: "Polikliniek 2A"
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        patient:
+          $ref: '#/components/schemas/Patient'
+        createdById:
+          type: integer
+          nullable: true
+
+    EncounterCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        type:
+          type: string
+          enum: [INPATIENT, OUTPATIENT, EMERGENCY]
+        status:
+          type: string
+          enum: [PLANNED, IN_PROGRESS, FINISHED, CANCELLED]
+          default: PLANNED
+        reason:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - patientId
+        - type
+        - start
+
+    EncountersResponse:
+      type: object
+      properties:
+        encounters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Encounter'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Medical Record schemas
+    MedicalRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [PROGRESS_NOTE, CONSULTATION, DISCHARGE_SUMMARY, PROCEDURE_NOTE, OTHER]
+        title:
+          type: string
+          nullable: true
+          example: "Intake gesprek diabetes"
+        content:
+          type: string
+          example: "Patiënt presenteert zich met verhoogde bloedsuikerwaardes..."
+        createdAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        authorId:
+          type: integer
+          nullable: true
+
+    MedicalRecordCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        type:
+          type: string
+          enum: [PROGRESS_NOTE, CONSULTATION, DISCHARGE_SUMMARY, PROCEDURE_NOTE, OTHER]
+        title:
+          type: string
+          nullable: true
+        content:
+          type: string
+      required:
+        - patientId
+        - type
+        - content
+
+    MedicalRecordsResponse:
+      type: object
+      properties:
+        medicalRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicalRecord'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Diagnosis schemas
+    Diagnosis:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          example: "E11.9"
+          description: ICD-10 code
+        description:
+          type: string
+          example: "Type 2 diabetes mellitus zonder complicaties"
+        type:
+          type: string
+          enum: [PRIMARY, SECONDARY, DIFFERENTIAL]
+        onset:
+          type: string
+          format: date-time
+          nullable: true
+        resolved:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        authorId:
+          type: integer
+          nullable: true
+
+    DiagnosisCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        code:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [PRIMARY, SECONDARY, DIFFERENTIAL]
+        onset:
+          type: string
+          format: date-time
+          nullable: true
+        resolved:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - patientId
+        - code
+        - description
+        - type
+
+    DiagnosesResponse:
+      type: object
+      properties:
+        diagnoses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diagnosis'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Medication schemas
+    MedicationOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+        medicationName:
+          type: string
+          example: "Metformine"
+        dose:
+          type: string
+          example: "500mg"
+        route:
+          type: string
+          nullable: true
+          example: "Oraal"
+        frequency:
+          type: string
+          nullable: true
+          example: "2x daags"
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, COMPLETED, CANCELLED, ON_HOLD]
+        createdAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        prescriberId:
+          type: integer
+          nullable: true
+
+    MedicationOrderCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        medicationName:
+          type: string
+        dose:
+          type: string
+        route:
+          type: string
+          nullable: true
+        frequency:
+          type: string
+          nullable: true
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, COMPLETED, CANCELLED, ON_HOLD]
+          default: ACTIVE
+      required:
+        - patientId
+        - medicationName
+        - dose
+        - startDate
+
+    MedicationsResponse:
+      type: object
+      properties:
+        medications:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicationOrder'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Allergy schemas
+    Allergy:
+      type: object
+      properties:
+        id:
+          type: integer
+        substance:
+          type: string
+          example: "Penicilline"
+        reaction:
+          type: string
+          nullable: true
+          example: "Anafylactische shock"
+        severity:
+          type: string
+          nullable: true
+          enum: [MILD, MODERATE, SEVERE]
+          example: "SEVERE"
+        notedAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+
+    AllergyCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        substance:
+          type: string
+        reaction:
+          type: string
+          nullable: true
+        severity:
+          type: string
+          nullable: true
+          enum: [MILD, MODERATE, SEVERE]
+      required:
+        - patientId
+        - substance
+
+    AllergiesResponse:
+      type: object
+      properties:
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Allergy'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Vital Sign schemas
+    VitalSign:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [BLOOD_PRESSURE, HEART_RATE, TEMPERATURE, RESPIRATORY_RATE, OXYGEN_SATURATION, WEIGHT, HEIGHT, BMI, BLOOD_GLUCOSE]
+        value:
+          type: string
+          example: "120/80"
+          description: Waarde inclusief eenheid
+        measuredAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+
+    VitalSignCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        type:
+          type: string
+          enum: [BLOOD_PRESSURE, HEART_RATE, TEMPERATURE, RESPIRATORY_RATE, OXYGEN_SATURATION, WEIGHT, HEIGHT, BMI, BLOOD_GLUCOSE]
+        value:
+          type: string
+        measuredAt:
+          type: string
+          format: date-time
+      required:
+        - patientId
+        - type
+        - value
+        - measuredAt
+
+    VitalsResponse:
+      type: object
+      properties:
+        vitals:
+          type: array
+          items:
+            $ref: '#/components/schemas/VitalSign'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Lab Result schemas
+    LabResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        testName:
+          type: string
+          example: "HbA1c"
+        value:
+          type: string
+          example: "7.2%"
+        unit:
+          type: string
+          nullable: true
+          example: "%"
+        referenceRange:
+          type: string
+          nullable: true
+          example: "4.0-6.0%"
+        status:
+          type: string
+          enum: [NORMAL, ABNORMAL, CRITICAL]
+        performedAt:
+          type: string
+          format: date-time
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+
+    LabResultCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        encounterId:
+          type: integer
+          nullable: true
+        testName:
+          type: string
+        value:
+          type: string
+        unit:
+          type: string
+          nullable: true
+        referenceRange:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [NORMAL, ABNORMAL, CRITICAL]
+        performedAt:
+          type: string
+          format: date-time
+      required:
+        - patientId
+        - testName
+        - value
+        - status
+        - performedAt
+
+    LabResultsResponse:
+      type: object
+      properties:
+        labResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabResult'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Appointment schemas
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [CONSULTATION, FOLLOW_UP, PROCEDURE, SCREENING]
+        status:
+          type: string
+          enum: [SCHEDULED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW]
+        scheduledStart:
+          type: string
+          format: date-time
+        scheduledEnd:
+          type: string
+          format: date-time
+        location:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        patientId:
+          type: integer
+        providerId:
+          type: integer
+          nullable: true
+
+    AppointmentCreate:
+      type: object
+      properties:
+        patientId:
+          type: integer
+        providerId:
+          type: integer
+          nullable: true
+        type:
+          type: string
+          enum: [CONSULTATION, FOLLOW_UP, PROCEDURE, SCREENING]
+        status:
+          type: string
+          enum: [SCHEDULED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW]
+          default: SCHEDULED
+        scheduledStart:
+          type: string
+          format: date-time
+        scheduledEnd:
+          type: string
+          format: date-time
+        location:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+      required:
+        - patientId
+        - type
+        - scheduledStart
+        - scheduledEnd
+
+    AppointmentsResponse:
+      type: object
+      properties:
+        appointments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # Error schemas
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Resource not found"
+        details:
+          type: string
+          nullable: true
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Validation failed"
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+# Apply Auth0 bearer token to all endpoints
+security:
+  - auth0Bearer: []
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      description: Check if the service is running
+      security: []  # No auth required for health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  # Patient endpoints
+  /api/patients:
+    get:
+      tags: [Patients]
+      summary: Get all patients
+      description: Retrieve a paginated list of patients with optional filtering
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [ACTIVE, INACTIVE, DECEASED]
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search in names and hospital number
+      responses:
+        '200':
+          description: List of patients
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags: [Patients]
+      summary: Create a new patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreate'
+      responses:
+        '201':
+          description: Patient created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized
+        '409':
+          description: Hospital number already exists
+
+  /api/patients/{id}:
+    get:
+      tags: [Patients]
+      summary: Get patient by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Patient found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Patients]
+      summary: Update patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreate'
+      responses:
+        '200':
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Patient not found
+
+    delete:
+      tags: [Patients]
+      summary: Delete patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Patient deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Patient not found
+
+  # Encounter endpoints
+  /api/encounters:
+    get:
+      tags: [Encounters]
+      summary: Get all encounters
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PLANNED, IN_PROGRESS, FINISHED, CANCELLED]
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [INPATIENT, OUTPATIENT, EMERGENCY]
+      responses:
+        '200':
+          description: List of encounters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncountersResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Encounters]
+      summary: Create a new encounter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncounterCreate'
+      responses:
+        '201':
+          description: Encounter created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/encounters/{id}:
+    get:
+      tags: [Encounters]
+      summary: Get encounter by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Encounter found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        '404':
+          description: Encounter not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Encounters]
+      summary: Update encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncounterCreate'
+      responses:
+        '200':
+          description: Encounter updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Encounter not found
+
+    delete:
+      tags: [Encounters]
+      summary: Delete encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Encounter deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Encounter not found
+
+  # Medical Record endpoints
+  /api/medical-records:
+    get:
+      tags: [Medical Records]
+      summary: Get all medical records
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: encounterId
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [PROGRESS_NOTE, CONSULTATION, DISCHARGE_SUMMARY, PROCEDURE_NOTE, OTHER]
+      responses:
+        '200':
+          description: List of medical records
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordsResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Medical Records]
+      summary: Create a new medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordCreate'
+      responses:
+        '201':
+          description: Medical record created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/medical-records/{id}:
+    get:
+      tags: [Medical Records]
+      summary: Get medical record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Medical record found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+        '404':
+          description: Medical record not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Medical Records]
+      summary: Update medical record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordCreate'
+      responses:
+        '200':
+          description: Medical record updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Medical record not found
+
+    delete:
+      tags: [Medical Records]
+      summary: Delete medical record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Medical record deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Medical record not found
+
+  # Diagnosis endpoints
+  /api/diagnoses:
+    get:
+      tags: [Diagnoses]
+      summary: Get all diagnoses
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: encounterId
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [PRIMARY, SECONDARY, DIFFERENTIAL]
+        - name: active
+          in: query
+          schema:
+            type: boolean
+          description: Filter active diagnoses (not resolved)
+      responses:
+        '200':
+          description: List of diagnoses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosesResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Diagnoses]
+      summary: Create a new diagnosis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosisCreate'
+      responses:
+        '201':
+          description: Diagnosis created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnosis'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/diagnoses/{id}:
+    get:
+      tags: [Diagnoses]
+      summary: Get diagnosis by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diagnosis found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnosis'
+        '404':
+          description: Diagnosis not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Diagnoses]
+      summary: Update diagnosis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosisCreate'
+      responses:
+        '200':
+          description: Diagnosis updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnosis'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Diagnosis not found
+
+    delete:
+      tags: [Diagnoses]
+      summary: Delete diagnosis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Diagnosis deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Diagnosis not found
+
+  # Medication endpoints
+  /api/medications:
+    get:
+      tags: [Medications]
+      summary: Get all medication orders
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [ACTIVE, COMPLETED, CANCELLED, ON_HOLD]
+      responses:
+        '200':
+          description: List of medication orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationsResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Medications]
+      summary: Create a new medication order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationOrderCreate'
+      responses:
+        '201':
+          description: Medication order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOrder'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/medications/{id}:
+    get:
+      tags: [Medications]
+      summary: Get medication order by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Medication order found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOrder'
+        '404':
+          description: Medication order not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Medications]
+      summary: Update medication order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationOrderCreate'
+      responses:
+        '200':
+          description: Medication order updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOrder'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Medication order not found
+
+    delete:
+      tags: [Medications]
+      summary: Delete medication order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Medication order deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Medication order not found
+
+  # Allergy endpoints
+  /api/allergies:
+    get:
+      tags: [Allergies]
+      summary: Get all allergies
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [MILD, MODERATE, SEVERE]
+      responses:
+        '200':
+          description: List of allergies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllergiesResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Allergies]
+      summary: Create a new allergy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllergyCreate'
+      responses:
+        '201':
+          description: Allergy created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allergy'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/allergies/{id}:
+    get:
+      tags: [Allergies]
+      summary: Get allergy by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Allergy found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allergy'
+        '404':
+          description: Allergy not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Allergies]
+      summary: Update allergy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllergyCreate'
+      responses:
+        '200':
+          description: Allergy updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allergy'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Allergy not found
+
+    delete:
+      tags: [Allergies]
+      summary: Delete allergy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Allergy deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Allergy not found
+
+  # Vital Signs endpoints
+  /api/vitals:
+    get:
+      tags: [Vitals]
+      summary: Get all vital signs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [BLOOD_PRESSURE, HEART_RATE, TEMPERATURE, RESPIRATORY_RATE, OXYGEN_SATURATION, WEIGHT, HEIGHT, BMI, BLOOD_GLUCOSE]
+      responses:
+        '200':
+          description: List of vital signs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VitalsResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Vitals]
+      summary: Create a new vital sign measurement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VitalSignCreate'
+      responses:
+        '201':
+          description: Vital sign created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VitalSign'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/vitals/{id}:
+    get:
+      tags: [Vitals]
+      summary: Get vital sign by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Vital sign found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VitalSign'
+        '404':
+          description: Vital sign not found
+        '401':
+          description: Unauthorized
+
+    delete:
+      tags: [Vitals]
+      summary: Delete vital sign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Vital sign deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Vital sign not found
+
+  # Lab Results endpoints
+  /api/lab-results:
+    get:
+      tags: [Lab Results]
+      summary: Get all lab results
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [NORMAL, ABNORMAL, CRITICAL]
+      responses:
+        '200':
+          description: List of lab results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabResultsResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Lab Results]
+      summary: Create a new lab result
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabResultCreate'
+      responses:
+        '201':
+          description: Lab result created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabResult'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/lab-results/{id}:
+    get:
+      tags: [Lab Results]
+      summary: Get lab result by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lab result found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabResult'
+        '404':
+          description: Lab result not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Lab Results]
+      summary: Update lab result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabResultCreate'
+      responses:
+        '200':
+          description: Lab result updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabResult'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Lab result not found
+
+    delete:
+      tags: [Lab Results]
+      summary: Delete lab result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Lab result deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Lab result not found
+
+  # Appointment endpoints
+  /api/appointments:
+    get:
+      tags: [Appointments]
+      summary: Get all appointments
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: patientId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [SCHEDULED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW]
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [CONSULTATION, FOLLOW_UP, PROCEDURE, SCREENING]
+      responses:
+        '200':
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentsResponse'
+        '401':
+          description: Unauthorized
+
+    post:
+      tags: [Appointments]
+      summary: Create a new appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        '201':
+          description: Appointment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /api/appointments/{id}:
+    get:
+      tags: [Appointments]
+      summary: Get appointment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Appointment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+        '401':
+          description: Unauthorized
+
+    put:
+      tags: [Appointments]
+      summary: Update appointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        '200':
+          description: Appointment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+        '404':
+          description: Appointment not found
+
+    delete:
+      tags: [Appointments]
+      summary: Delete appointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Appointment deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Appointment not found

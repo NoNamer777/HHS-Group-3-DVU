@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { userService } from '../services/user.service';
-import { authenticateToken, authorizeRoles } from '../middlewares/auth.middleware';
+import { authenticateAuth0, requireAnyPermission } from '../middlewares/auth0.middleware';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authenticateToken);
+// All routes require Auth0 M2M authentication
+router.use(authenticateAuth0);
 
-router.get('/', authorizeRoles('ADMIN', 'DOCTOR'), async (req, res) => {
+router.get('/', requireAnyPermission('read:users', 'admin:all'), async (req, res) => {
   try {
     const users = await userService.findAll();
     res.json(users);

@@ -46,7 +46,7 @@ docker-compose down
 
 ## Features
 
-- **Authentication & Authorization**: JWT-based auth with role-based access control (DOCTOR, NURSE, ASSISTANT, ADMIN)
+- **Authentication & Authorization**: Auth0 Machine-to-Machine (M2M) authentication with permission-based access control
 - **Patient Management**: Full CRUD for patients with search and filtering functionality
 - **Encounters**: Management of outpatient, inpatient, and emergency encounters
 - **Medical Records**: Notes, consultations, reports, and procedures
@@ -232,7 +232,7 @@ The database contains the following models:
 - **Language**: TypeScript
 - **Database**: PostgreSQL (via Docker)
 - **ORM**: Prisma
-- **Authentication**: JWT + bcrypt
+- **Authentication**: Auth0 M2M (express-oauth2-jwt-bearer)
 - **Containerization**: Docker & Docker Compose
 - **Validation**: TypeScript types + Prisma
 

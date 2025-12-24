@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authenticateToken } from '../middlewares/auth.middleware';
+import { authenticateAuth0 } from '../middlewares/auth0.middleware';
 import { insuranceController } from '../controllers/insurance.controller';
 import { prisma } from '../lib/prisma';
 
 const router = Router();
-router.use(authenticateToken);
+router.use(authenticateAuth0);
 
 // Insurer endpoints (keep as-is, simple lookup tables)
 router.get('/insurers', async (req, res) => {
