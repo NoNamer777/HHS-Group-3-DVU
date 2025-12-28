@@ -19,10 +19,9 @@
 
 node_modules/
 
+.msw/
 dist/
 reports/
 
 .idea/
 .vscode/
-
-package*.json
