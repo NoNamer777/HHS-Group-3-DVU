@@ -23,6 +23,11 @@
         "noUncheckedSideEffectImports": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "paths": {
+            "@/models": ["./models/index.ts"],
+            "@/utils": ["./utils/index.ts"],
+            "@/test": ["./test/index.ts"]
+        },
         "skipLibCheck": true,
         "strictBindCallApply": true,
         "strictBuiltinIteratorReturn": true,

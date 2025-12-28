@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { medicalRecordController } from '../controllers/medicalRecord.controller';
-import { authenticateToken } from '../middlewares/auth.middleware';
+import { authenticateAuth0 } from '../middlewares/auth0.middleware';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authenticateToken);
+// All routes require Auth0 M2M authentication
+router.use(authenticateAuth0);
 
 router.get('/', medicalRecordController.getAll);
 router.get('/:id', medicalRecordController.getById);
