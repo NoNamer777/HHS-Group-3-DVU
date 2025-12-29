@@ -10,7 +10,7 @@ from project.db.models.mail import (
     MailCreate,
     MarkMailReadResponse,
 )
-from project.services.auth_service import get_bearer_token
+from project.services.auth_service import check_scope, get_bearer_token
 from project.services.mail_service import (
     create_mail,
     delete_mail_by_id,
@@ -31,6 +31,7 @@ router = APIRouter(
     "/user/{user_id}",
     response_model=GetMailsByUserResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("mails:get"))],
 )
 async def get_mails_by_user(
     user_id: int, token: str = Depends(get_bearer_token)
@@ -40,7 +41,10 @@ async def get_mails_by_user(
 
 
 @router.get(
-    "/{mail_id}", response_model=GetMailByIdResponse, status_code=status.HTTP_200_OK
+    "/{mail_id}",
+    response_model=GetMailByIdResponse,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("mails:get"))],
 )
 async def get_mail(
     mail_id: int, token: str = Depends(get_bearer_token)
@@ -50,7 +54,10 @@ async def get_mail(
 
 
 @router.post(
-    "/", response_model=CreateMailResponse, status_code=status.HTTP_201_CREATED
+    "/",
+    response_model=CreateMailResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(check_scope("mails:create"))],
 )
 async def create_new_mail(
     form_data: Annotated[MailCreate, Depends()], token: str = Depends(get_bearer_token)
@@ -63,6 +70,7 @@ async def create_new_mail(
     "/{mail_id}/read",
     response_model=MarkMailReadResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("mails:update"))],
 )
 async def mark_read(
     mail_id: int, token: str = Depends(get_bearer_token)
@@ -71,7 +79,12 @@ async def mark_read(
     return marked_mail
 
 
-@router.delete("/{mail_id}", response_model=None, status_code=status.HTTP_200_OK)
+@router.delete(
+    "/{mail_id}",
+    response_model=None,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("mails:remove"))],
+)
 async def delete_mail(mail_id: int, token: str = Depends(get_bearer_token)) -> None:
     await delete_mail_by_id(mail_id=mail_id, token=token)
 
@@ -80,6 +93,7 @@ async def delete_mail(mail_id: int, token: str = Depends(get_bearer_token)) -> N
     "/user/{user_id}/count",
     response_model=MailCountResponse,
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(check_scope("mails:get"))],
 )
 async def get_count(
     user_id: int, token: str = Depends(get_bearer_token)
