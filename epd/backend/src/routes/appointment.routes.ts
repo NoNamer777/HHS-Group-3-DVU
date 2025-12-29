@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { authenticateToken } from '../middlewares/auth.middleware';
+import { authenticateAuth0 } from '../middlewares/auth0.middleware';
 import { appointmentController } from '../controllers/appointment.controller';
 
 const router = Router();
-router.use(authenticateToken);
+router.use(authenticateAuth0);
 
 router.get('/', appointmentController.getAll);
 router.get('/:id', appointmentController.getById);

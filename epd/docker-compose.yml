@@ -27,11 +27,12 @@ services:
     restart: unless-stopped
     ports:
       - "3001:3001"
+    env_file:
+      - .env.docker
     environment:
       DATABASE_URL: postgresql://epd_user:epd_password@postgres:5432/epd_db
       PORT: 3001
       NODE_ENV: development
-      JWT_SECRET: change-this-secret-in-production
     depends_on:
       postgres:
         condition: service_healthy
