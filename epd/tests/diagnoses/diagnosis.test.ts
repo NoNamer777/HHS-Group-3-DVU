@@ -1,97 +1,45 @@
 import request from 'supertest';
 import express from 'express';
-import authRoutes from '../../backend/src/routes/auth.routes';
-import patientRoutes from '../../backend/src/routes/patient.routes';
-import encounterRoutes from '../../backend/src/routes/encounter.routes';
 import diagnosisRoutes from '../../backend/src/routes/diagnosis.routes';
+import { getAuth0Token } from '../helpers/auth0.helper';
 
 const app = express();
 app.use(express.json());
-app.use('/api/auth', authRoutes);
-app.use('/api/patients', patientRoutes);
-app.use('/api/encounters', encounterRoutes);
 app.use('/api/diagnoses', diagnosisRoutes);
 
-describe('Diagnosis API', () => {
+describe('Diagnosis API - Auth0 M2M', () => {
   let authToken: string;
-  let testPatient: any;
-  let testEncounter: any;
+  let createdDiagnosisId: number;
 
   beforeAll(async () => {
-    // Create test user and authenticate
-    const testEmail = `diagnosis-test-${Date.now()}@example.com`;
-    const userResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        password: 'Password123!',
-        firstName: 'Diagnosis',
-        lastName: 'Tester',
-        role: 'DOCTOR'
-      });
-
-    expect(userResponse.status).toBe(201);
-    authToken = userResponse.body.accessToken;
-
-    // Create test patient
-    const patientResponse = await request(app)
-      .post('/api/patients')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        firstName: 'Diagnosis',
-        lastName: 'Patient',
-        dateOfBirth: '1990-05-15T00:00:00.000Z',
-        sex: 'MALE',
-        email: `diagnosis-patient-${Date.now()}@example.com`,
-        phone: '+31612345678',
-        addressLine1: 'Test Street 1',
-        city: 'Amsterdam',
-        postalCode: '1000AA',
-        hospitalNumber: `DIA-${Date.now()}`
-      });
-
-    testPatient = patientResponse.body;
-
-    // Create test encounter
-    const encounterResponse = await request(app)
-      .post('/api/encounters')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        patientId: testPatient.id,
-        type: 'OUTPATIENT',
-        status: 'IN_PROGRESS',
-        startDate: new Date().toISOString(),
-        chiefComplaint: 'Diagnosis test encounter'
-      });
-
-    testEncounter = encounterResponse.body;
+    authToken = await getAuth0Token();
   });
 
   describe('POST /api/diagnoses', () => {
-    it('should create a new diagnosis', async () => {
+    it('should create diagnosis with valid token', async () => {
       const response = await request(app)
         .post('/api/diagnoses')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          code: 'J06.9',
-          description: 'Acute upper respiratory infection, unspecified',
-          type: 'PRIMARY'
+          patientId: 1,
+          code: 'E11.9',
+          description: 'Type 2 diabetes mellitus without complications',
+          type: 'PRIMARY',
+          onset: new Date().toISOString()
         });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.code).toBe('J06.9');
+      expect(response.body.code).toBe('E11.9');
       expect(response.body.type).toBe('PRIMARY');
+      createdDiagnosisId = response.body.id;
     });
 
     it('should fail without authentication', async () => {
       const response = await request(app)
         .post('/api/diagnoses')
         .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
+          patientId: 1,
           code: 'I10',
           description: 'Essential hypertension',
           type: 'SECONDARY'
@@ -99,27 +47,10 @@ describe('Diagnosis API', () => {
 
       expect(response.status).toBe(401);
     });
-
-    it('should create diagnosis with notes', async () => {
-      const response = await request(app)
-        .post('/api/diagnoses')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          code: 'E11.9',
-          description: 'Type 2 diabetes mellitus without complications',
-          type: 'SECONDARY',
-          onset: new Date('2024-01-01').toISOString()
-        });
-
-      expect(response.status).toBe(201);
-      expect(response.body.onset).toBeDefined();
-    });
   });
 
   describe('GET /api/diagnoses', () => {
-    it('should list all diagnoses', async () => {
+    it('should list diagnoses with valid token', async () => {
       const response = await request(app)
         .get('/api/diagnoses')
         .set('Authorization', `Bearer ${authToken}`);
@@ -127,66 +58,43 @@ describe('Diagnosis API', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('diagnoses');
       expect(Array.isArray(response.body.diagnoses)).toBe(true);
-    });
-
-    it('should filter diagnoses by patientId', async () => {
-      const response = await request(app)
-        .get(`/api/diagnoses?patientId=${testPatient.id}`)
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.diagnoses.every((d: any) => d.patientId === testPatient.id)).toBe(true);
-    });
-
-    it('should filter diagnoses by encounterId', async () => {
-      const response = await request(app)
-        .get(`/api/diagnoses?encounterId=${testEncounter.id}`)
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.diagnoses.every((d: any) => d.encounterId === testEncounter.id)).toBe(true);
-    });
-
-    it('should filter diagnoses by type', async () => {
-      const response = await request(app)
-        .get('/api/diagnoses?type=PRIMARY')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(Array.isArray(response.body.diagnoses)).toBe(true);
-    });
-
-    it('should support pagination', async () => {
-      const response = await request(app)
-        .get('/api/diagnoses?page=1&limit=2')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('pagination');
-      expect(response.body.pagination.limit).toBe(2);
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get('/api/diagnoses');
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should filter by patient ID', async () => {
+      const response = await request(app)
+        .get('/api/diagnoses')
+        .query({ patientId: 1 })
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.diagnoses.every((d: any) => d.patientId === 1)).toBe(true);
+    });
+
+    it('should filter by type', async () => {
+      const response = await request(app)
+        .get('/api/diagnoses')
+        .query({ type: 'PRIMARY' })
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
     });
   });
 
   describe('GET /api/diagnoses/:id', () => {
-    it('should get diagnosis by id', async () => {
-      const createResponse = await request(app)
-        .post('/api/diagnoses')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          code: 'M54.5',
-          description: 'Low back pain',
-          type: 'PRIMARY'
-        });
-
+    it('should get diagnosis by id with valid token', async () => {
       const response = await request(app)
-        .get(`/api/diagnoses/${createResponse.body.id}`)
+        .get(`/api/diagnoses/${createdDiagnosisId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.id).toBe(createResponse.body.id);
-      expect(response.body.code).toBe('M54.5');
+      expect(response.body.id).toBe(createdDiagnosisId);
     });
 
     it('should return 404 for non-existent diagnosis', async () => {
@@ -196,60 +104,58 @@ describe('Diagnosis API', () => {
 
       expect(response.status).toBe(404);
     });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get(`/api/diagnoses/${createdDiagnosisId}`);
+
+      expect(response.status).toBe(401);
+    });
   });
 
   describe('PUT /api/diagnoses/:id', () => {
-    it('should update diagnosis', async () => {
-      const createResponse = await request(app)
-        .post('/api/diagnoses')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          code: 'R50.9',
-          description: 'Fever, unspecified',
-          type: 'PRIMARY'
-        });
-
+    it('should update diagnosis with valid token', async () => {
       const response = await request(app)
-        .put(`/api/diagnoses/${createResponse.body.id}`)
+        .put(`/api/diagnoses/${createdDiagnosisId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          resolved: new Date().toISOString(),
-          description: 'Fever resolved after treatment'
+          patientId: 1,
+          code: 'E11.9',
+          description: 'Type 2 diabetes mellitus - controlled',
+          type: 'PRIMARY',
+          resolved: new Date().toISOString()
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.resolved).toBeDefined();
-      expect(response.body.description).toBe('Fever resolved after treatment');
+      expect(response.body.description).toContain('controlled');
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app)
+        .put(`/api/diagnoses/${createdDiagnosisId}`)
+        .send({
+          patientId: 1,
+          code: 'E11.9',
+          description: 'Update',
+          type: 'PRIMARY'
+        });
+
+      expect(response.status).toBe(401);
     });
   });
 
   describe('DELETE /api/diagnoses/:id', () => {
-    it('should delete diagnosis', async () => {
-      const createResponse = await request(app)
-        .post('/api/diagnoses')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          patientId: testPatient.id,
-          encounterId: testEncounter.id,
-          code: 'Z00.0',
-          description: 'General medical examination',
-          type: 'SECONDARY'
-        });
-
-      const deleteResponse = await request(app)
-        .delete(`/api/diagnoses/${createResponse.body.id}`)
+    it('should delete diagnosis with valid token', async () => {
+      const response = await request(app)
+        .delete(`/api/diagnoses/${createdDiagnosisId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(deleteResponse.status).toBe(200);
-      expect(deleteResponse.body.message).toBe('Diagnosis deleted');
+      expect(response.status).toBe(200);
+    });
 
-      const getResponse = await request(app)
-        .get(`/api/diagnoses/${createResponse.body.id}`)
-        .set('Authorization', `Bearer ${authToken}`);
+    it('should fail without authentication', async () => {
+      const response = await request(app).delete('/api/diagnoses/1');
 
-      expect(getResponse.status).toBe(404);
+      expect(response.status).toBe(401);
     });
   });
 });

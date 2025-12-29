@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["vite.config.ts", "src/**/*.spec.tsx"],
+    "include": ["vite.config.ts", "src/**/*.spec.tsx", "test/**/*.ts"],
     "compilerOptions": {
         "types": ["node", "vitest/globals"]
     }
