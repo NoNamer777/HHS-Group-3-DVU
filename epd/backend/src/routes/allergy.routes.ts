@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { authenticateToken } from '../middlewares/auth.middleware';
+import { authenticateAuth0 } from '../middlewares/auth0.middleware';
 import { allergyController } from '../controllers/allergy.controller';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authenticateToken);
+// All routes require Auth0 M2M authentication
+router.use(authenticateAuth0);
 
 router.get('/', allergyController.getAll);
 router.get('/:id', allergyController.getById);

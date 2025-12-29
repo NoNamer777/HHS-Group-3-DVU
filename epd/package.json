@@ -17,7 +17,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:verbose": "jest --verbose"
+    "test:verbose": "jest --verbose",
+    "test:m2m": "ts-node test-m2m.ts"
   },
   "keywords": [
     "epd",
@@ -29,21 +30,19 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^5.20.0",
-    "bcrypt": "^5.1.1",
+    "axios": "^1.13.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
+    "express-oauth2-jwt-bearer": "^1.7.2",
     "pg": "^8.11.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.5",
     "@types/jest": "^30.0.0",
-    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^24.0.0",
     "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",

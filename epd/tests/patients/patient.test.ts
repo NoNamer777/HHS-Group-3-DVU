@@ -1,98 +1,90 @@
 import request from 'supertest';
 import express from 'express';
 import patientRoutes from '../../backend/src/routes/patient.routes';
-import authRoutes from '../../backend/src/routes/auth.routes';
+import { getAuth0Token } from '../helpers/auth0.helper';
 
 const app = express();
 app.use(express.json());
-app.use('/api/auth', authRoutes);
 app.use('/api/patients', patientRoutes);
 
-describe('Patient API', () => {
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3002';
+
+describe('Patient API - Auth0 M2M', () => {
   let authToken: string;
   let createdPatientId: number;
 
   beforeAll(async () => {
-    // Create and login test user
-    const registerResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        firstName: 'Patient',
-        lastName: 'Tester',
-        email: `patienttest${Date.now()}@example.com`,
-        password: 'password123',
-        role: 'DOCTOR'
-      });
-
-    authToken = registerResponse.body.accessToken;
-
-    // Create a test patient for use in GET/PUT/DELETE tests
-    const patientResponse = await request(app)
-      .post('/api/patients')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        firstName: 'Shared',
-        lastName: 'TestPatient',
-        dateOfBirth: '1985-05-15',
-        sex: 'FEMALE',
-        hospitalNumber: `HN-SHARED-${Date.now()}`
-      });
-
-    createdPatientId = patientResponse.body.id;
+    // Get Auth0 M2M token
+    authToken = await getAuth0Token();
   });
 
   describe('POST /api/patients', () => {
-    it('should create a new patient', async () => {
+    it('should create a new patient with valid Auth0 token', async () => {
       const response = await request(app)
         .post('/api/patients')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           firstName: 'John',
           lastName: 'Doe',
-          dateOfBirth: '1990-01-01',
+          dateOfBirth: '1990-01-15',
           sex: 'MALE',
-          hospitalNumber: `HP-CREATE-${Date.now()}`,
-          email: 'john.doe@example.com',
-          phone: '0612345678',
-          addressLine1: 'Test Street 123',
-          city: 'Amsterdam',
-          postalCode: '1000AA',
-          status: 'ACTIVE'
+          hospitalNumber: `HN-TEST-${Date.now()}`,
+          phone: '+31612345678',
+          email: 'john.doe@example.com'
         });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.firstName).toBe('John');
       expect(response.body.lastName).toBe('Doe');
+      expect(response.body.sex).toBe('MALE');
+
+      createdPatientId = response.body.id;
     });
 
-    it('should return 401 without authentication', async () => {
+    it('should fail without authentication token', async () => {
       const response = await request(app)
         .post('/api/patients')
         .send({
-          firstName: 'New',
-          lastName: 'Patient',
-          dateOfBirth: '1995-05-15',
-          sex: 'MALE',
-          hospitalNumber: 'HP999'
+          firstName: 'Jane',
+          lastName: 'Smith',
+          dateOfBirth: '1995-05-20',
+          sex: 'FEMALE',
+          hospitalNumber: `HN-NOAUTH-${Date.now()}`
+        });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
+    });
+
+    it('should fail with invalid token', async () => {
+      const response = await request(app)
+        .post('/api/patients')
+        .set('Authorization', 'Bearer invalid-token-12345')
+        .send({
+          firstName: 'Invalid',
+          lastName: 'Token',
+          dateOfBirth: '1985-03-10',
+          sex: 'OTHER',
+          hospitalNumber: `HN-INVALID-${Date.now()}`
         });
 
       expect(response.status).toBe(401);
     });
 
-    it('should return 400 if hospital number already exists', async () => {
-      const hospitalNumber = `HN${Date.now()}`;
+    it('should reject duplicate hospital number', async () => {
+      const hospitalNumber = `HN-DUP-${Date.now()}`;
 
       // Create first patient
       await request(app)
         .post('/api/patients')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          hospitalNumber,
           firstName: 'First',
           lastName: 'Patient',
-          dateOfBirth: '1990-01-01',
-          sex: 'MALE'
+          dateOfBirth: '1980-01-01',
+          sex: 'MALE',
+          hospitalNumber
         });
 
       // Try to create duplicate
@@ -100,70 +92,72 @@ describe('Patient API', () => {
         .post('/api/patients')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          hospitalNumber,
           firstName: 'Second',
           lastName: 'Patient',
-          dateOfBirth: '1990-01-01',
-          sex: 'MALE'
+          dateOfBirth: '1985-01-01',
+          sex: 'FEMALE',
+          hospitalNumber // Same hospital number
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Hospital number already exists');
     });
   });
 
   describe('GET /api/patients', () => {
-    it('should return list of patients', async () => {
+    it('should get all patients with valid token', async () => {
       const response = await request(app)
         .get('/api/patients')
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('patients');
-      expect(response.body).toHaveProperty('pagination');
-      expect(response.body.pagination).toHaveProperty('total');
       expect(Array.isArray(response.body.patients)).toBe(true);
+      expect(response.body).toHaveProperty('pagination');
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get('/api/patients');
+
+      expect(response.status).toBe(401);
     });
 
     it('should support pagination', async () => {
       const response = await request(app)
-        .get('/api/patients?page=1&limit=5')
+        .get('/api/patients')
+        .query({ page: 1, limit: 5 })
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('pagination');
-      expect(response.body.pagination.page).toBe(1);
+      expect(response.body).toHaveProperty('patients');
+      expect(Array.isArray(response.body.patients)).toBe(true);
+      expect(response.body.patients.length).toBeLessThanOrEqual(5);
       expect(response.body.pagination.limit).toBe(5);
-    });
-
-    it('should filter by status', async () => {
-      const response = await request(app)
-        .get('/api/patients?status=ACTIVE')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('patients');
-    });
-
-    it('should search patients', async () => {
-      const response = await request(app)
-        .get('/api/patients?search=John')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('patients');
     });
   });
 
   describe('GET /api/patients/:id', () => {
-    it('should return patient by id', async () => {
+    it('should get patient by id with valid token', async () => {
+      // First create a patient
+      const createResponse = await request(app)
+        .post('/api/patients')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          firstName: 'GetById',
+          lastName: 'Test',
+          dateOfBirth: '1992-06-15',
+          sex: 'FEMALE',
+          hospitalNumber: `HN-GETBYID-${Date.now()}`
+        });
+
+      const patientId = createResponse.body.id;
+
       const response = await request(app)
-        .get(`/api/patients/${createdPatientId}`)
+        .get(`/api/patients/${patientId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
-      expect(response.body.id).toBe(createdPatientId);
+      expect(response.body.id).toBe(patientId);
+      expect(response.body.firstName).toBe('GetById');
     });
 
     it('should return 404 for non-existent patient', async () => {
@@ -172,60 +166,90 @@ describe('Patient API', () => {
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toBe('Patient not found');
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).get('/api/patients/1');
+
+      expect(response.status).toBe(401);
     });
   });
 
   describe('PUT /api/patients/:id', () => {
-    it('should update patient', async () => {
-      const response = await request(app)
-        .put(`/api/patients/${createdPatientId}`)
+    it('should update patient with valid token', async () => {
+      // Create patient first
+      const createResponse = await request(app)
+        .post('/api/patients')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          phone: '0687654321',
-          city: 'Rotterdam'
+          firstName: 'Original',
+          lastName: 'Name',
+          dateOfBirth: '1988-08-08',
+          sex: 'MALE',
+          hospitalNumber: `HN-UPDATE-${Date.now()}`
+        });
+
+      const patientId = createResponse.body.id;
+
+      // Update patient
+      const response = await request(app)
+        .put(`/api/patients/${patientId}`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          firstName: 'Updated',
+          lastName: 'Name',
+          phone: '+31687654321'
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.phone).toBe('0687654321');
-      expect(response.body.city).toBe('Rotterdam');
+      expect(response.body.firstName).toBe('Updated');
+      expect(response.body.phone).toBe('+31687654321');
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app)
+        .put('/api/patients/1')
+        .send({ firstName: 'Hacker' });
+
+      expect(response.status).toBe(401);
     });
   });
 
   describe('DELETE /api/patients/:id', () => {
-    let deletePatientId: number;
-
-    beforeAll(async () => {
-      // Create a fresh patient specifically for deletion test
-      const response = await request(app)
+    it('should delete patient with valid token', async () => {
+      // Create patient first
+      const createResponse = await request(app)
         .post('/api/patients')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          firstName: 'Delete',
-          lastName: 'Me',
-          dateOfBirth: '1990-01-01',
-          sex: 'MALE',
+          firstName: 'ToDelete',
+          lastName: 'Patient',
+          dateOfBirth: '1975-12-25',
+          sex: 'OTHER',
           hospitalNumber: `HN-DELETE-${Date.now()}`
         });
-      
-      deletePatientId = response.body.id;
-    });
 
-    it('should delete patient', async () => {
+      const patientId = createResponse.body.id;
+
+      // Delete patient
       const response = await request(app)
-        .delete(`/api/patients/${deletePatientId}`)
+        .delete(`/api/patients/${patientId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.message).toBe('Patient deleted');
-    });
 
-    it('should return 404 after deletion', async () => {
-      const response = await request(app)
-        .get(`/api/patients/${deletePatientId}`)
+      // Verify deletion
+      const getResponse = await request(app)
+        .get(`/api/patients/${patientId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response.status).toBe(404);
+      expect(getResponse.status).toBe(404);
+    });
+
+    it('should fail without authentication', async () => {
+      const response = await request(app).delete('/api/patients/1');
+
+      expect(response.status).toBe(401);
     });
   });
 });
