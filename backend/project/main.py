@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from project.globals import CLIENT_URL
 from project.middleware.cors import setup_cors_middleware
-from project.routes import auth, encounters, patients
+from project.routes import auth, encounters, mails, patients
 
 
 def add_middleware(app: FastAPI) -> None:
@@ -39,6 +39,7 @@ app: FastAPI = build_app()
 app.include_router(auth.router)
 app.include_router(encounters.router)
 app.include_router(patients.router)
+app.include_router(mails.router)
 
 
 @app.get("/", tags=["root"])
