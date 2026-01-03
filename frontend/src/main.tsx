@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import '../public/style.css';
 import App from './app/app';
-import AuthProvider from './app/auth/context/auth.provider';
 import store from './app/store';
 
 const rootElement = document.getElementById('root');
@@ -38,11 +37,9 @@ createRoot(rootElement).render(
             useRefreshTokens={true}
         >
             <BrowserRouter>
-                <AuthProvider>
-                    <Provider store={store}>
-                        <App />
-                    </Provider>
-                </AuthProvider>
+                <Provider store={store}>
+                    <App />
+                </Provider>
             </BrowserRouter>
         </Auth0Provider>
     </StrictMode>,

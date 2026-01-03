@@ -1,7 +1,6 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Routes } from 'react-router-dom';
 import './app.css';
-import { useAuth } from './auth';
-import LoginPage from './auth/login/login.page';
 import HeaderComponent from './core/header/header.component';
 import RootPage from './core/root/root.page';
 import PatientsDashboardPage from './patients/dashboard/patients-dashboard.page';
@@ -12,11 +11,11 @@ import PatientInfoLabResultsComponent from './patients/patient-info/sections/lab
 import PatientInfoOverviewComponent from './patients/patient-info/sections/overview/patient-info-overview.component';
 
 export default function App() {
-    const { loading, user } = useAuth();
+    const { isLoading, user } = useAuth0();
 
     return (
         <>
-            {!loading && (
+            {!isLoading && (
                 <>
                     {user && (
                         <header className="mb-3">
@@ -26,7 +25,6 @@ export default function App() {
                     <main>
                         <Routes>
                             <Route path="/" element={<RootPage />} />
-                            <Route path="/login" element={<LoginPage />} />
                             <Route
                                 path="/dashboard"
                                 element={<PatientsDashboardPage />}
