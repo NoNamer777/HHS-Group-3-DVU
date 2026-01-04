@@ -1,4 +1,4 @@
-import { faFileImport, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFileImport, faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './sync-modal.component.css';
 
@@ -8,6 +8,10 @@ export default function SyncModalComponent() {
             apiEndpoint: formData.get('api-endpoint'),
             apiKey: formData.get('api-key'),
         });
+    }
+
+    function onExportData() {
+        console.warn('EXPORTING DATA AS JSON');
     }
 
     return (
@@ -67,6 +71,20 @@ export default function SyncModalComponent() {
                                     <span>Synchroniseren</span>
                                 </button>
                             </form>
+
+                            <hr />
+
+                            <h6>Exporteren</h6>
+                            <small>Download alle patiëntgegevens inclusief meetwaarden en gesprekken</small>
+                            <button
+                                type="button"
+                                className="btn btn-primary d-flex align-items-center gap-3 mt-2"
+                                onClick={onExportData}
+                            >
+                                <FontAwesomeIcon icon={faDownload} />
+                                <span>Exporteer as JSON</span>
+                            </button>
+
                             <hr />
                         </div>
                         <div className="modal-footer">
