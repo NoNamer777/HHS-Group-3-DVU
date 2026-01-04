@@ -4,8 +4,8 @@ import {
     HttpStatusCodes,
     HttpStatusNames,
 } from '@/models';
-import { mockConversationsDB } from '@/test';
 import { delay, http, HttpResponse, type RequestHandler } from 'msw';
+import { mockConversationsDB } from '../../../db';
 
 const endPoint = `${BASE_URL}/api/conversations`;
 
