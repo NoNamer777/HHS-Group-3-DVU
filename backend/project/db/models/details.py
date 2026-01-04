@@ -35,10 +35,10 @@ class DiagnosesResponse(DVUBaseModel):
 
 class Allergies(DVUBaseModel):
     substance: str
-    reaction: str
-    severity: str
-    notedAt: str
-    patientId: int
+    reaction: Optional[str] = None
+    severity: Optional[str] = None
+    notedAt: Optional[str] = None
+    patientId: Optional[int] = None
 
 
 class Insurer(DVUBaseModel):
@@ -61,11 +61,11 @@ class InsurancePolicies(DVUBaseModel):
 
 
 class PatientDetailResponse(PatientResponse):
-    createdBy: User
-    encounters: List[EncounterResponse]
-    diagnoses: List[DiagnosesResponse]
-    allergies: List[Allergies]
-    insurancePolicies: List[InsurancePolicies]
+    createdBy: Optional[User] = None
+    encounters: List[EncounterResponse] = []
+    diagnoses: List[DiagnosesResponse] = []
+    allergies: List[Allergies] = []
+    insurancePolicies: List[InsurancePolicies] = []
 
 
 class EncounterDetailResponse(EncounterResponse):

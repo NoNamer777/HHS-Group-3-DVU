@@ -6,20 +6,20 @@ from project.db.models.user import User
 
 
 class PatientRead(DVUBaseModel):
-    hospitalNumber: str
+    hospitalNumber: Optional[str] = None
     firstName: str
     lastName: str
 
 
 class PatientResponse(User):
-    hospitalNumber: str
-    dateOfBirth: str
-    sex: GenderEnum
-    phone: str
-    addressLine1: str
+    hospitalNumber: Optional[str] = None
+    dateOfBirth: Optional[str] = None
+    sex: Optional[GenderEnum] = None
+    phone: Optional[str] = None
+    addressLine1: Optional[str] = None
     addressLine2: Optional[str] = None
-    city: str
-    postalCode: str
-    status: PatientStatusEnum
-    updatedAt: str
-    createdById: int
+    city: Optional[str] = None
+    postalCode: Optional[str] = None
+    status: Optional[PatientStatusEnum] = None
+    updatedAt: Optional[str] = None
+    createdById: Optional[int] = None

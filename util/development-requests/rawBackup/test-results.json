@@ -1,0 +1,2142 @@
+[
+  {
+    "service": "FastAPI",
+    "name": "Root Health Check",
+    "url": "http://localhost:8000/api/",
+    "method": "GET",
+    "auth": false,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 26,
+    "requestHeaders": [],
+    "response": {
+      "message": "Hello World!!"
+    },
+    "responsePreview": "{\"message\":\"Hello World!!\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Auth Login (Get Token)",
+    "url": "http://localhost:8000/api/auth/login/",
+    "method": "POST",
+    "auth": false,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 462,
+    "requestHeaders": [],
+    "response": {
+      "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9Da1E4cFhmOG9sZDRTekpNNnVLMSJ9.eyJpc3MiOiJodHRwczovL2Rldi1najh1YnNycGtkdHQxdnhwLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJrdGtUN2JhRFB5aDdOT0xXRXZ5QXB1N2pjMkk4akduU0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9kZXYtZ2o4dWJzcnBrZHR0MXZ4cC51cy5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTc2NzUwMjc0NSwiZXhwIjoxNzY3NTg5MTQ1LCJzY29wZSI6InJlYWQ6Y2xpZW50X2dyYW50cyBjcmVhdGU6Y2xpZW50X2dyYW50cyBkZWxldGU6Y2xpZW50X2dyYW50cyB1cGRhdGU6Y2xpZW50X2dyYW50cyByZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyBkZWxldGU6dXNlcnMgY3JlYXRlOnVzZXJzIHJlYWQ6dXNlcnNfYXBwX21ldGFkYXRhIHVwZGF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgZGVsZXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBjcmVhdGU6dXNlcnNfYXBwX21ldGFkYXRhIHJlYWQ6dXNlcl9jdXN0b21fYmxvY2tzIGNyZWF0ZTp1c2VyX2N1c3RvbV9ibG9ja3MgZGVsZXRlOnVzZXJfY3VzdG9tX2Jsb2NrcyBjcmVhdGU6dXNlcl90aWNrZXRzIHJlYWQ6Y2xpZW50cyB1cGRhdGU6Y2xpZW50cyBkZWxldGU6Y2xpZW50cyBjcmVhdGU6Y2xpZW50cyByZWFkOmNsaWVudF9rZXlzIHVwZGF0ZTpjbGllbnRfa2V5cyBkZWxldGU6Y2xpZW50X2tleXMgY3JlYXRlOmNsaWVudF9rZXlzIHJlYWQ6Y2xpZW50X2NyZWRlbnRpYWxzIHVwZGF0ZTpjbGllbnRfY3JlZGVudGlhbHMgZGVsZXRlOmNsaWVudF9jcmVkZW50aWFscyBjcmVhdGU6Y2xpZW50X2NyZWRlbnRpYWxzIHJlYWQ6Y29ubmVjdGlvbnMgdXBkYXRlOmNvbm5lY3Rpb25zIGRlbGV0ZTpjb25uZWN0aW9ucyBjcmVhdGU6Y29ubmVjdGlvbnMgcmVhZDpyZXNvdXJjZV9zZXJ2ZXJzIHVwZGF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGRlbGV0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGNyZWF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIHJlYWQ6ZGV2aWNlX2NyZWRlbnRpYWxzIHVwZGF0ZTpkZXZpY2VfY3JlZGVudGlhbHMgZGVsZXRlOmRldmljZV9jcmVkZW50aWFscyBjcmVhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIHJlYWQ6cnVsZXMgdXBkYXRlOnJ1bGVzIGRlbGV0ZTpydWxlcyBjcmVhdGU6cnVsZXMgcmVhZDpydWxlc19jb25maWdzIHVwZGF0ZTpydWxlc19jb25maWdzIGRlbGV0ZTpydWxlc19jb25maWdzIHJlYWQ6aG9va3MgdXBkYXRlOmhvb2tzIGRlbGV0ZTpob29rcyBjcmVhdGU6aG9va3MgcmVhZDphY3Rpb25zIHVwZGF0ZTphY3Rpb25zIGRlbGV0ZTphY3Rpb25zIGNyZWF0ZTphY3Rpb25zIHJlYWQ6ZW1haWxfcHJvdmlkZXIgdXBkYXRlOmVtYWlsX3Byb3ZpZGVyIGRlbGV0ZTplbWFpbF9wcm92aWRlciBjcmVhdGU6ZW1haWxfcHJvdmlkZXIgYmxhY2tsaXN0OnRva2VucyByZWFkOnN0YXRzIHJlYWQ6aW5zaWdodHMgcmVhZDp0ZW5hbnRfc2V0dGluZ3MgdXBkYXRlOnRlbmFudF9zZXR0aW5ncyByZWFkOmxvZ3MgcmVhZDpsb2dzX3VzZXJzIHJlYWQ6c2hpZWxkcyBjcmVhdGU6c2hpZWxkcyB1cGRhdGU6c2hpZWxkcyBkZWxldGU6c2hpZWxkcyByZWFkOmFub21hbHlfYmxvY2tzIGRlbGV0ZTphbm9tYWx5X2Jsb2NrcyB1cGRhdGU6dHJpZ2dlcnMgcmVhZDp0cmlnZ2VycyByZWFkOmdyYW50cyBkZWxldGU6Z3JhbnRzIHJlYWQ6Z3VhcmRpYW5fZmFjdG9ycyB1cGRhdGU6Z3VhcmRpYW5fZmFjdG9ycyByZWFkOmd1YXJkaWFuX2Vucm9sbG1lbnRzIGRlbGV0ZTpndWFyZGlhbl9lbnJvbGxtZW50cyBjcmVhdGU6Z3VhcmRpYW5fZW5yb2xsbWVudF90aWNrZXRzIHJlYWQ6dXNlcl9pZHBfdG9rZW5zIGNyZWF0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIGRlbGV0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIHJlYWQ6Y3VzdG9tX2RvbWFpbnMgZGVsZXRlOmN1c3RvbV9kb21haW5zIGNyZWF0ZTpjdXN0b21fZG9tYWlucyB1cGRhdGU6Y3VzdG9tX2RvbWFpbnMgcmVhZDplbWFpbF90ZW1wbGF0ZXMgY3JlYXRlOmVtYWlsX3RlbXBsYXRlcyB1cGRhdGU6ZW1haWxfdGVtcGxhdGVzIHJlYWQ6bWZhX3BvbGljaWVzIHVwZGF0ZTptZmFfcG9saWNpZXMgcmVhZDpyb2xlcyBjcmVhdGU6cm9sZXMgZGVsZXRlOnJvbGVzIHVwZGF0ZTpyb2xlcyByZWFkOnByb21wdHMgdXBkYXRlOnByb21wdHMgcmVhZDpicmFuZGluZyB1cGRhdGU6YnJhbmRpbmcgZGVsZXRlOmJyYW5kaW5nIHJlYWQ6bG9nX3N0cmVhbXMgY3JlYXRlOmxvZ19zdHJlYW1zIGRlbGV0ZTpsb2dfc3RyZWFtcyB1cGRhdGU6bG9nX3N0cmVhbXMgY3JlYXRlOnNpZ25pbmdfa2V5cyByZWFkOnNpZ25pbmdfa2V5cyB1cGRhdGU6c2lnbmluZ19rZXlzIHJlYWQ6bGltaXRzIHVwZGF0ZTpsaW1pdHMgY3JlYXRlOnJvbGVfbWVtYmVycyByZWFkOnJvbGVfbWVtYmVycyBkZWxldGU6cm9sZV9tZW1iZXJzIHJlYWQ6ZW50aXRsZW1lbnRzIHJlYWQ6YXR0YWNrX3Byb3RlY3Rpb24gdXBkYXRlOmF0dGFja19wcm90ZWN0aW9uIHJlYWQ6b3JnYW5pemF0aW9uc19zdW1tYXJ5IGNyZWF0ZTphdXRoZW50aWNhdGlvbl9tZXRob2RzIHJlYWQ6YXV0aGVudGljYXRpb25fbWV0aG9kcyB1cGRhdGU6YXV0aGVudGljYXRpb25fbWV0aG9kcyBkZWxldGU6YXV0aGVudGljYXRpb25fbWV0aG9kcyByZWFkOm9yZ2FuaXphdGlvbnMgdXBkYXRlOm9yZ2FuaXphdGlvbnMgY3JlYXRlOm9yZ2FuaXphdGlvbnMgZGVsZXRlOm9yZ2FuaXphdGlvbnMgcmVhZDpvcmdhbml6YXRpb25fZGlzY292ZXJ5X2RvbWFpbnMgdXBkYXRlOm9yZ2FuaXphdGlvbl9kaXNjb3ZlcnlfZG9tYWlucyBjcmVhdGU6b3JnYW5pemF0aW9uX2Rpc2NvdmVyeV9kb21haW5zIGRlbGV0ZTpvcmdhbml6YXRpb25fZGlzY292ZXJ5X2RvbWFpbnMgY3JlYXRlOm9yZ2FuaXphdGlvbl9tZW1iZXJzIHJlYWQ6b3JnYW5pemF0aW9uX21lbWJlcnMgZGVsZXRlOm9yZ2FuaXphdGlvbl9tZW1iZXJzIGNyZWF0ZTpvcmdhbml6YXRpb25fY29ubmVjdGlvbnMgcmVhZDpvcmdhbml6YXRpb25fY29ubmVjdGlvbnMgdXBkYXRlOm9yZ2FuaXphdGlvbl9jb25uZWN0aW9ucyBkZWxldGU6b3JnYW5pemF0aW9uX2Nvbm5lY3Rpb25zIGNyZWF0ZTpvcmdhbml6YXRpb25fbWVtYmVyX3JvbGVzIHJlYWQ6b3JnYW5pemF0aW9uX21lbWJlcl9yb2xlcyBkZWxldGU6b3JnYW5pemF0aW9uX21lbWJlcl9yb2xlcyBjcmVhdGU6b3JnYW5pemF0aW9uX2ludml0YXRpb25zIHJlYWQ6b3JnYW5pemF0aW9uX2ludml0YXRpb25zIGRlbGV0ZTpvcmdhbml6YXRpb25faW52aXRhdGlvbnMgcmVhZDpzY2ltX2NvbmZpZyBjcmVhdGU6c2NpbV9jb25maWcgdXBkYXRlOnNjaW1fY29uZmlnIGRlbGV0ZTpzY2ltX2NvbmZpZyBjcmVhdGU6c2NpbV90b2tlbiByZWFkOnNjaW1fdG9rZW4gZGVsZXRlOnNjaW1fdG9rZW4gZGVsZXRlOnBob25lX3Byb3ZpZGVycyBjcmVhdGU6cGhvbmVfcHJvdmlkZXJzIHJlYWQ6cGhvbmVfcHJvdmlkZXJzIHVwZGF0ZTpwaG9uZV9wcm92aWRlcnMgZGVsZXRlOnBob25lX3RlbXBsYXRlcyBjcmVhdGU6cGhvbmVfdGVtcGxhdGVzIHJlYWQ6cGhvbmVfdGVtcGxhdGVzIHVwZGF0ZTpwaG9uZV90ZW1wbGF0ZXMgY3JlYXRlOmVuY3J5cHRpb25fa2V5cyByZWFkOmVuY3J5cHRpb25fa2V5cyB1cGRhdGU6ZW5jcnlwdGlvbl9rZXlzIGRlbGV0ZTplbmNyeXB0aW9uX2tleXMgcmVhZDpzZXNzaW9ucyB1cGRhdGU6c2Vzc2lvbnMgZGVsZXRlOnNlc3Npb25zIHJlYWQ6cmVmcmVzaF90b2tlbnMgdXBkYXRlOnJlZnJlc2hfdG9rZW5zIGRlbGV0ZTpyZWZyZXNoX3Rva2VucyBjcmVhdGU6c2VsZl9zZXJ2aWNlX3Byb2ZpbGVzIHJlYWQ6c2VsZl9zZXJ2aWNlX3Byb2ZpbGVzIHVwZGF0ZTpzZWxmX3NlcnZpY2VfcHJvZmlsZXMgZGVsZXRlOnNlbGZfc2VydmljZV9wcm9maWxlcyBjcmVhdGU6c3NvX2FjY2Vzc190aWNrZXRzIGRlbGV0ZTpzc29fYWNjZXNzX3RpY2tldHMgcmVhZDpmb3JtcyB1cGRhdGU6Zm9ybXMgZGVsZXRlOmZvcm1zIGNyZWF0ZTpmb3JtcyByZWFkOmZsb3dzIHVwZGF0ZTpmbG93cyBkZWxldGU6Zmxvd3MgY3JlYXRlOmZsb3dzIHJlYWQ6Zmxvd3NfdmF1bHQgcmVhZDpmbG93c192YXVsdF9jb25uZWN0aW9ucyB1cGRhdGU6Zmxvd3NfdmF1bHRfY29ubmVjdGlvbnMgZGVsZXRlOmZsb3dzX3ZhdWx0X2Nvbm5lY3Rpb25zIGNyZWF0ZTpmbG93c192YXVsdF9jb25uZWN0aW9ucyByZWFkOmZsb3dzX2V4ZWN1dGlvbnMgZGVsZXRlOmZsb3dzX2V4ZWN1dGlvbnMgcmVhZDpjb25uZWN0aW9uc19vcHRpb25zIHVwZGF0ZTpjb25uZWN0aW9uc19vcHRpb25zIHJlYWQ6c2VsZl9zZXJ2aWNlX3Byb2ZpbGVfY3VzdG9tX3RleHRzIHVwZGF0ZTpzZWxmX3NlcnZpY2VfcHJvZmlsZV9jdXN0b21fdGV4dHMgY3JlYXRlOm5ldHdvcmtfYWNscyB1cGRhdGU6bmV0d29ya19hY2xzIHJlYWQ6bmV0d29ya19hY2xzIGRlbGV0ZTpuZXR3b3JrX2FjbHMgZGVsZXRlOnZkY3NfdGVtcGxhdGVzIHJlYWQ6dmRjc190ZW1wbGF0ZXMgY3JlYXRlOnZkY3NfdGVtcGxhdGVzIHVwZGF0ZTp2ZGNzX3RlbXBsYXRlcyBjcmVhdGU6Y3VzdG9tX3NpZ25pbmdfa2V5cyByZWFkOmN1c3RvbV9zaWduaW5nX2tleXMgdXBkYXRlOmN1c3RvbV9zaWduaW5nX2tleXMgZGVsZXRlOmN1c3RvbV9zaWduaW5nX2tleXMgcmVhZDpmZWRlcmF0ZWRfY29ubmVjdGlvbnNfdG9rZW5zIGRlbGV0ZTpmZWRlcmF0ZWRfY29ubmVjdGlvbnNfdG9rZW5zIGNyZWF0ZTp1c2VyX2F0dHJpYnV0ZV9wcm9maWxlcyByZWFkOnVzZXJfYXR0cmlidXRlX3Byb2ZpbGVzIHVwZGF0ZTp1c2VyX2F0dHJpYnV0ZV9wcm9maWxlcyBkZWxldGU6dXNlcl9hdHRyaWJ1dGVfcHJvZmlsZXMgcmVhZDpldmVudF9zdHJlYW1zIGNyZWF0ZTpldmVudF9zdHJlYW1zIGRlbGV0ZTpldmVudF9zdHJlYW1zIHVwZGF0ZTpldmVudF9zdHJlYW1zIHJlYWQ6ZXZlbnRfZGVsaXZlcmllcyB1cGRhdGU6ZXZlbnRfZGVsaXZlcmllcyBjcmVhdGU6Y29ubmVjdGlvbl9wcm9maWxlcyByZWFkOmNvbm5lY3Rpb25fcHJvZmlsZXMgdXBkYXRlOmNvbm5lY3Rpb25fcHJvZmlsZXMgZGVsZXRlOmNvbm5lY3Rpb25fcHJvZmlsZXMgcmVhZDpvcmdhbml6YXRpb25fY2xpZW50X2dyYW50cyBjcmVhdGU6b3JnYW5pemF0aW9uX2NsaWVudF9ncmFudHMgZGVsZXRlOm9yZ2FuaXphdGlvbl9jbGllbnRfZ3JhbnRzIGNyZWF0ZTp0b2tlbl9leGNoYW5nZV9wcm9maWxlcyByZWFkOnRva2VuX2V4Y2hhbmdlX3Byb2ZpbGVzIHVwZGF0ZTp0b2tlbl9leGNoYW5nZV9wcm9maWxlcyBkZWxldGU6dG9rZW5fZXhjaGFuZ2VfcHJvZmlsZXMgcmVhZDpzZWN1cml0eV9tZXRyaWNzIHJlYWQ6Y29ubmVjdGlvbnNfa2V5cyB1cGRhdGU6Y29ubmVjdGlvbnNfa2V5cyBjcmVhdGU6Y29ubmVjdGlvbnNfa2V5cyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsImF6cCI6Imt0a1Q3YmFEUHloN05PTFdFdnlBcHU3amMySThqR25TIn0.DAgm3Ld7eqSG0y-aPS_eBNvMKsNuFNZ0ojKwcTf7aH4o0mRgT_Jv5sTj_UPQ01fS3Qeikwm4d0Z_84FNzGETkMLWKYPHs6lpdTqerP1tjllWN09EYXJVcaHxtFGBhItqGrQ1AcOcMbGJ9HpWzz1JmmCBrrOhgJWSphkJMDBp1VhTdDPpS1Uo3X_pjM3RyWosNFf4mK3KaQmQMfH2LgpSdjrQiuPLz1twZNjdp-VjTBN3NR0mYR2Y0WNMe28A0Z4xorq5gS_g5-ufolmNaufau6tSfQ_zjY3rm3ZaRodsKrC8AQnJ_U549kbjnzWmohJVMjBGuzj2altOnMpq95etjQ",
+      "token_type": "Bearer",
+      "expires_in": 86400,
+      "scope": "read:client_grants create:client_grants delete:client_grants update:client_grants read:users update:users delete:users create:users read:users_app_metadata update:users_app_metadata delete:users_app_metadata create:users_app_metadata read:user_custom_blocks create:user_custom_blocks delete:user_custom_blocks create:user_tickets read:clients update:clients delete:clients create:clients read:client_keys update:client_keys delete:client_keys create:client_keys read:client_credentials update:client_credentials delete:client_credentials create:client_credentials read:connections update:connections delete:connections create:connections read:resource_servers update:resource_servers delete:resource_servers create:resource_servers read:device_credentials update:device_credentials delete:device_credentials create:device_credentials read:rules update:rules delete:rules create:rules read:rules_configs update:rules_configs delete:rules_configs read:hooks update:hooks delete:hooks create:hooks read:actions update:actions delete:actions create:actions read:email_provider update:email_provider delete:email_provider create:email_provider blacklist:tokens read:stats read:insights read:tenant_settings update:tenant_settings read:logs read:logs_users read:shields create:shields update:shields delete:shields read:anomaly_blocks delete:anomaly_blocks update:triggers read:triggers read:grants delete:grants read:guardian_factors update:guardian_factors read:guardian_enrollments delete:guardian_enrollments create:guardian_enrollment_tickets read:user_idp_tokens create:passwords_checking_job delete:passwords_checking_job read:custom_domains delete:custom_domains create:custom_domains update:custom_domains read:email_templates create:email_templates update:email_templates read:mfa_policies update:mfa_policies read:roles create:roles delete:roles update:roles read:prompts update:prompts read:branding update:branding delete:branding read:log_streams create:log_streams delete:log_streams update:log_streams create:signing_keys read:signing_keys update:signing_keys read:limits update:limits create:role_members read:role_members delete:role_members read:entitlements read:attack_protection update:attack_protection read:organizations_summary create:authentication_methods read:authentication_methods update:authentication_methods delete:authentication_methods read:organizations update:organizations create:organizations delete:organizations read:organization_discovery_domains update:organization_discovery_domains create:organization_discovery_domains delete:organization_discovery_domains create:organization_members read:organization_members delete:organization_members create:organization_connections read:organization_connections update:organization_connections delete:organization_connections create:organization_member_roles read:organization_member_roles delete:organization_member_roles create:organization_invitations read:organization_invitations delete:organization_invitations read:scim_config create:scim_config update:scim_config delete:scim_config create:scim_token read:scim_token delete:scim_token delete:phone_providers create:phone_providers read:phone_providers update:phone_providers delete:phone_templates create:phone_templates read:phone_templates update:phone_templates create:encryption_keys read:encryption_keys update:encryption_keys delete:encryption_keys read:sessions update:sessions delete:sessions read:refresh_tokens update:refresh_tokens delete:refresh_tokens create:self_service_profiles read:self_service_profiles update:self_service_profiles delete:self_service_profiles create:sso_access_tickets delete:sso_access_tickets read:forms update:forms delete:forms create:forms read:flows update:flows delete:flows create:flows read:flows_vault read:flows_vault_connections update:flows_vault_connections delete:flows_vault_connections create:flows_vault_connections read:flows_executions delete:flows_executions read:connections_options update:connections_options read:self_service_profile_custom_texts update:self_service_profile_custom_texts create:network_acls update:network_acls read:network_acls delete:network_acls delete:vdcs_templates read:vdcs_templates create:vdcs_templates update:vdcs_templates create:custom_signing_keys read:custom_signing_keys update:custom_signing_keys delete:custom_signing_keys read:federated_connections_tokens delete:federated_connections_tokens create:user_attribute_profiles read:user_attribute_profiles update:user_attribute_profiles delete:user_attribute_profiles read:event_streams create:event_streams delete:event_streams update:event_streams read:event_deliveries update:event_deliveries create:connection_profiles read:connection_profiles update:connection_profiles delete:connection_profiles read:organization_client_grants create:organization_client_grants delete:organization_client_grants create:token_exchange_profiles read:token_exchange_profiles update:token_exchange_profiles delete:token_exchange_profiles read:security_metrics read:connections_keys update:connections_keys create:connections_keys"
+    },
+    "responsePreview": "{\"access_token\":\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9Da1E4cFhmOG9sZDRTekpNNnVLMSJ9.eyJpc3MiOiJodHRwczovL2Rldi1najh1YnNycGtkdHQxdnhwLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJrdGtUN2JhRFB5aDdOT0xXRXZ5QX"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Patients",
+    "url": "http://localhost:8000/api/patient/",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 4,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Patients (with limit)",
+    "url": "http://localhost:8000/api/patient/?limit=5&offset=0",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 2,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get Patient by ID",
+    "url": "http://localhost:8000/api/patient/1",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 4,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Encounters",
+    "url": "http://localhost:8000/api/encounters/",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 3,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Encounters (with filters)",
+    "url": "http://localhost:8000/api/encounters/?page=1&limit=10",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 2,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get Encounter by ID",
+    "url": "http://localhost:8000/api/encounters/1",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 3,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get User Mails",
+    "url": "http://localhost:8000/api/mails/user/1",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 3,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get User Mail Count",
+    "url": "http://localhost:8000/api/mails/user/1/count",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 3,
+    "requestHeaders": [],
+    "response": {
+      "detail": "Forbidden"
+    },
+    "responsePreview": "{\"detail\":\"Forbidden\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "Health Check",
+    "url": "http://localhost:3001/health",
+    "method": "GET",
+    "auth": false,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "status": "ok",
+      "timestamp": "2026-01-04T04:59:05.431Z"
+    },
+    "responsePreview": "{\"status\":\"ok\",\"timestamp\":\"2026-01-04T04:59:05.431Z\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "List Users",
+    "url": "http://localhost:3001/api/users",
+    "method": "GET",
+    "auth": true,
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "statusText": "Forbidden",
+    "time": 565,
+    "requestHeaders": [],
+    "response": {
+      "error": "Insufficient permissions",
+      "required": "One of: read:users, admin:all"
+    },
+    "responsePreview": "{\"error\":\"Insufficient permissions\",\"required\":\"One of: read:users, admin:all\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "Get User by ID",
+    "url": "http://localhost:3001/api/users/1",
+    "method": "GET",
+    "auth": true,
+    "status": "NOT_FOUND",
+    "statusCode": 404,
+    "statusText": "Not Found",
+    "time": 22,
+    "requestHeaders": [],
+    "response": {
+      "error": "User not found"
+    },
+    "responsePreview": "{\"error\":\"User not found\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "List Patients",
+    "url": "http://localhost:3001/api/patients",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 19,
+    "requestHeaders": [],
+    "response": {
+      "patients": [
+        {
+          "id": 420,
+          "hospitalNumber": "P2024060",
+          "firstName": "Koen",
+          "lastName": "Kok",
+          "dateOfBirth": "1959-12-04T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345737",
+          "email": "patient60@email.nl",
+          "addressLine1": "Beatrixlaan 60",
+          "addressLine2": null,
+          "city": "Zwolle",
+          "postalCode": "1059 HO",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.447Z",
+          "updatedAt": "2026-01-04T04:36:42.447Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 419,
+          "hospitalNumber": "P2024059",
+          "firstName": "Fay",
+          "lastName": "Kok",
+          "dateOfBirth": "1958-11-03T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345736",
+          "email": "patient59@email.nl",
+          "addressLine1": "Molenstraat 59",
+          "addressLine2": null,
+          "city": "Zoetermeer",
+          "postalCode": "1058 GM",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.444Z",
+          "updatedAt": "2026-01-04T04:36:42.444Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 418,
+          "hospitalNumber": "P2024058",
+          "firstName": "Robin",
+          "lastName": "Dekker",
+          "dateOfBirth": "1957-10-02T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345735",
+          "email": "patient58@email.nl",
+          "addressLine1": "Parkweg 58",
+          "addressLine2": null,
+          "city": "s-Hertogenbosch",
+          "postalCode": "1057 FK",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.440Z",
+          "updatedAt": "2026-01-04T04:36:42.440Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 417,
+          "hospitalNumber": "P2024057",
+          "firstName": "Saar",
+          "lastName": "Dekker",
+          "dateOfBirth": "1956-09-01T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345734",
+          "email": "patient57@email.nl",
+          "addressLine1": "Stationsweg 57",
+          "addressLine2": null,
+          "city": "Haarlemmermeer",
+          "postalCode": "1056 EI",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.437Z",
+          "updatedAt": "2026-01-04T04:36:42.437Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 416,
+          "hospitalNumber": "P2024056",
+          "firstName": "Dex",
+          "lastName": "Vos",
+          "dateOfBirth": "1955-08-28T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345733",
+          "email": "patient56@email.nl",
+          "addressLine1": "Schoolstraat 56",
+          "addressLine2": null,
+          "city": "Zaanstad",
+          "postalCode": "1055 DG",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.434Z",
+          "updatedAt": "2026-01-04T04:36:42.434Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 415,
+          "hospitalNumber": "P2024055",
+          "firstName": "Lieke",
+          "lastName": "Vos",
+          "dateOfBirth": "1954-07-27T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345732",
+          "email": "patient55@email.nl",
+          "addressLine1": "Dorpsstraat 55",
+          "addressLine2": null,
+          "city": "Amersfoort",
+          "postalCode": "1054 CE",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.430Z",
+          "updatedAt": "2026-01-04T04:36:42.430Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 414,
+          "hospitalNumber": "P2024054",
+          "firstName": "Jayden",
+          "lastName": "de Wit",
+          "dateOfBirth": "1953-06-26T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345731",
+          "email": "patient54@email.nl",
+          "addressLine1": "Markt 54",
+          "addressLine2": null,
+          "city": "Arnhem",
+          "postalCode": "1053 BC",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.427Z",
+          "updatedAt": "2026-01-04T04:36:42.427Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 413,
+          "hospitalNumber": "P2024053",
+          "firstName": "Lynn",
+          "lastName": "de Wit",
+          "dateOfBirth": "1952-05-25T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345730",
+          "email": "patient53@email.nl",
+          "addressLine1": "Laan 53",
+          "addressLine2": null,
+          "city": "Haarlem",
+          "postalCode": "1052 AA",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.423Z",
+          "updatedAt": "2026-01-04T04:36:42.423Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 412,
+          "hospitalNumber": "P2024052",
+          "firstName": "Nick",
+          "lastName": "Maas",
+          "dateOfBirth": "1951-04-24T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345729",
+          "email": "patient52@email.nl",
+          "addressLine1": "Kerkstraat 52",
+          "addressLine2": null,
+          "city": "Apeldoorn",
+          "postalCode": "1051 ZY",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.420Z",
+          "updatedAt": "2026-01-04T04:36:42.420Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 411,
+          "hospitalNumber": "P2024051",
+          "firstName": "Sophie",
+          "lastName": "Maas",
+          "dateOfBirth": "1950-03-23T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345728",
+          "email": "patient51@email.nl",
+          "addressLine1": "Hoofdstraat 51",
+          "addressLine2": null,
+          "city": "Enschede",
+          "postalCode": "1050 YW",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.417Z",
+          "updatedAt": "2026-01-04T04:36:42.417Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 410,
+          "hospitalNumber": "P2024050",
+          "firstName": "Milan",
+          "lastName": "van Veen",
+          "dateOfBirth": "1999-02-22T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345727",
+          "email": "patient50@email.nl",
+          "addressLine1": "Beatrixlaan 50",
+          "addressLine2": null,
+          "city": "Nijmegen",
+          "postalCode": "1049 XU",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.413Z",
+          "updatedAt": "2026-01-04T04:36:42.413Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 409,
+          "hospitalNumber": "P2024049",
+          "firstName": "Luna",
+          "lastName": "van Veen",
+          "dateOfBirth": "1998-01-21T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345726",
+          "email": "patient49@email.nl",
+          "addressLine1": "Molenstraat 49",
+          "addressLine2": null,
+          "city": "Breda",
+          "postalCode": "1048 WS",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.410Z",
+          "updatedAt": "2026-01-04T04:36:42.410Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 408,
+          "hospitalNumber": "P2024048",
+          "firstName": "Gijs",
+          "lastName": "Hoekstra",
+          "dateOfBirth": "1997-12-20T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345725",
+          "email": "patient48@email.nl",
+          "addressLine1": "Parkweg 48",
+          "addressLine2": null,
+          "city": "Almere",
+          "postalCode": "1047 VQ",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.407Z",
+          "updatedAt": "2026-01-04T04:36:42.407Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 407,
+          "hospitalNumber": "P2024047",
+          "firstName": "Roos",
+          "lastName": "Hoekstra",
+          "dateOfBirth": "1996-11-19T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345724",
+          "email": "patient47@email.nl",
+          "addressLine1": "Stationsweg 47",
+          "addressLine2": null,
+          "city": "Groningen",
+          "postalCode": "1046 UO",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.403Z",
+          "updatedAt": "2026-01-04T04:36:42.403Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 406,
+          "hospitalNumber": "P2024046",
+          "firstName": "Joep",
+          "lastName": "de Groot",
+          "dateOfBirth": "1995-10-18T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345723",
+          "email": "patient46@email.nl",
+          "addressLine1": "Schoolstraat 46",
+          "addressLine2": null,
+          "city": "Tilburg",
+          "postalCode": "1045 TM",
+          "status": "DISCHARGED",
+          "createdAt": "2026-01-04T04:36:42.400Z",
+          "updatedAt": "2026-01-04T04:36:42.400Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 405,
+          "hospitalNumber": "P2024045",
+          "firstName": "Iris",
+          "lastName": "de Groot",
+          "dateOfBirth": "1994-09-17T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345722",
+          "email": "patient45@email.nl",
+          "addressLine1": "Dorpsstraat 45",
+          "addressLine2": null,
+          "city": "Eindhoven",
+          "postalCode": "1044 SK",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.396Z",
+          "updatedAt": "2026-01-04T04:36:42.396Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 404,
+          "hospitalNumber": "P2024044",
+          "firstName": "Stijn",
+          "lastName": "Jacobs",
+          "dateOfBirth": "1993-08-16T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345721",
+          "email": "patient44@email.nl",
+          "addressLine1": "Markt 44",
+          "addressLine2": null,
+          "city": "Den Haag",
+          "postalCode": "1043 RI",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.393Z",
+          "updatedAt": "2026-01-04T04:36:42.393Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 403,
+          "hospitalNumber": "P2024043",
+          "firstName": "Evi",
+          "lastName": "Jacobs",
+          "dateOfBirth": "1992-07-15T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345720",
+          "email": "patient43@email.nl",
+          "addressLine1": "Laan 43",
+          "addressLine2": null,
+          "city": "Utrecht",
+          "postalCode": "1042 QG",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.389Z",
+          "updatedAt": "2026-01-04T04:36:42.389Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 402,
+          "hospitalNumber": "P2024042",
+          "firstName": "Sam",
+          "lastName": "Brouwer",
+          "dateOfBirth": "1991-06-14T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345719",
+          "email": "patient42@email.nl",
+          "addressLine1": "Kerkstraat 42",
+          "addressLine2": null,
+          "city": "Rotterdam",
+          "postalCode": "1041 PE",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.386Z",
+          "updatedAt": "2026-01-04T04:36:42.386Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 401,
+          "hospitalNumber": "P2024041",
+          "firstName": "Liv",
+          "lastName": "Brouwer",
+          "dateOfBirth": "1990-05-13T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345718",
+          "email": "patient41@email.nl",
+          "addressLine1": "Hoofdstraat 41",
+          "addressLine2": null,
+          "city": "Amsterdam",
+          "postalCode": "1040 OC",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.382Z",
+          "updatedAt": "2026-01-04T04:36:42.382Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 60,
+        "totalPages": 3
+      }
+    },
+    "responsePreview": "{\"patients\":[{\"id\":420,\"hospitalNumber\":\"P2024060\",\"firstName\":\"Koen\",\"lastName\":\"Kok\",\"dateOfBirth\":\"1959-12-04T00:00:00.000Z\",\"sex\":\"OTHER\",\"phone\":\"06-12345737\",\"email\":\"patient60@email.nl\",\"addres"
+  },
+  {
+    "service": "EPD",
+    "name": "List Patients (paginated)",
+    "url": "http://localhost:3001/api/patients?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 11,
+    "requestHeaders": [],
+    "response": {
+      "patients": [
+        {
+          "id": 420,
+          "hospitalNumber": "P2024060",
+          "firstName": "Koen",
+          "lastName": "Kok",
+          "dateOfBirth": "1959-12-04T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345737",
+          "email": "patient60@email.nl",
+          "addressLine1": "Beatrixlaan 60",
+          "addressLine2": null,
+          "city": "Zwolle",
+          "postalCode": "1059 HO",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.447Z",
+          "updatedAt": "2026-01-04T04:36:42.447Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 419,
+          "hospitalNumber": "P2024059",
+          "firstName": "Fay",
+          "lastName": "Kok",
+          "dateOfBirth": "1958-11-03T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345736",
+          "email": "patient59@email.nl",
+          "addressLine1": "Molenstraat 59",
+          "addressLine2": null,
+          "city": "Zoetermeer",
+          "postalCode": "1058 GM",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.444Z",
+          "updatedAt": "2026-01-04T04:36:42.444Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 418,
+          "hospitalNumber": "P2024058",
+          "firstName": "Robin",
+          "lastName": "Dekker",
+          "dateOfBirth": "1957-10-02T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345735",
+          "email": "patient58@email.nl",
+          "addressLine1": "Parkweg 58",
+          "addressLine2": null,
+          "city": "s-Hertogenbosch",
+          "postalCode": "1057 FK",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.440Z",
+          "updatedAt": "2026-01-04T04:36:42.440Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 417,
+          "hospitalNumber": "P2024057",
+          "firstName": "Saar",
+          "lastName": "Dekker",
+          "dateOfBirth": "1956-09-01T00:00:00.000Z",
+          "sex": "OTHER",
+          "phone": "06-12345734",
+          "email": "patient57@email.nl",
+          "addressLine1": "Stationsweg 57",
+          "addressLine2": null,
+          "city": "Haarlemmermeer",
+          "postalCode": "1056 EI",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.437Z",
+          "updatedAt": "2026-01-04T04:36:42.437Z",
+          "createdById": 27,
+          "createdBy": {
+            "id": 27,
+            "firstName": "Pieter",
+            "lastName": "Bakker"
+          }
+        },
+        {
+          "id": 416,
+          "hospitalNumber": "P2024056",
+          "firstName": "Dex",
+          "lastName": "Vos",
+          "dateOfBirth": "1955-08-28T00:00:00.000Z",
+          "sex": "FEMALE",
+          "phone": "06-12345733",
+          "email": "patient56@email.nl",
+          "addressLine1": "Schoolstraat 56",
+          "addressLine2": null,
+          "city": "Zaanstad",
+          "postalCode": "1055 DG",
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.434Z",
+          "updatedAt": "2026-01-04T04:36:42.434Z",
+          "createdById": 26,
+          "createdBy": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 60,
+        "totalPages": 12
+      }
+    },
+    "responsePreview": "{\"patients\":[{\"id\":420,\"hospitalNumber\":\"P2024060\",\"firstName\":\"Koen\",\"lastName\":\"Kok\",\"dateOfBirth\":\"1959-12-04T00:00:00.000Z\",\"sex\":\"OTHER\",\"phone\":\"06-12345737\",\"email\":\"patient60@email.nl\",\"addres"
+  },
+  {
+    "service": "EPD",
+    "name": "Get Patient by ID",
+    "url": "http://localhost:3001/api/patients/420",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 13,
+    "requestHeaders": [],
+    "response": {
+      "id": 420,
+      "hospitalNumber": "P2024060",
+      "firstName": "Koen",
+      "lastName": "Kok",
+      "dateOfBirth": "1959-12-04T00:00:00.000Z",
+      "sex": "OTHER",
+      "phone": "06-12345737",
+      "email": "patient60@email.nl",
+      "addressLine1": "Beatrixlaan 60",
+      "addressLine2": null,
+      "city": "Zwolle",
+      "postalCode": "1059 HO",
+      "status": "ACTIVE",
+      "createdAt": "2026-01-04T04:36:42.447Z",
+      "updatedAt": "2026-01-04T04:36:42.447Z",
+      "createdById": 27,
+      "createdBy": {
+        "id": 27,
+        "firstName": "Pieter",
+        "lastName": "Bakker"
+      },
+      "encounters": [],
+      "diagnoses": [],
+      "allergies": [],
+      "insurancePolicies": []
+    },
+    "responsePreview": "{\"id\":420,\"hospitalNumber\":\"P2024060\",\"firstName\":\"Koen\",\"lastName\":\"Kok\",\"dateOfBirth\":\"1959-12-04T00:00:00.000Z\",\"sex\":\"OTHER\",\"phone\":\"06-12345737\",\"email\":\"patient60@email.nl\",\"addressLine1\":\"Beat"
+  },
+  {
+    "service": "EPD",
+    "name": "Search Patients",
+    "url": "http://localhost:3001/api/patients?search=Anna",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 9,
+    "requestHeaders": [],
+    "response": {
+      "patients": [
+        {
+          "id": 361,
+          "hospitalNumber": "P2024001",
+          "firstName": "Anna",
+          "lastName": "Smit",
+          "dateOfBirth": "1950-01-01T00:00:00.000Z",
+          "sex": "MALE",
+          "phone": "06-12345678",
+          "email": "patient1@email.nl",
+          "addressLine1": "Hoofdstraat 1",
+          "addressLine2": null,
+          "city": "Amsterdam",
+          "postalCode": "1000 AA",
+          "status": "DISCHARGED",
+          "createdAt": "2026-01-04T04:36:42.228Z",
+          "updatedAt": "2026-01-04T04:36:42.228Z",
+          "createdById": 25,
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 1,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"patients\":[{\"id\":361,\"hospitalNumber\":\"P2024001\",\"firstName\":\"Anna\",\"lastName\":\"Smit\",\"dateOfBirth\":\"1950-01-01T00:00:00.000Z\",\"sex\":\"MALE\",\"phone\":\"06-12345678\",\"email\":\"patient1@email.nl\",\"address"
+  },
+  {
+    "service": "EPD",
+    "name": "List Encounters",
+    "url": "http://localhost:3001/api/encounters",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "encounters": [
+        {
+          "id": 14,
+          "type": "EMERGENCY",
+          "status": "COMPLETED",
+          "reason": "Pijn op de borst",
+          "location": "Spoedeisende Hulp",
+          "start": "2024-11-15T14:30:00.000Z",
+          "end": "2024-11-15T18:00:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.481Z",
+          "patientId": 362,
+          "createdById": 25,
+          "patient": {
+            "id": 362,
+            "hospitalNumber": "P2024002",
+            "firstName": "Henk",
+            "lastName": "Smit"
+          },
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 13,
+          "type": "OUTPATIENT",
+          "status": "COMPLETED",
+          "reason": "Controle diabetes",
+          "location": "Polikliniek A",
+          "start": "2024-11-01T09:00:00.000Z",
+          "end": "2024-11-01T09:30:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.464Z",
+          "patientId": 361,
+          "createdById": 25,
+          "patient": {
+            "id": 361,
+            "hospitalNumber": "P2024001",
+            "firstName": "Anna",
+            "lastName": "Smit"
+          },
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"encounters\":[{\"id\":14,\"type\":\"EMERGENCY\",\"status\":\"COMPLETED\",\"reason\":\"Pijn op de borst\",\"location\":\"Spoedeisende Hulp\",\"start\":\"2024-11-15T14:30:00.000Z\",\"end\":\"2024-11-15T18:00:00.000Z\",\"createdA"
+  },
+  {
+    "service": "EPD",
+    "name": "List Encounters (paginated)",
+    "url": "http://localhost:3001/api/encounters?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "encounters": [
+        {
+          "id": 14,
+          "type": "EMERGENCY",
+          "status": "COMPLETED",
+          "reason": "Pijn op de borst",
+          "location": "Spoedeisende Hulp",
+          "start": "2024-11-15T14:30:00.000Z",
+          "end": "2024-11-15T18:00:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.481Z",
+          "patientId": 362,
+          "createdById": 25,
+          "patient": {
+            "id": 362,
+            "hospitalNumber": "P2024002",
+            "firstName": "Henk",
+            "lastName": "Smit"
+          },
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 13,
+          "type": "OUTPATIENT",
+          "status": "COMPLETED",
+          "reason": "Controle diabetes",
+          "location": "Polikliniek A",
+          "start": "2024-11-01T09:00:00.000Z",
+          "end": "2024-11-01T09:30:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.464Z",
+          "patientId": 361,
+          "createdById": 25,
+          "patient": {
+            "id": 361,
+            "hospitalNumber": "P2024001",
+            "firstName": "Anna",
+            "lastName": "Smit"
+          },
+          "createdBy": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"encounters\":[{\"id\":14,\"type\":\"EMERGENCY\",\"status\":\"COMPLETED\",\"reason\":\"Pijn op de borst\",\"location\":\"Spoedeisende Hulp\",\"start\":\"2024-11-15T14:30:00.000Z\",\"end\":\"2024-11-15T18:00:00.000Z\",\"createdA"
+  },
+  {
+    "service": "EPD",
+    "name": "Get Encounter by ID",
+    "url": "http://localhost:3001/api/encounters/14",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 11,
+    "requestHeaders": [],
+    "response": {
+      "id": 14,
+      "type": "EMERGENCY",
+      "status": "COMPLETED",
+      "reason": "Pijn op de borst",
+      "location": "Spoedeisende Hulp",
+      "start": "2024-11-15T14:30:00.000Z",
+      "end": "2024-11-15T18:00:00.000Z",
+      "createdAt": "2026-01-04T04:36:42.481Z",
+      "patientId": 362,
+      "createdById": 25,
+      "patient": {
+        "id": 362,
+        "hospitalNumber": "P2024002",
+        "firstName": "Henk",
+        "lastName": "Smit",
+        "dateOfBirth": "1951-02-02T00:00:00.000Z",
+        "sex": "FEMALE",
+        "phone": "06-12345679",
+        "email": "patient2@email.nl",
+        "addressLine1": "Kerkstraat 2",
+        "addressLine2": null,
+        "city": "Rotterdam",
+        "postalCode": "1001 BC",
+        "status": "ACTIVE",
+        "createdAt": "2026-01-04T04:36:42.235Z",
+        "updatedAt": "2026-01-04T04:36:42.235Z",
+        "createdById": 26
+      },
+      "createdBy": {
+        "id": 25,
+        "firstName": "Jan",
+        "lastName": "de Vries"
+      },
+      "medicalRecords": [
+        {
+          "id": 14,
+          "type": "NOTE",
+          "title": "ER admission",
+          "content": "Patient presents with acute chest pain. ECG: no abnormalities. Troponin negative. Diagnosis: musculoskeletal pain. Pain medication given and discharged.",
+          "createdAt": "2026-01-04T04:36:42.484Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "authorId": 25,
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "diagnoses": [
+        {
+          "id": 14,
+          "code": "M79.1",
+          "description": "Musculoskeletale pijn",
+          "type": "PRIMARY",
+          "onset": "2024-11-15T00:00:00.000Z",
+          "resolved": "2024-11-15T00:00:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.488Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "authorId": 25,
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "medicationOrders": []
+    },
+    "responsePreview": "{\"id\":14,\"type\":\"EMERGENCY\",\"status\":\"COMPLETED\",\"reason\":\"Pijn op de borst\",\"location\":\"Spoedeisende Hulp\",\"start\":\"2024-11-15T14:30:00.000Z\",\"end\":\"2024-11-15T18:00:00.000Z\",\"createdAt\":\"2026-01-04T"
+  },
+  {
+    "service": "EPD",
+    "name": "List Medications",
+    "url": "http://localhost:3001/api/medications",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "medications": [
+        {
+          "id": 7,
+          "medicationName": "Metformine",
+          "dose": "850mg",
+          "route": "Oraal",
+          "frequency": "2x daags",
+          "startDate": "2020-05-15T00:00:00.000Z",
+          "endDate": null,
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.476Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "prescriberId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "status": "COMPLETED"
+          },
+          "prescriber": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 1,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"medications\":[{\"id\":7,\"medicationName\":\"Metformine\",\"dose\":\"850mg\",\"route\":\"Oraal\",\"frequency\":\"2x daags\",\"startDate\":\"2020-05-15T00:00:00.000Z\",\"endDate\":null,\"status\":\"ACTIVE\",\"createdAt\":\"2026-01"
+  },
+  {
+    "service": "EPD",
+    "name": "List Medications (paginated)",
+    "url": "http://localhost:3001/api/medications?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 9,
+    "requestHeaders": [],
+    "response": {
+      "medications": [
+        {
+          "id": 7,
+          "medicationName": "Metformine",
+          "dose": "850mg",
+          "route": "Oraal",
+          "frequency": "2x daags",
+          "startDate": "2020-05-15T00:00:00.000Z",
+          "endDate": null,
+          "status": "ACTIVE",
+          "createdAt": "2026-01-04T04:36:42.476Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "prescriberId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "status": "COMPLETED"
+          },
+          "prescriber": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 1,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"medications\":[{\"id\":7,\"medicationName\":\"Metformine\",\"dose\":\"850mg\",\"route\":\"Oraal\",\"frequency\":\"2x daags\",\"startDate\":\"2020-05-15T00:00:00.000Z\",\"endDate\":null,\"status\":\"ACTIVE\",\"createdAt\":\"2026-01"
+  },
+  {
+    "service": "EPD",
+    "name": "List Allergies",
+    "url": "http://localhost:3001/api/allergies",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 5,
+    "requestHeaders": [],
+    "response": {
+      "allergies": [
+        {
+          "id": 14,
+          "substance": "Noten",
+          "reaction": "Anafylaxie",
+          "severity": "Ernstig",
+          "notedAt": "2026-01-04T04:36:42.461Z",
+          "patientId": 362,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          }
+        },
+        {
+          "id": 13,
+          "substance": "Penicilline",
+          "reaction": "Huiduitslag",
+          "severity": "Matig",
+          "notedAt": "2026-01-04T04:36:42.458Z",
+          "patientId": 361,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"allergies\":[{\"id\":14,\"substance\":\"Noten\",\"reaction\":\"Anafylaxie\",\"severity\":\"Ernstig\",\"notedAt\":\"2026-01-04T04:36:42.461Z\",\"patientId\":362,\"patient\":{\"id\":362,\"firstName\":\"Henk\",\"lastName\":\"Smit\",\"h"
+  },
+  {
+    "service": "EPD",
+    "name": "Get Allergy by ID",
+    "url": "http://localhost:3001/api/allergies/14",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 4,
+    "requestHeaders": [],
+    "response": {
+      "id": 14,
+      "substance": "Noten",
+      "reaction": "Anafylaxie",
+      "severity": "Ernstig",
+      "notedAt": "2026-01-04T04:36:42.461Z",
+      "patientId": 362,
+      "patient": {
+        "id": 362,
+        "hospitalNumber": "P2024002",
+        "firstName": "Henk",
+        "lastName": "Smit",
+        "dateOfBirth": "1951-02-02T00:00:00.000Z",
+        "sex": "FEMALE",
+        "phone": "06-12345679",
+        "email": "patient2@email.nl",
+        "addressLine1": "Kerkstraat 2",
+        "addressLine2": null,
+        "city": "Rotterdam",
+        "postalCode": "1001 BC",
+        "status": "ACTIVE",
+        "createdAt": "2026-01-04T04:36:42.235Z",
+        "updatedAt": "2026-01-04T04:36:42.235Z",
+        "createdById": 26
+      }
+    },
+    "responsePreview": "{\"id\":14,\"substance\":\"Noten\",\"reaction\":\"Anafylaxie\",\"severity\":\"Ernstig\",\"notedAt\":\"2026-01-04T04:36:42.461Z\",\"patientId\":362,\"patient\":{\"id\":362,\"hospitalNumber\":\"P2024002\",\"firstName\":\"Henk\",\"lastN"
+  },
+  {
+    "service": "EPD",
+    "name": "List Vitals",
+    "url": "http://localhost:3001/api/vitals",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 6,
+    "requestHeaders": [],
+    "response": {
+      "vitals": [
+        {
+          "id": 21,
+          "type": "TEMPERATURE",
+          "value": "36.8",
+          "unit": "°C",
+          "measuredAt": "2024-11-15T14:30:00.000Z",
+          "patientId": 362,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          }
+        },
+        {
+          "id": 19,
+          "type": "BLOOD_PRESSURE",
+          "value": "120/80",
+          "unit": "mmHg",
+          "measuredAt": "2024-11-01T09:00:00.000Z",
+          "patientId": 361,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          }
+        },
+        {
+          "id": 20,
+          "type": "HEART_RATE",
+          "value": "72",
+          "unit": "bpm",
+          "measuredAt": "2024-11-01T09:00:00.000Z",
+          "patientId": 361,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 3,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"vitals\":[{\"id\":21,\"type\":\"TEMPERATURE\",\"value\":\"36.8\",\"unit\":\"°C\",\"measuredAt\":\"2024-11-15T14:30:00.000Z\",\"patientId\":362,\"patient\":{\"id\":362,\"firstName\":\"Henk\",\"lastName\":\"Smit\",\"hospitalNumber\":\"P"
+  },
+  {
+    "service": "EPD",
+    "name": "List Vitals (paginated)",
+    "url": "http://localhost:3001/api/vitals?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 5,
+    "requestHeaders": [],
+    "response": {
+      "vitals": [
+        {
+          "id": 21,
+          "type": "TEMPERATURE",
+          "value": "36.8",
+          "unit": "°C",
+          "measuredAt": "2024-11-15T14:30:00.000Z",
+          "patientId": 362,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          }
+        },
+        {
+          "id": 19,
+          "type": "BLOOD_PRESSURE",
+          "value": "120/80",
+          "unit": "mmHg",
+          "measuredAt": "2024-11-01T09:00:00.000Z",
+          "patientId": 361,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          }
+        },
+        {
+          "id": 20,
+          "type": "HEART_RATE",
+          "value": "72",
+          "unit": "bpm",
+          "measuredAt": "2024-11-01T09:00:00.000Z",
+          "patientId": 361,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 3,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"vitals\":[{\"id\":21,\"type\":\"TEMPERATURE\",\"value\":\"36.8\",\"unit\":\"°C\",\"measuredAt\":\"2024-11-15T14:30:00.000Z\",\"patientId\":362,\"patient\":{\"id\":362,\"firstName\":\"Henk\",\"lastName\":\"Smit\",\"hospitalNumber\":\"P"
+  },
+  {
+    "service": "EPD",
+    "name": "List Lab Results",
+    "url": "http://localhost:3001/api/lab-results",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 8,
+    "requestHeaders": [],
+    "response": {
+      "labResults": [
+        {
+          "id": 14,
+          "testName": "Troponine",
+          "value": "0.02",
+          "unit": "ng/mL",
+          "referenceRange": "< 0.04",
+          "status": "FINAL",
+          "takenAt": "2024-11-15T14:45:00.000Z",
+          "reportedAt": "2026-01-04T04:36:42.506Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "validatorId": 25,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          },
+          "encounter": {
+            "id": 14,
+            "type": "EMERGENCY",
+            "status": "COMPLETED"
+          },
+          "validator": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 13,
+          "testName": "HbA1c",
+          "value": "6.8",
+          "unit": "%",
+          "referenceRange": "< 7.0%",
+          "status": "FINAL",
+          "takenAt": "2024-11-01T09:00:00.000Z",
+          "reportedAt": "2026-01-04T04:36:42.502Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "validatorId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "status": "COMPLETED"
+          },
+          "validator": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"labResults\":[{\"id\":14,\"testName\":\"Troponine\",\"value\":\"0.02\",\"unit\":\"ng/mL\",\"referenceRange\":\"< 0.04\",\"status\":\"FINAL\",\"takenAt\":\"2024-11-15T14:45:00.000Z\",\"reportedAt\":\"2026-01-04T04:36:42.506Z\",\"pa"
+  },
+  {
+    "service": "EPD",
+    "name": "List Lab Results (paginated)",
+    "url": "http://localhost:3001/api/lab-results?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "labResults": [
+        {
+          "id": 14,
+          "testName": "Troponine",
+          "value": "0.02",
+          "unit": "ng/mL",
+          "referenceRange": "< 0.04",
+          "status": "FINAL",
+          "takenAt": "2024-11-15T14:45:00.000Z",
+          "reportedAt": "2026-01-04T04:36:42.506Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "validatorId": 25,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          },
+          "encounter": {
+            "id": 14,
+            "type": "EMERGENCY",
+            "status": "COMPLETED"
+          },
+          "validator": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 13,
+          "testName": "HbA1c",
+          "value": "6.8",
+          "unit": "%",
+          "referenceRange": "< 7.0%",
+          "status": "FINAL",
+          "takenAt": "2024-11-01T09:00:00.000Z",
+          "reportedAt": "2026-01-04T04:36:42.502Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "validatorId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "status": "COMPLETED"
+          },
+          "validator": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"labResults\":[{\"id\":14,\"testName\":\"Troponine\",\"value\":\"0.02\",\"unit\":\"ng/mL\",\"referenceRange\":\"< 0.04\",\"status\":\"FINAL\",\"takenAt\":\"2024-11-15T14:45:00.000Z\",\"reportedAt\":\"2026-01-04T04:36:42.506Z\",\"pa"
+  },
+  {
+    "service": "EPD",
+    "name": "List Appointments",
+    "url": "http://localhost:3001/api/appointments",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 8,
+    "requestHeaders": [],
+    "response": {
+      "appointments": [
+        {
+          "id": 21,
+          "start": "2024-12-10T09:00:00.000Z",
+          "end": "2024-12-10T09:30:00.000Z",
+          "location": "Polikliniek C",
+          "reason": "Intake",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.518Z",
+          "patientId": 363,
+          "clinicianId": 26,
+          "patient": {
+            "id": 363,
+            "firstName": "Sophie",
+            "lastName": "de Jong",
+            "hospitalNumber": "P2024003"
+          },
+          "clinician": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 19,
+          "start": "2024-12-15T10:00:00.000Z",
+          "end": "2024-12-15T10:30:00.000Z",
+          "location": "Polikliniek A",
+          "reason": "Controle diabetes",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.510Z",
+          "patientId": 361,
+          "clinicianId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "clinician": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 20,
+          "start": "2024-12-20T14:00:00.000Z",
+          "end": "2024-12-20T14:30:00.000Z",
+          "location": "Polikliniek B",
+          "reason": "Nacontrole",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.515Z",
+          "patientId": 362,
+          "clinicianId": 25,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          },
+          "clinician": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 3,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"appointments\":[{\"id\":21,\"start\":\"2024-12-10T09:00:00.000Z\",\"end\":\"2024-12-10T09:30:00.000Z\",\"location\":\"Polikliniek C\",\"reason\":\"Intake\",\"status\":\"SCHEDULED\",\"createdAt\":\"2026-01-04T04:36:42.518Z\",\""
+  },
+  {
+    "service": "EPD",
+    "name": "List Appointments (paginated)",
+    "url": "http://localhost:3001/api/appointments?page=1&limit=5",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 6,
+    "requestHeaders": [],
+    "response": {
+      "appointments": [
+        {
+          "id": 21,
+          "start": "2024-12-10T09:00:00.000Z",
+          "end": "2024-12-10T09:30:00.000Z",
+          "location": "Polikliniek C",
+          "reason": "Intake",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.518Z",
+          "patientId": 363,
+          "clinicianId": 26,
+          "patient": {
+            "id": 363,
+            "firstName": "Sophie",
+            "lastName": "de Jong",
+            "hospitalNumber": "P2024003"
+          },
+          "clinician": {
+            "id": 26,
+            "firstName": "Maria",
+            "lastName": "Jansen"
+          }
+        },
+        {
+          "id": 19,
+          "start": "2024-12-15T10:00:00.000Z",
+          "end": "2024-12-15T10:30:00.000Z",
+          "location": "Polikliniek A",
+          "reason": "Controle diabetes",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.510Z",
+          "patientId": 361,
+          "clinicianId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "clinician": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 20,
+          "start": "2024-12-20T14:00:00.000Z",
+          "end": "2024-12-20T14:30:00.000Z",
+          "location": "Polikliniek B",
+          "reason": "Nacontrole",
+          "status": "SCHEDULED",
+          "createdAt": "2026-01-04T04:36:42.515Z",
+          "patientId": 362,
+          "clinicianId": 25,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          },
+          "clinician": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 5,
+        "total": 3,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"appointments\":[{\"id\":21,\"start\":\"2024-12-10T09:00:00.000Z\",\"end\":\"2024-12-10T09:30:00.000Z\",\"location\":\"Polikliniek C\",\"reason\":\"Intake\",\"status\":\"SCHEDULED\",\"createdAt\":\"2026-01-04T04:36:42.518Z\",\""
+  },
+  {
+    "service": "EPD",
+    "name": "List Insurers",
+    "url": "http://localhost:3001/api/insurance/insurers",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 6,
+    "requestHeaders": [],
+    "response": {
+      "insurers": [
+        {
+          "id": 13,
+          "name": "CZ Zorgverzekeringen",
+          "code": "CZ001",
+          "phone": "088-123-4567",
+          "email": "info@cz.nl",
+          "website": "https://www.cz.nl",
+          "address": null,
+          "createdAt": "2026-01-04T04:36:42.222Z"
+        },
+        {
+          "id": 14,
+          "name": "VGZ",
+          "code": "VGZ001",
+          "phone": "088-765-4321",
+          "email": "info@vgz.nl",
+          "website": "https://www.vgz.nl",
+          "address": null,
+          "createdAt": "2026-01-04T04:36:42.225Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"insurers\":[{\"id\":13,\"name\":\"CZ Zorgverzekeringen\",\"code\":\"CZ001\",\"phone\":\"088-123-4567\",\"email\":\"info@cz.nl\",\"website\":\"https://www.cz.nl\",\"address\":null,\"createdAt\":\"2026-01-04T04:36:42.222Z\"},{\"id"
+  },
+  {
+    "service": "EPD",
+    "name": "List Insurance Policies",
+    "url": "http://localhost:3001/api/insurance/policies",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 9,
+    "requestHeaders": [],
+    "response": {
+      "policies": [
+        {
+          "id": 13,
+          "policyNumber": "POL-2024-001",
+          "status": "ACTIVE",
+          "startDate": "2024-01-01T00:00:00.000Z",
+          "endDate": null,
+          "patientId": 361,
+          "insurerId": 13,
+          "createdAt": "2026-01-04T04:36:42.450Z",
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "sex": "MALE",
+            "dateOfBirth": "1950-01-01T00:00:00.000Z"
+          },
+          "insurer": {
+            "id": 13,
+            "name": "CZ Zorgverzekeringen",
+            "code": "CZ001",
+            "phone": "088-123-4567",
+            "email": "info@cz.nl",
+            "website": "https://www.cz.nl"
+          }
+        },
+        {
+          "id": 14,
+          "policyNumber": "POL-2024-002",
+          "status": "ACTIVE",
+          "startDate": "2024-01-01T00:00:00.000Z",
+          "endDate": null,
+          "patientId": 362,
+          "insurerId": 14,
+          "createdAt": "2026-01-04T04:36:42.455Z",
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "sex": "FEMALE",
+            "dateOfBirth": "1951-02-02T00:00:00.000Z"
+          },
+          "insurer": {
+            "id": 14,
+            "name": "VGZ",
+            "code": "VGZ001",
+            "phone": "088-765-4321",
+            "email": "info@vgz.nl",
+            "website": "https://www.vgz.nl"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"policies\":[{\"id\":13,\"policyNumber\":\"POL-2024-001\",\"status\":\"ACTIVE\",\"startDate\":\"2024-01-01T00:00:00.000Z\",\"endDate\":null,\"patientId\":361,\"insurerId\":13,\"createdAt\":\"2026-01-04T04:36:42.450Z\",\"patie"
+  },
+  {
+    "service": "EPD",
+    "name": "List Medical Records",
+    "url": "http://localhost:3001/api/medical-records",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "records": [
+        {
+          "id": 14,
+          "type": "NOTE",
+          "title": "ER admission",
+          "content": "Patient presents with acute chest pain. ECG: no abnormalities. Troponin negative. Diagnosis: musculoskeletal pain. Pain medication given and discharged.",
+          "createdAt": "2026-01-04T04:36:42.484Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "authorId": 25,
+          "patient": {
+            "id": 362,
+            "hospitalNumber": "P2024002",
+            "firstName": "Henk",
+            "lastName": "Smit"
+          },
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries",
+            "role": "DOCTOR"
+          },
+          "encounter": {
+            "id": 14,
+            "type": "EMERGENCY",
+            "start": "2024-11-15T14:30:00.000Z"
+          }
+        },
+        {
+          "id": 13,
+          "type": "CONSULTATION",
+          "title": "Diabetes checkup",
+          "content": "Patient comes for regular diabetes mellitus type 2 checkup. Blood sugar levels well regulated. HbA1c: 6.8%. No complaints. Continue medication.",
+          "createdAt": "2026-01-04T04:36:42.468Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "authorId": 25,
+          "patient": {
+            "id": 361,
+            "hospitalNumber": "P2024001",
+            "firstName": "Anna",
+            "lastName": "Smit"
+          },
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries",
+            "role": "DOCTOR"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "start": "2024-11-01T09:00:00.000Z"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"records\":[{\"id\":14,\"type\":\"NOTE\",\"title\":\"ER admission\",\"content\":\"Patient presents with acute chest pain. ECG: no abnormalities. Troponin negative. Diagnosis: musculoskeletal pain. Pain medication "
+  },
+  {
+    "service": "EPD",
+    "name": "List Diagnoses",
+    "url": "http://localhost:3001/api/diagnoses",
+    "method": "GET",
+    "auth": true,
+    "status": "PASS",
+    "statusCode": 200,
+    "statusText": "OK",
+    "time": 7,
+    "requestHeaders": [],
+    "response": {
+      "diagnoses": [
+        {
+          "id": 14,
+          "code": "M79.1",
+          "description": "Musculoskeletale pijn",
+          "type": "PRIMARY",
+          "onset": "2024-11-15T00:00:00.000Z",
+          "resolved": "2024-11-15T00:00:00.000Z",
+          "createdAt": "2026-01-04T04:36:42.488Z",
+          "patientId": 362,
+          "encounterId": 14,
+          "authorId": 25,
+          "patient": {
+            "id": 362,
+            "firstName": "Henk",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024002"
+          },
+          "encounter": {
+            "id": 14,
+            "type": "EMERGENCY",
+            "status": "COMPLETED"
+          },
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        },
+        {
+          "id": 13,
+          "code": "E11",
+          "description": "Diabetes Mellitus Type 2",
+          "type": "PRIMARY",
+          "onset": "2020-05-15T00:00:00.000Z",
+          "resolved": null,
+          "createdAt": "2026-01-04T04:36:42.472Z",
+          "patientId": 361,
+          "encounterId": 13,
+          "authorId": 25,
+          "patient": {
+            "id": 361,
+            "firstName": "Anna",
+            "lastName": "Smit",
+            "hospitalNumber": "P2024001"
+          },
+          "encounter": {
+            "id": 13,
+            "type": "OUTPATIENT",
+            "status": "COMPLETED"
+          },
+          "author": {
+            "id": 25,
+            "firstName": "Jan",
+            "lastName": "de Vries"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 2,
+        "totalPages": 1
+      }
+    },
+    "responsePreview": "{\"diagnoses\":[{\"id\":14,\"code\":\"M79.1\",\"description\":\"Musculoskeletale pijn\",\"type\":\"PRIMARY\",\"onset\":\"2024-11-15T00:00:00.000Z\",\"resolved\":\"2024-11-15T00:00:00.000Z\",\"createdAt\":\"2026-01-04T04:36:42.4"
+  },
+  {
+    "service": "EPD-NoAuth",
+    "name": "List Patients (no auth)",
+    "url": "http://localhost:3001/api/patients",
+    "method": "GET",
+    "auth": false,
+    "status": "PASS",
+    "statusCode": 401,
+    "statusText": "Unauthorized",
+    "time": 2,
+    "requestHeaders": [],
+    "response": {
+      "error": "Unauthorized",
+      "message": "Valid Auth0 M2M token required"
+    },
+    "responsePreview": "{\"error\":\"Unauthorized\",\"message\":\"Valid Auth0 M2M token required\"}"
+  },
+  {
+    "service": "Mail",
+    "name": "Health Check",
+    "url": "http://localhost:3002/health",
+    "method": "GET",
+    "auth": false,
+    "status": "FAIL",
+    "statusCode": 0,
+    "time": 2,
+    "error": "",
+    "requestHeaders": [],
+    "response": null,
+    "responsePreview": null
+  },
+  {
+    "service": "Mail",
+    "name": "Get User Mail Count",
+    "url": "http://localhost:3002/api/mails/user/test-user/count",
+    "method": "GET",
+    "auth": true,
+    "status": "FAIL",
+    "statusCode": 0,
+    "time": 2,
+    "error": "",
+    "requestHeaders": [],
+    "response": null,
+    "responsePreview": null
+  },
+  {
+    "service": "Mail",
+    "name": "Get User Mails",
+    "url": "http://localhost:3002/api/mails/user/test-user",
+    "method": "GET",
+    "auth": true,
+    "status": "FAIL",
+    "statusCode": 0,
+    "time": 1,
+    "error": "",
+    "requestHeaders": [],
+    "response": null,
+    "responsePreview": null
+  }
+]

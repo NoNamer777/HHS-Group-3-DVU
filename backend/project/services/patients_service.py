@@ -56,15 +56,15 @@ async def get_patient_by_id_service(
     patient_id: int, token: str
 ) -> PatientDetailResponse:
     """
-    Get a patient by uuid
+    Get a patient by id
     """
-    epd_url = url_prefix
-    params = {"id": patient_id}
+    # Use the specific patient endpoint instead of query params
+    epd_url = f"{url_prefix}{patient_id}"
 
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                epd_url, params=params, headers=create_header(token)
+                epd_url, headers=create_header(token)
             )
             response.raise_for_status()
     except httpx.RequestError as exc:

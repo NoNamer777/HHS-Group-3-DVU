@@ -1,0 +1,375 @@
+{
+  "info": {
+    "name": "HHS Group 3 DVU - API Collection",
+    "_postman_id": "hhs-dvu-api-collection",
+    "description": "Complete API collection for testing FastAPI, EPD, and Mail services",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "fastapi_url",
+      "value": "http://localhost:8000/api"
+    },
+    {
+      "key": "epd_url",
+      "value": "http://localhost:3001"
+    },
+    {
+      "key": "mail_url",
+      "value": "http://localhost:3002"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Auth Token (FastAPI)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access_token) {",
+                  "    pm.collectionVariables.set('access_token', jsonData.access_token);",
+                  "    console.log('Token saved to collection variable');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{fastapi_url}}/auth/login/",
+              "host": ["{{fastapi_url}}"],
+              "path": ["auth", "login", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "FastAPI Backend",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/", "host": ["{{fastapi_url}}"], "path": [""] }
+          }
+        },
+        {
+          "name": "List Patients",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/patient/", "host": ["{{fastapi_url}}"], "path": ["patient", ""] }
+          }
+        },
+        {
+          "name": "List Patients (paginated)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{fastapi_url}}/patient/?limit=10&offset=0",
+              "host": ["{{fastapi_url}}"],
+              "path": ["patient", ""],
+              "query": [
+                { "key": "limit", "value": "10" },
+                { "key": "offset", "value": "0" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Patient by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/patient/1", "host": ["{{fastapi_url}}"], "path": ["patient", "1"] }
+          }
+        },
+        {
+          "name": "List Encounters",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/encounters/", "host": ["{{fastapi_url}}"], "path": ["encounters", ""] }
+          }
+        },
+        {
+          "name": "Get User Mails",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/mails/user/1", "host": ["{{fastapi_url}}"], "path": ["mails", "user", "1"] }
+          }
+        },
+        {
+          "name": "Get User Mail Count",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{fastapi_url}}/mails/user/1/count", "host": ["{{fastapi_url}}"], "path": ["mails", "user", "1", "count"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "EPD Backend",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{epd_url}}/health", "host": ["{{epd_url}}"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Patients",
+          "item": [
+            {
+              "name": "List Patients",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/patients", "host": ["{{epd_url}}"], "path": ["api", "patients"] }
+              }
+            },
+            {
+              "name": "List Patients (paginated)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{epd_url}}/api/patients?page=1&limit=5",
+                  "host": ["{{epd_url}}"],
+                  "path": ["api", "patients"],
+                  "query": [
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "5" }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Search Patients",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{epd_url}}/api/patients?search=Anna",
+                  "host": ["{{epd_url}}"],
+                  "path": ["api", "patients"],
+                  "query": [{ "key": "search", "value": "Anna" }]
+                }
+              }
+            },
+            {
+              "name": "Get Patient by ID",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/patients/2", "host": ["{{epd_url}}"], "path": ["api", "patients", "2"] }
+              }
+            },
+            {
+              "name": "Create Patient",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"hospitalNumber\": \"P2024999\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"Patient\",\n  \"dateOfBirth\": \"1985-03-20\",\n  \"sex\": \"MALE\",\n  \"email\": \"test.patient@example.com\",\n  \"phone\": \"0612345678\",\n  \"addressLine1\": \"Test Street 123\",\n  \"city\": \"Amsterdam\",\n  \"postalCode\": \"1234 AB\",\n  \"status\": \"ACTIVE\"\n}"
+                },
+                "url": { "raw": "{{epd_url}}/api/patients", "host": ["{{epd_url}}"], "path": ["api", "patients"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Encounters",
+          "item": [
+            {
+              "name": "List Encounters",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/encounters", "host": ["{{epd_url}}"], "path": ["api", "encounters"] }
+              }
+            },
+            {
+              "name": "Get Encounter by ID",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/encounters/1", "host": ["{{epd_url}}"], "path": ["api", "encounters", "1"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Medications",
+          "item": [
+            {
+              "name": "List Medications",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/medications", "host": ["{{epd_url}}"], "path": ["api", "medications"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Allergies",
+          "item": [
+            {
+              "name": "List Allergies",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/allergies", "host": ["{{epd_url}}"], "path": ["api", "allergies"] }
+              }
+            },
+            {
+              "name": "Get Allergy by ID",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/allergies/1", "host": ["{{epd_url}}"], "path": ["api", "allergies", "1"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Vitals",
+          "item": [
+            {
+              "name": "List Vitals",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/vitals", "host": ["{{epd_url}}"], "path": ["api", "vitals"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lab Results",
+          "item": [
+            {
+              "name": "List Lab Results",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/lab-results", "host": ["{{epd_url}}"], "path": ["api", "lab-results"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Appointments",
+          "item": [
+            {
+              "name": "List Appointments",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/appointments", "host": ["{{epd_url}}"], "path": ["api", "appointments"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Insurance",
+          "item": [
+            {
+              "name": "List Insurers",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/insurance/insurers", "host": ["{{epd_url}}"], "path": ["api", "insurance", "insurers"] }
+              }
+            },
+            {
+              "name": "List Policies",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/insurance/policies", "host": ["{{epd_url}}"], "path": ["api", "insurance", "policies"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Medical Records",
+          "item": [
+            {
+              "name": "List Medical Records",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/medical-records", "host": ["{{epd_url}}"], "path": ["api", "medical-records"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Diagnoses",
+          "item": [
+            {
+              "name": "List Diagnoses",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{epd_url}}/api/diagnoses", "host": ["{{epd_url}}"], "path": ["api", "diagnoses"] }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mail Service",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{mail_url}}/health", "host": ["{{mail_url}}"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Get User Mail Count",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{mail_url}}/api/mails/user/test-user/count", "host": ["{{mail_url}}"], "path": ["api", "mails", "user", "test-user", "count"] }
+          }
+        },
+        {
+          "name": "Get User Mails",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{mail_url}}/api/mails/user/test-user", "host": ["{{mail_url}}"], "path": ["api", "mails", "user", "test-user"] }
+          }
+        },
+        {
+          "name": "Create Mail",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"test-user\",\n  \"from\": \"doctor@hospital.nl\",\n  \"to\": \"patient@email.nl\",\n  \"subject\": \"Appointment Confirmation\",\n  \"body\": \"Your appointment is confirmed for tomorrow at 10:00 AM.\"\n}"
+            },
+            "url": { "raw": "{{mail_url}}/api/mails", "host": ["{{mail_url}}"], "path": ["api", "mails"] }
+          }
+        }
+      ]
+    }
+  ]
+}
