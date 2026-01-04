@@ -25,6 +25,9 @@ export default function PatientInfoOverviewComponent() {
                             key={conversation.id}
                         />
                     ))}
+                    {(!conversations || conversations?.length === 0) && (
+                        <p className="card-text">Geen resultaten</p>
+                    )}
                 </div>
             </div>
         </div>
