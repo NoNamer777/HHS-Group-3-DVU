@@ -1,4 +1,5 @@
-import type { Conversation } from '@/models';
+import type { Conversation, CreateConversationData } from '@/models';
+import { nanoid } from 'nanoid';
 import { defaultConversations } from '../../data';
 import type { Records } from '../../types';
 
@@ -7,6 +8,18 @@ class MockConversationsDB {
 
     public getAll() {
         return Object.values(this.records);
+    }
+
+    public create(data: CreateConversationData) {
+        const conversation: Conversation = {
+            id: nanoid(),
+            message: data.message,
+            from: data.from,
+            to: data.to,
+            timestamp: new Date().getTime(),
+        };
+        this.records[conversation.id] = conversation;
+        return conversation;
     }
 
     public reset() {
