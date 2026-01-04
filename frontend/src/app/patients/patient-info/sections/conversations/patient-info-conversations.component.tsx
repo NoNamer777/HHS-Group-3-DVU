@@ -15,8 +15,9 @@ export default function PatientInfoConversationsComponent() {
 
     const { data: patient } = useGetPatientByIdQuery(patientId);
 
-    // TODO: Filter by patient ID.
-    const { data: conversations } = useGetConversationsQuery();
+    const { data: conversations } = useGetConversationsQuery({
+        to: patientId,
+    });
     const [createConversation] = useCreateConversationMutation();
 
     async function onAddNote(formData: FormData) {

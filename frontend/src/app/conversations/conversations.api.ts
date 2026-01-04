@@ -11,24 +11,47 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const END_POINT = '/api/conversations' as const;
 const TAG_TYPE = 'Conversation' as const;
 
+interface GetAllQueryParams {
+    to?: string;
+    limit?: number;
+}
+
 export const conversationsApi = createApi({
     reducerPath: 'conversationsApi',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     tagTypes: [TAG_TYPE],
     endpoints: (build) => ({
-        getConversations: build.query<Conversation[], void>({
-            query: () => END_POINT,
-            providesTags: (conversations) =>
-                conversations
-                    ? [
-                          ...conversations.map(({ id }) => ({
-                              type: TAG_TYPE,
-                              id: id,
-                          })),
-                          { type: TAG_TYPE, id: TAG_LIST_ID },
-                      ]
-                    : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
+        getConversations: build.query<Conversation[], GetAllQueryParams | void>(
+            {
+                query: (params) => {
+                    if (!params) return END_POINT;
+                    const queryParams = new URLSearchParams();
+
+                    console.log(params);
+
+                    if (params.limit) {
+                        queryParams.set('limit', `${params.limit}`);
+                    }
+                    if (params.to) {
+                        queryParams.set('to', params.to);
+                    }
+                    const queryString = queryParams.toString();
+
+                    if (!queryString) return END_POINT;
+                    return `${END_POINT}?${queryString}`;
+                },
+                providesTags: (conversations) =>
+                    conversations
+                        ? [
+                              ...conversations.map(({ id }) => ({
+                                  type: TAG_TYPE,
+                                  id: id,
+                              })),
+                              { type: TAG_TYPE, id: TAG_LIST_ID },
+                          ]
+                        : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
+            },
+        ),
 
         createConversation: build.mutation<
             Conversation,

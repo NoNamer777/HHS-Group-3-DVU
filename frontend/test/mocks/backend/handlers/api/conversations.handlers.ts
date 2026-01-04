@@ -10,10 +10,12 @@ import { delay, http, HttpResponse, type RequestHandler } from 'msw';
 const endPoint = `${BASE_URL}/api/conversations`;
 
 export const conversationsHandlers: RequestHandler[] = [
-    http.get(endPoint, async () => {
+    http.get(endPoint, async ({ request }) => {
         await delay();
 
-        return HttpResponse.json(mockConversationsDB.getAll());
+        const url = new URL(request.url);
+
+        return HttpResponse.json(mockConversationsDB.getAll(url.searchParams));
     }),
     http.post<null, CreateConversationData>(endPoint, async ({ request }) => {
         await delay();

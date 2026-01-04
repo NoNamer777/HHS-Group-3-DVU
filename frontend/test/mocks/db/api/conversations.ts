@@ -6,8 +6,21 @@ import type { Records } from '../../types';
 class MockConversationsDB {
     private records: Records<Conversation> = {};
 
-    public getAll() {
-        return Object.values(this.records);
+    public getAll(params: URLSearchParams) {
+        let conversations = Object.values(this.records);
+
+        if (params.has('to')) {
+            conversations = conversations.filter(
+                ({ to }) => to.id === params.get('to'),
+            );
+        }
+        if (params.has('limit')) {
+            conversations = conversations.slice(
+                0,
+                Number.parseInt(params.get('limit')) - 1,
+            );
+        }
+        return conversations;
     }
 
     public create(data: CreateConversationData) {
