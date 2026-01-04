@@ -20,7 +20,9 @@ class MockConversationsDB {
                 Number.parseInt(params.get('limit')) - 1,
             );
         }
-        return conversations;
+        return conversations.sort(
+            (curr, next) => next.timestamp - curr.timestamp,
+        );
     }
 
     public create(data: CreateConversationData) {
