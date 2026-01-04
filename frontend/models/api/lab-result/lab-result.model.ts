@@ -14,3 +14,8 @@ export interface LabResult {
     timestamp: number;
     patient: Patient;
 }
+
+export type CreateLabResultData = Pick<
+    LabResult,
+    'type' | 'value' | 'unit' | 'minValue' | 'maxValue' | 'patient'
+>;
