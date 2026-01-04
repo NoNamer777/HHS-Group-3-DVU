@@ -1,8 +1,15 @@
-import { faFileImport } from '@fortawesome/free-solid-svg-icons';
+import { faFileImport, faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './sync-modal.component.css';
 
 export default function SyncModalComponent() {
+    function onSynchroniseApi(formData: FormData) {
+        console.warn('SYNCHRONIZING API', {
+            apiEndpoint: formData.get('api-endpoint'),
+            apiKey: formData.get('api-key'),
+        });
+    }
+
     return (
         <>
             <button
@@ -34,7 +41,34 @@ export default function SyncModalComponent() {
                                 </small>
                             </div>
                         </div>
-                        <div className="modal-body"></div>
+                        <div className="modal-body">
+                            <h6>API Synchronisatie</h6>
+                            <small>Synchroniseer gegevens met externe applications via een API</small>
+                            <form className="bg-body-tertiary p-2 rounded-4 mt-2" action={onSynchroniseApi}>
+                                <div className="mb-3">
+                                    <label className="form-label" htmlFor="api-endpoint-input">
+                                        API endpoint URL
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        type="url"
+                                        id="api-endpoint-input"
+                                        name="api-endpoint"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" htmlFor="api-key-input">
+                                        API sleutel
+                                    </label>
+                                    <input className="form-control" type="password" id="api-key-input" name="api-key" />
+                                </div>
+                                <button type="submit" className="btn btn-primary d-flex align-items-center gap-2">
+                                    <FontAwesomeIcon icon={faLink} />
+                                    <span>Synchroniseren</span>
+                                </button>
+                            </form>
+                            <hr />
+                        </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                                 Terug naar het dashboard
