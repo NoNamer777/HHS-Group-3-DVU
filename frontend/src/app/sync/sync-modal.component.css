@@ -1,0 +1,4 @@
+.modal-dialog {
+    width: 40rem;
+    max-width: unset !important;
+}
