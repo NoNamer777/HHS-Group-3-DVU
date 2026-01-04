@@ -10,11 +10,7 @@ const store = configureStore({
         [labResultsApi.reducerPath]: labResultsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(
-            patientsApi.middleware,
-            conversationsApi.middleware,
-            labResultsApi.middleware,
-        ),
+        getDefaultMiddleware().concat(patientsApi.middleware, conversationsApi.middleware, labResultsApi.middleware),
 });
 
 export default store;

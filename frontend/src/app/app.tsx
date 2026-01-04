@@ -24,28 +24,11 @@ export default function App() {
                     <main>
                         <Routes>
                             <Route path="/" element={<RootPage />} />
-                            <Route
-                                path="/dashboard"
-                                element={<PatientsDashboardPage />}
-                            />
-                            <Route
-                                path="/patienten/:patientId"
-                                element={<PatientInfoPage />}
-                            >
-                                <Route
-                                    path="overzicht"
-                                    element={<PatientInfoOverviewComponent />}
-                                />
-                                <Route
-                                    path="meetwaarden"
-                                    element={<PatientInfoLabResultsComponent />}
-                                />
-                                <Route
-                                    path="gesprekken"
-                                    element={
-                                        <PatientInfoConversationsComponent />
-                                    }
-                                />
+                            <Route path="/dashboard" element={<PatientsDashboardPage />} />
+                            <Route path="/patienten/:patientId" element={<PatientInfoPage />}>
+                                <Route path="overzicht" element={<PatientInfoOverviewComponent />} />
+                                <Route path="meetwaarden" element={<PatientInfoLabResultsComponent />} />
+                                <Route path="gesprekken" element={<PatientInfoConversationsComponent />} />
                             </Route>
                         </Routes>
                     </main>

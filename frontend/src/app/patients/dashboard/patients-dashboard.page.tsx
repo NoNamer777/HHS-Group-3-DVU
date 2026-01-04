@@ -35,10 +35,7 @@ export default function PatientsDashboardPage() {
             {/*Query input*/}
             <div className="bg-body p-2 shadow-sm rounded-3 mb-5">
                 <form action={onQuery}>
-                    <label
-                        htmlFor="query-input"
-                        className="form-label visually-hidden"
-                    >
+                    <label htmlFor="query-input" className="form-label visually-hidden">
                         Zoek
                     </label>
                     <div className="input-group input-group-lg">
@@ -61,79 +58,47 @@ export default function PatientsDashboardPage() {
             <div className="d-flex align-items-center justify-content-between px-5 mb-5">
                 <div className="card rounded-4 shadow-sm">
                     <div className="card-body">
-                        <h3 className="card-title text-muted h6">
-                            Totaal Patienten
-                        </h3>
+                        <h3 className="card-title text-muted h6">Totaal Patienten</h3>
                         <h4 className="h2">{(patients ?? []).length}</h4>
                     </div>
                 </div>
                 <div className="card rounded-4 shadow-sm">
                     <div className="card-body d-flex justify-content-between">
                         <section>
-                            <h3 className="card-title text-muted h6">
-                                Stabiel
-                            </h3>
+                            <h3 className="card-title text-muted h6">Stabiel</h3>
                             <h4 className="h2">
-                                {
-                                    (patients ?? []).filter(
-                                        (patient) =>
-                                            patient.status ===
-                                            PatientStatuses.STABLE,
-                                    ).length
-                                }
+                                {(patients ?? []).filter((patient) => patient.status === PatientStatuses.STABLE).length}
                             </h4>
                         </section>
-                        <FontAwesomeIcon
-                            icon={faCircleCheck}
-                            size="5x"
-                            className="text-success"
-                        />
+                        <FontAwesomeIcon icon={faCircleCheck} size="5x" className="text-success" />
                     </div>
                 </div>
                 <div className="card rounded-4 shadow-sm">
                     <div className="card-body d-flex justify-content-between">
                         <section>
-                            <h3 className="card-title text-muted h6">
-                                Monitoren
-                            </h3>
+                            <h3 className="card-title text-muted h6">Monitoren</h3>
                             <h4 className="h2">
                                 {
-                                    (patients ?? []).filter(
-                                        (patient) =>
-                                            patient.status ===
-                                            PatientStatuses.MONITORING,
-                                    ).length
+                                    (patients ?? []).filter((patient) => patient.status === PatientStatuses.MONITORING)
+                                        .length
                                 }
                             </h4>
                         </section>
-                        <FontAwesomeIcon
-                            icon={faHeartPulse}
-                            size="5x"
-                            className="text-warning"
-                        />
+                        <FontAwesomeIcon icon={faHeartPulse} size="5x" className="text-warning" />
                     </div>
                 </div>
                 <div className="card rounded-4 shadow-sm">
                     <div className="card-body d-flex justify-content-between">
                         <section>
-                            <h3 className="card-title text-muted h6">
-                                Kritiek
-                            </h3>
+                            <h3 className="card-title text-muted h6">Kritiek</h3>
                             <h4 className="h2">
                                 {
-                                    (patients ?? []).filter(
-                                        (patient) =>
-                                            patient.status ===
-                                            PatientStatuses.CRITICAL,
-                                    ).length
+                                    (patients ?? []).filter((patient) => patient.status === PatientStatuses.CRITICAL)
+                                        .length
                                 }
                             </h4>
                         </section>
-                        <FontAwesomeIcon
-                            icon={faTriangleExclamation}
-                            size="5x"
-                            className="text-danger"
-                        />
+                        <FontAwesomeIcon icon={faTriangleExclamation} size="5x" className="text-danger" />
                     </div>
                 </div>
             </div>
@@ -165,44 +130,21 @@ export default function PatientsDashboardPage() {
                     </thead>
                     <tbody className="table-group-divider">
                         {(patients ?? []).map((patient) => (
-                            <tr
-                                key={patient.id}
-                                onClick={() => onOpenPatientDossier(patient.id)}
-                            >
+                            <tr key={patient.id} onClick={() => onOpenPatientDossier(patient.id)}>
                                 <td className="p-3">{patient.name}</td>
-                                <td className="p-3">
-                                    {new Date(
-                                        patient.dateOfBirth,
-                                    ).toLocaleDateString(['nl'])}
-                                </td>
+                                <td className="p-3">{new Date(patient.dateOfBirth).toLocaleDateString(['nl'])}</td>
                                 <td className="p-3">{patient.gender}</td>
                                 <td className="p-3">{patient.condition}</td>
-                                <td className="p-3">
-                                    {new Date(
-                                        patient.lastUpdated,
-                                    ).toLocaleString(['nl'])}
-                                </td>
+                                <td className="p-3">{new Date(patient.lastUpdated).toLocaleString(['nl'])}</td>
                                 <td className="p-3 d-flex gap-2 align-items-center">
-                                    {patient.status ===
-                                        PatientStatuses.STABLE && (
-                                        <FontAwesomeIcon
-                                            icon={faCircleCheck}
-                                            className="text-success"
-                                        />
+                                    {patient.status === PatientStatuses.STABLE && (
+                                        <FontAwesomeIcon icon={faCircleCheck} className="text-success" />
                                     )}
-                                    {patient.status ===
-                                        PatientStatuses.MONITORING && (
-                                        <FontAwesomeIcon
-                                            icon={faHeartPulse}
-                                            className="text-warning"
-                                        />
+                                    {patient.status === PatientStatuses.MONITORING && (
+                                        <FontAwesomeIcon icon={faHeartPulse} className="text-warning" />
                                     )}
-                                    {patient.status ===
-                                        PatientStatuses.CRITICAL && (
-                                        <FontAwesomeIcon
-                                            icon={faTriangleExclamation}
-                                            className="text-danger"
-                                        />
+                                    {patient.status === PatientStatuses.CRITICAL && (
+                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-danger" />
                                     )}
                                     {patient.status}
                                 </td>

@@ -25,28 +25,18 @@ export default function SyncModalComponent() {
                     <div className="modal-content">
                         <div className="modal-header d-flex align-items-center gap-3">
                             <div className="bg-primary-subtle text-bg-primary p-1 py-2 rounded-4">
-                                <FontAwesomeIcon
-                                    icon={faFileImport}
-                                    size="3x"
-                                />
+                                <FontAwesomeIcon icon={faFileImport} size="3x" />
                             </div>
                             <div className="d-flex flex-column">
-                                <span className="modal-title">
-                                    Gegevens synchroniseren en im- of exporteren
-                                </span>
+                                <span className="modal-title">Gegevens synchroniseren en im- of exporteren</span>
                                 <small className="text-muted">
-                                    Beheer uw patiëntgegevens via importeren,
-                                    exporteren en API-synchronisatie
+                                    Beheer uw patiëntgegevens via importeren, exporteren en API-synchronisatie
                                 </small>
                             </div>
                         </div>
                         <div className="modal-body"></div>
                         <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                                 Terug naar het dashboard
                             </button>
                         </div>

@@ -28,11 +28,7 @@ export default defineConfig(({ mode }) => {
                       proxy: {
                           '/mockServiceWorker.js': {
                               target: '',
-                              bypass: () =>
-                                  resolve(
-                                      __dirname,
-                                      '.msw/mockServiceWorker.js',
-                                  ),
+                              bypass: () => resolve(__dirname, '.msw/mockServiceWorker.js'),
                           },
                       },
                   },

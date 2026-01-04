@@ -1,9 +1,4 @@
-import {
-    mockConversationsDB,
-    mockDoctorsDB,
-    mockLabResultsDB,
-    mockPatientsDB,
-} from './api';
+import { mockConversationsDB, mockDoctorsDB, mockLabResultsDB, mockPatientsDB } from './api';
 import { mockUsersDB } from './auth';
 
 export function resetMockDatabases() {

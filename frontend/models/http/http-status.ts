@@ -9,8 +9,7 @@ export const HttpStatusCodes = {
     NOT_FOUND: 404,
 } as const;
 
-export type HttpStatusCode =
-    (typeof HttpStatusCodes)[keyof typeof HttpStatusCodes];
+export type HttpStatusCode = (typeof HttpStatusCodes)[keyof typeof HttpStatusCodes];
 
 export const HttpStatusNames = {
     200: 'OK',
@@ -23,5 +22,4 @@ export const HttpStatusNames = {
     404: 'Not Found',
 } as const;
 
-export type HttpStatusName =
-    (typeof HttpStatusNames)[keyof typeof HttpStatusNames];
+export type HttpStatusName = (typeof HttpStatusNames)[keyof typeof HttpStatusNames];

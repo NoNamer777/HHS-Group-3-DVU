@@ -1,10 +1,7 @@
 import type { CreateConversationData, User } from '@/models';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
-import {
-    useCreateConversationMutation,
-    useGetConversationsQuery,
-} from '../../../../conversations';
+import { useCreateConversationMutation, useGetConversationsQuery } from '../../../../conversations';
 import ConversationCardComponent from '../../../../conversations/conversation-card.component.tsx';
 import { useGetPatientByIdQuery } from '../../../patients.api.ts';
 import './patient-info-conversations.component.css';
@@ -39,10 +36,7 @@ export default function PatientInfoConversationsComponent() {
             <div className="card w-100 shadow-sm rounded-4">
                 <form className="card-body" action={onAddNote}>
                     <div className="mb-3">
-                        <label
-                            htmlFor="note-textarea"
-                            className="form-label fw-bold"
-                        >
+                        <label htmlFor="note-textarea" className="form-label fw-bold">
                             Nieuwe notitie toevoegen
                         </label>
                         <textarea
@@ -63,10 +57,7 @@ export default function PatientInfoConversationsComponent() {
                     <h5 className="card-title">Gespreksgeschiedenis</h5>
                     <div className="d-flex flex-column gap-2">
                         {(conversations ?? []).map((conversation) => (
-                            <ConversationCardComponent
-                                conversation={conversation}
-                                key={conversation.id}
-                            />
+                            <ConversationCardComponent conversation={conversation} key={conversation.id} />
                         ))}
                         {(!conversations || conversations?.length === 0) && (
                             <p className="card-text">Geen resultaten</p>

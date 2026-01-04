@@ -15,7 +15,4 @@ export interface LabResult {
     patient: Patient;
 }
 
-export type CreateLabResultData = Pick<
-    LabResult,
-    'type' | 'value' | 'unit' | 'minValue' | 'maxValue' | 'patient'
->;
+export type CreateLabResultData = Pick<LabResult, 'type' | 'value' | 'unit' | 'minValue' | 'maxValue' | 'patient'>;

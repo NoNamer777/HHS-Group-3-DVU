@@ -4,14 +4,10 @@ export const PatientStatuses = {
     CRITICAL: 'Kritiek',
 } as const;
 
-export type PatientStatus =
-    (typeof PatientStatuses)[keyof typeof PatientStatuses];
+export type PatientStatus = (typeof PatientStatuses)[keyof typeof PatientStatuses];
 
 export function patientStatusAttribute(value: unknown) {
-    return (
-        Object.values(PatientStatuses).find((status) => value === status) ??
-        PatientStatuses.STABLE
-    );
+    return Object.values(PatientStatuses).find((status) => value === status) ?? PatientStatuses.STABLE;
 }
 
 export const PATIENT_STATUS_OPTIONS = [

@@ -4,9 +4,7 @@ interface LabResultCardComponentProps {
     labResult: LabResult;
 }
 
-export default function LabResultCardComponent(
-    props: LabResultCardComponentProps,
-) {
+export default function LabResultCardComponent(props: LabResultCardComponentProps) {
     const { labResult } = props;
 
     return (
@@ -25,9 +23,7 @@ export default function LabResultCardComponent(
                     </span>
                 </div>
                 <small className="text-muted d-flex align-items-center justify-content-between">
-                    <span>
-                        {new Date(labResult.timestamp).toLocaleDateString()}
-                    </span>
+                    <span>{new Date(labResult.timestamp).toLocaleDateString()}</span>
                     {labResult.minValue && labResult.maxValue && (
                         <span>
                             Normaal: {labResult.minValue} - {labResult.maxValue}

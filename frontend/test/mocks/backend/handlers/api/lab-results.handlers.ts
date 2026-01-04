@@ -1,9 +1,4 @@
-import {
-    BASE_URL,
-    type CreateLabResultData,
-    HttpStatusCodes,
-    HttpStatusNames,
-} from '@/models';
+import { BASE_URL, type CreateLabResultData, HttpStatusCodes, HttpStatusNames } from '@/models';
 import { delay, http, HttpResponse, type RequestHandler } from 'msw';
 import { mockLabResultsDB } from '../../../db';
 

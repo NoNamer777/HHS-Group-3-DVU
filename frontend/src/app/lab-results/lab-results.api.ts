@@ -59,8 +59,7 @@ export const labResultsApi = createApi({
         }),
 
         getLabResultById: build.query<LabResult, string>({
-            query: (labResultId) =>
-                buildResourceEndPoint(END_POINT, labResultId),
+            query: (labResultId) => buildResourceEndPoint(END_POINT, labResultId),
             providesTags: (labResult) => [{ type: TAG_TYPE, id: labResult.id }],
         }),
 

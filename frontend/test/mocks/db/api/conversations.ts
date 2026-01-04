@@ -10,19 +10,12 @@ class MockConversationsDB {
         let conversations = Object.values(this.records);
 
         if (params.has('to')) {
-            conversations = conversations.filter(
-                ({ to }) => to.id === params.get('to'),
-            );
+            conversations = conversations.filter(({ to }) => to.id === params.get('to'));
         }
         if (params.has('limit')) {
-            conversations = conversations.slice(
-                0,
-                Number.parseInt(params.get('limit')) - 1,
-            );
+            conversations = conversations.slice(0, Number.parseInt(params.get('limit')) - 1);
         }
-        return conversations.sort(
-            (curr, next) => next.timestamp - curr.timestamp,
-        );
+        return conversations.sort((curr, next) => next.timestamp - curr.timestamp);
     }
 
     public create(data: CreateConversationData) {
@@ -38,13 +31,10 @@ class MockConversationsDB {
     }
 
     public reset() {
-        this.records = [...defaultConversations].reduce(
-            (records, conversation) => {
-                records[conversation.id] = conversation;
-                return records;
-            },
-            {} as Records<Conversation>,
-        );
+        this.records = [...defaultConversations].reduce((records, conversation) => {
+            records[conversation.id] = conversation;
+            return records;
+        }, {} as Records<Conversation>);
     }
 }
 

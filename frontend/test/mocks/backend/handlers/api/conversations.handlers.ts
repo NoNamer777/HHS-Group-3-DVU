@@ -1,9 +1,4 @@
-import {
-    BASE_URL,
-    type CreateConversationData,
-    HttpStatusCodes,
-    HttpStatusNames,
-} from '@/models';
+import { BASE_URL, type CreateConversationData, HttpStatusCodes, HttpStatusNames } from '@/models';
 import { delay, http, HttpResponse, type RequestHandler } from 'msw';
 import { mockConversationsDB } from '../../../db';
 

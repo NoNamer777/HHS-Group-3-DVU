@@ -21,40 +21,35 @@ export const conversationsApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     tagTypes: [TAG_TYPE],
     endpoints: (build) => ({
-        getConversations: build.query<Conversation[], GetAllQueryParams | void>(
-            {
-                query: (params) => {
-                    if (!params) return END_POINT;
-                    const queryParams = new URLSearchParams();
+        getConversations: build.query<Conversation[], GetAllQueryParams | void>({
+            query: (params) => {
+                if (!params) return END_POINT;
+                const queryParams = new URLSearchParams();
 
-                    if (params.limit) {
-                        queryParams.set('limit', `${params.limit}`);
-                    }
-                    if (params.to) {
-                        queryParams.set('to', params.to);
-                    }
-                    const queryString = queryParams.toString();
+                if (params.limit) {
+                    queryParams.set('limit', `${params.limit}`);
+                }
+                if (params.to) {
+                    queryParams.set('to', params.to);
+                }
+                const queryString = queryParams.toString();
 
-                    if (!queryString) return END_POINT;
-                    return `${END_POINT}?${queryString}`;
-                },
-                providesTags: (conversations) =>
-                    conversations
-                        ? [
-                              ...conversations.map(({ id }) => ({
-                                  type: TAG_TYPE,
-                                  id: id,
-                              })),
-                              { type: TAG_TYPE, id: TAG_LIST_ID },
-                          ]
-                        : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
+                if (!queryString) return END_POINT;
+                return `${END_POINT}?${queryString}`;
             },
-        ),
+            providesTags: (conversations) =>
+                conversations
+                    ? [
+                          ...conversations.map(({ id }) => ({
+                              type: TAG_TYPE,
+                              id: id,
+                          })),
+                          { type: TAG_TYPE, id: TAG_LIST_ID },
+                      ]
+                    : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
+        }),
 
-        createConversation: build.mutation<
-            Conversation,
-            CreateConversationData
-        >({
+        createConversation: build.mutation<Conversation, CreateConversationData>({
             query: (data) => ({
                 url: END_POINT,
                 method: RequestMethods.POST,
@@ -64,11 +59,8 @@ export const conversationsApi = createApi({
         }),
 
         getConversationById: build.query<Conversation, string>({
-            query: (conversationId) =>
-                buildResourceEndPoint(END_POINT, conversationId),
-            providesTags: (conversation) => [
-                { type: TAG_TYPE, id: conversation.id },
-            ],
+            query: (conversationId) => buildResourceEndPoint(END_POINT, conversationId),
+            providesTags: (conversation) => [{ type: TAG_TYPE, id: conversation.id }],
         }),
 
         updateConversation: build.mutation<Conversation, Conversation>({

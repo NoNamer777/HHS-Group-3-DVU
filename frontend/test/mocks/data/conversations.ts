@@ -2,13 +2,7 @@ import { ConversationBuilder } from '@/models';
 import { drHartman, drKuiper } from './doctors';
 import { alice, bob, charlie, diana, eve } from './patients';
 
-export const [
-    drHartmanToAlice,
-    drHartmanToBob,
-    drHartmanToCharlie,
-    drKuiperToDiana,
-    drKuiperToEve,
-] = [
+export const [drHartmanToAlice, drHartmanToBob, drHartmanToCharlie, drKuiperToDiana, drKuiperToEve] = [
     new ConversationBuilder()
         .from(drHartman)
         .to(alice)

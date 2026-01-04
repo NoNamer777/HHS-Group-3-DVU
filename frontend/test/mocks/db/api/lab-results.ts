@@ -9,15 +9,10 @@ class MockLabResultsDB {
         let labResults = Object.values(this.records);
 
         if (params.has('patient')) {
-            labResults = labResults.filter(
-                ({ patient }) => patient.id === params.get('patient'),
-            );
+            labResults = labResults.filter(({ patient }) => patient.id === params.get('patient'));
         }
         if (params.has('limit')) {
-            labResults = labResults.slice(
-                0,
-                Number.parseInt(params.get('limit')) - 1,
-            );
+            labResults = labResults.slice(0, Number.parseInt(params.get('limit')) - 1);
         }
         return labResults.sort((curr, next) => next.timestamp - curr.timestamp);
     }

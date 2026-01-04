@@ -2,10 +2,7 @@ import type { CreateLabResultData } from '@/models';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
-import {
-    useCreateLabResultMutation,
-    useGetLabResultsQuery,
-} from '../../../../lab-results';
+import { useCreateLabResultMutation, useGetLabResultsQuery } from '../../../../lab-results';
 import LabResultCardComponent from '../../../../lab-results/lab-result-card.component.tsx';
 import { useGetPatientByIdQuery } from '../../../patients.api.ts';
 import './patient-info-lab-results.component.css';
@@ -56,9 +53,7 @@ export default function PatientInfoLabResultsComponent() {
                         <div className="card-body">
                             <form className="card-body" action={onAddLabResult}>
                                 <div className="mb-3">
-                                    <label className="form-label">
-                                        Nieuwe meetwaarde
-                                    </label>
+                                    <label className="form-label">Nieuwe meetwaarde</label>
                                     <div className="row">
                                         <div className="col-2">
                                             <input
@@ -89,41 +84,23 @@ export default function PatientInfoLabResultsComponent() {
                                 </div>
                                 <div className="mb-3 row align-items-center">
                                     <div className="col-auto">
-                                        <label className="form-label">
-                                            Optioneel: Normaalwaarde van
-                                        </label>
+                                        <label className="form-label">Optioneel: Normaalwaarde van</label>
                                     </div>
                                     <div className="col-auto">
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            name="low"
-                                            step="0.1"
-                                        />
+                                        <input type="number" className="form-control" name="low" step="0.1" />
                                     </div>
                                     <div className="col-auto">
                                         <span className="form-label">tot</span>
                                     </div>
                                     <div className="col-auto">
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            name="high"
-                                            step="0.1"
-                                        />
+                                        <input type="number" className="form-control" name="high" step="0.1" />
                                     </div>
                                 </div>
                                 <div className="d-flex gap-3 align-items-center">
-                                    <button
-                                        className="btn btn-primary"
-                                        type="submit"
-                                    >
+                                    <button className="btn btn-primary" type="submit">
                                         Toevoegen
                                     </button>
-                                    <button
-                                        className="btn btn-secondary"
-                                        type="reset"
-                                    >
+                                    <button className="btn btn-secondary" type="reset">
                                         Annuleren
                                     </button>
                                 </div>
@@ -135,14 +112,9 @@ export default function PatientInfoLabResultsComponent() {
                     <div className="card-body">
                         <h5 className="card-title">Meetwaarden</h5>
                         {(labResults ?? []).map((labResult) => (
-                            <LabResultCardComponent
-                                labResult={labResult}
-                                key={labResult.id}
-                            />
+                            <LabResultCardComponent labResult={labResult} key={labResult.id} />
                         ))}
-                        {(!labResults || labResults?.length === 0) && (
-                            <p className="card-text">Geen resultaten</p>
-                        )}
+                        {(!labResults || labResults?.length === 0) && <p className="card-text">Geen resultaten</p>}
                     </div>
                 </div>
             </div>
