@@ -27,8 +27,6 @@ export const conversationsApi = createApi({
                     if (!params) return END_POINT;
                     const queryParams = new URLSearchParams();
 
-                    console.log(params);
-
                     if (params.limit) {
                         queryParams.set('limit', `${params.limit}`);
                     }
