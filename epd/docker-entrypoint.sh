@@ -10,7 +10,7 @@ npx prisma generate || true
 # Apply migrations if any; fall back to db push if deploy fails
 echo "[entrypoint] SKIP_MIGRATIONS=${SKIP_MIGRATIONS:-false}"
 if [ "${SKIP_MIGRATIONS:-false}" = "true" ]; then
-  echo "[entrypoint] SKIP_MIGRATIONS is set to true — skipping migrations and seed"
+  echo "[entrypoint] SKIP_MIGRATIONS is set to true â€” skipping migrations and seed"
 else
   echo "[entrypoint] Applying Prisma migrations (deploy)"
   if npx prisma migrate deploy; then

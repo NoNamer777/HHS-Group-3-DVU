@@ -57,6 +57,30 @@
         <stringProp name="TestPlan.comments">docker compose down -v &amp;&amp; docker compose up -d</stringProp>
       </Arguments>
       <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables - Mail">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="Mail_HTTPBase" elementType="Argument">
+            <stringProp name="Argument.name">Mail_HTTPBase</stringProp>
+            <stringProp name="Argument.value">http</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc"></stringProp>
+          </elementProp>
+          <elementProp name="Mail_PortNumber" elementType="Argument">
+            <stringProp name="Argument.name">Mail_PortNumber</stringProp>
+            <stringProp name="Argument.value">3002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">8080</stringProp>
+          </elementProp>
+          <elementProp name="Mail_BaseURL" elementType="Argument">
+            <stringProp name="Argument.name">Mail_BaseURL</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc"></stringProp>
+          </elementProp>
+        </collectionProp>
+        <stringProp name="TestPlan.comments">docker compose down -v &amp;&amp; docker compose up -d</stringProp>
+      </Arguments>
+      <hashTree/>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables - Port forwarded" enabled="false">
         <collectionProp name="Arguments.arguments">
           <elementProp name="HTTPBase" elementType="Argument">
@@ -87,7 +111,7 @@
         <boolProp name="DNSCacheManager.isCustomResolver">false</boolProp>
       </DNSCacheManager>
       <hashTree/>
-      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
+      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager">
         <collectionProp name="AuthManager.auth_list"/>
         <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
       </AuthManager>
@@ -162,7 +186,7 @@
           </collectionProp>
         </ModuleController>
         <hashTree/>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - EPD" enabled="false">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller - EPD">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
             <stringProp name="764597751">Test Plan</stringProp>
@@ -186,9 +210,101 @@
         <stringProp name="TestPlan.comments">Hiervoor word of ingelogd, of een account gemaakt</stringProp>
       </TestFragmentController>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Index" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Index"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET hi" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET docs">
+            <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
+            <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
+            <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
+            <stringProp name="HTTPSampler.path">api/docs</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="false">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="Accept" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value"> text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</stringProp>
+                </elementProp>
+                <elementProp name="Accept-Encoding" elementType="Header">
+                  <stringProp name="Header.name">Accept-Encoding</stringProp>
+                  <stringProp name="Header.value"> gzip, deflate, br, zstd</stringProp>
+                </elementProp>
+                <elementProp name="Accept-Language" elementType="Header">
+                  <stringProp name="Header.name">Accept-Language</stringProp>
+                  <stringProp name="Header.value"> en-GB,en;q=0.5</stringProp>
+                </elementProp>
+                <elementProp name="Cache-Control" elementType="Header">
+                  <stringProp name="Header.name">Cache-Control</stringProp>
+                  <stringProp name="Header.value"> max-age=0</stringProp>
+                </elementProp>
+                <elementProp name="Cookie" elementType="Header">
+                  <stringProp name="Header.name">Cookie</stringProp>
+                  <stringProp name="Header.value"></stringProp>
+                </elementProp>
+                <elementProp name="Priority" elementType="Header">
+                  <stringProp name="Header.name">Priority</stringProp>
+                  <stringProp name="Header.value"> u=0, i</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Ch-Ua" elementType="Header">
+                  <stringProp name="Header.name">Sec-Ch-Ua</stringProp>
+                  <stringProp name="Header.value"> &quot;Chromium&quot;;v=&quot;124&quot;, &quot;Brave&quot;;v=&quot;124&quot;, &quot;Not-A.Brand&quot;;v=&quot;99&quot;</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Ch-Ua-Mobile" elementType="Header">
+                  <stringProp name="Header.name">Sec-Ch-Ua-Mobile</stringProp>
+                  <stringProp name="Header.value"> ?0</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Ch-Ua-Model" elementType="Header">
+                  <stringProp name="Header.name">Sec-Ch-Ua-Model</stringProp>
+                  <stringProp name="Header.value"> &quot;&quot;</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Ch-Ua-Platform" elementType="Header">
+                  <stringProp name="Header.name">Sec-Ch-Ua-Platform</stringProp>
+                  <stringProp name="Header.value"> &quot;Windows&quot;</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Ch-Ua-Platform-Version" elementType="Header">
+                  <stringProp name="Header.name">Sec-Ch-Ua-Platform-Version</stringProp>
+                  <stringProp name="Header.value"> &quot;10.0.0&quot;</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Fetch-Dest" elementType="Header">
+                  <stringProp name="Header.name">Sec-Fetch-Dest</stringProp>
+                  <stringProp name="Header.value">document</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Fetch-Mode" elementType="Header">
+                  <stringProp name="Header.name">Sec-Fetch-Mode</stringProp>
+                  <stringProp name="Header.value">navigate</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Fetch-Site" elementType="Header">
+                  <stringProp name="Header.name">Sec-Fetch-Site</stringProp>
+                  <stringProp name="Header.value"> same-origin</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Fetch-User" elementType="Header">
+                  <stringProp name="Header.name">Sec-Fetch-User</stringProp>
+                  <stringProp name="Header.value"> ?1</stringProp>
+                </elementProp>
+                <elementProp name="Sec-Gpc" elementType="Header">
+                  <stringProp name="Header.name">Sec-Gpc</stringProp>
+                  <stringProp name="Header.value">1</stringProp>
+                </elementProp>
+                <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
+                  <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
+                  <stringProp name="Header.value">1</stringProp>
+                </elementProp>
+                <elementProp name="User-Agent" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value"> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET hi">
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
             <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
             <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
@@ -289,7 +405,7 @@
           </collectionProp>
         </ModuleController>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Encounters"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Encounters" enabled="true"/>
         <hashTree>
           <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Encounter Parameters">
             <collectionProp name="UserParameters.names">
@@ -392,7 +508,7 @@
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Mails"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Mails" enabled="true"/>
         <hashTree>
           <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Mail Parameters">
             <collectionProp name="UserParameters.names">
@@ -509,6 +625,79 @@
             <boolProp name="UserParameters.per_iteration">false</boolProp>
           </UserParameters>
           <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET  patients">
+            <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
+            <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
+            <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
+            <stringProp name="HTTPSampler.path">api/</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="limit" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">limit</stringProp>
+                </elementProp>
+                <elementProp name="offset" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">offset</stringProp>
+                </elementProp>
+                <elementProp name="patient_status" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                  <stringProp name="Argument.value">ACTIVE</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">patient_status</stringProp>
+                </elementProp>
+                <elementProp name="search" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                  <stringProp name="Argument.value">a</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">search</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - json">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-encoding</stringProp>
+                  <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-language</stringProp>
+                  <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">cache-control</stringProp>
+                  <stringProp name="Header.value">no-cache</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">connection</stringProp>
+                  <stringProp name="Header.value">keep-alive</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${DVU_AccessToken}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET  patients">
             <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
             <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
@@ -690,11 +879,10 @@
         <stringProp name="TestPlan.comments">Hiervoor word of ingelogd, of een account gemaakt</stringProp>
       </TestFragmentController>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - login" enabled="true">
-          <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
-          <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
-          <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
-          <stringProp name="HTTPSampler.path">api/auth/login/</stringProp>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - auth - Backend">
+          <stringProp name="HTTPSampler.domain">diabeticum-pedis.eu.auth0.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">oauth/token</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -704,8 +892,10 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-    &quot;email&quot;: &quot;${UserMail}&quot;,&#xd;
-    &quot;password&quot;: &quot;${GenericPassword}&quot;&#xd;
+    &quot;client_id&quot;: &quot;E2RpfVuwh2W8SJPTUsjzlx1LTTye6rOZ&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;kA1OIaUh15RYVcM_fPJObAcEFMu2UdPrjLorgU0lHrTrh6a6I38VRG5kV27OIX-_&quot;,&#xd;
+    &quot;audience&quot;: &quot;backend&quot;,&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -746,7 +936,331 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
-          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor">
+            <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - auth - Backend" enabled="false">
+          <stringProp name="HTTPSampler.domain">diabeticum-pedis.eu.auth0.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">oauth/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;client_id&quot;: &quot;tNhEMoSBd8Tsb8HAB1zGPVCJniN2Ohvv&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;sT5wzO-Nr4SwlghColItlxmqLbv0IaRwgCvbiaTiq91hDA79ylc20IG2urJwqm0k&quot;,&#xd;
+    &quot;audience&quot;: &quot;backend&quot;,&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Accept" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value"> application/json</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Language" elementType="Header">
+                <stringProp name="Header.name">Accept-Language</stringProp>
+                <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+              </elementProp>
+              <elementProp name="Cache-Control" elementType="Header">
+                <stringProp name="Header.name">Cache-Control</stringProp>
+                <stringProp name="Header.value">no-cache</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-length</stringProp>
+                <stringProp name="Header.value">71</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor">
+            <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - auth - Frontend" enabled="false">
+          <stringProp name="HTTPSampler.domain">diabeticum-pedis.eu.auth0.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">oauth/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;client_id&quot;: &quot;jLDFtiXr7k9RNpoRjgAZt6usN6I3t7x0&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;KEwHLkeEfV6U3vz5n2INQoYgufhs5q8c5gqqnEqJB_sR93wK_zY7ELInf0Npn9KX&quot;,&#xd;
+    &quot;audience&quot;: &quot;backend&quot;,&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Accept" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value"> application/json</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Language" elementType="Header">
+                <stringProp name="Header.name">Accept-Language</stringProp>
+                <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+              </elementProp>
+              <elementProp name="Cache-Control" elementType="Header">
+                <stringProp name="Header.name">Cache-Control</stringProp>
+                <stringProp name="Header.value">no-cache</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-length</stringProp>
+                <stringProp name="Header.value">71</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
+            <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - auth - Epd">
+          <stringProp name="HTTPSampler.domain">diabeticum-pedis.eu.auth0.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">oauth/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;client_id&quot;: &quot;Tbaolg8nHaJpk5txPSKu66jUniIOOxld&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;yTwwGbXKIj8qEui9QUqdVBkahjY_vHKhTXsuhPAxCj5-4rtMGGQ5RfblYeZF6Zac&quot;,&#xd;
+    &quot;audience&quot;: &quot;epd&quot;,&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Accept" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value"> application/json</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Language" elementType="Header">
+                <stringProp name="Header.name">Accept-Language</stringProp>
+                <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+              </elementProp>
+              <elementProp name="Cache-Control" elementType="Header">
+                <stringProp name="Header.name">Cache-Control</stringProp>
+                <stringProp name="Header.value">no-cache</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-length</stringProp>
+                <stringProp name="Header.value">71</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
+            <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - auth - Mail">
+          <stringProp name="HTTPSampler.domain">diabeticum-pedis.eu.auth0.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">oauth/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;client_id&quot;: &quot;4cPIwoYKUWneklaOOgKiYkXluQlhRkmK&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;zhWKj1J28MGJi2yxoSmVpdr-dLcStxpVXDm1gFJ9N0HHNsSUSUMYr751FprqW9Gn&quot;,&#xd;
+    &quot;audience&quot;: &quot;https://api.mail-service.local&quot;,&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Accept" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value"> application/json</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Language" elementType="Header">
+                <stringProp name="Header.name">Accept-Language</stringProp>
+                <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+              </elementProp>
+              <elementProp name="Cache-Control" elementType="Header">
+                <stringProp name="Header.name">Cache-Control</stringProp>
+                <stringProp name="Header.value">no-cache</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-length</stringProp>
+                <stringProp name="Header.value">71</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor">
+            <stringProp name="JSONPostProcessor.referenceNames">DVU_Mail_AccessToken</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">No token</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST - Frontend login">
+          <stringProp name="HTTPSampler.domain">${BaseURL}</stringProp>
+          <stringProp name="HTTPSampler.port">${PortNumber}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${HTTPBase}</stringProp>
+          <stringProp name="HTTPSampler.path">api/auth/login/</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;email&quot;: &quot;${UserMail}&quot;,&#xd;
+    &quot;password&quot;: &quot;${GenericPassword}&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Accept" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value"> application/json</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Language" elementType="Header">
+                <stringProp name="Header.name">Accept-Language</stringProp>
+                <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
+              </elementProp>
+              <elementProp name="Cache-Control" elementType="Header">
+                <stringProp name="Header.name">Cache-Control</stringProp>
+                <stringProp name="Header.value">no-cache</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-length</stringProp>
+                <stringProp name="Header.value">71</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
             <stringProp name="JSONPostProcessor.referenceNames">DVU_AccessToken</stringProp>
             <stringProp name="JSONPostProcessor.jsonPathExprs">$..access_token</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
@@ -775,79 +1289,75 @@
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - with bearer" enabled="false">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - json">
               <collectionProp name="HeaderManager.headers">
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value"> text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
                 </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value"> gzip, deflate, br, zstd</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-encoding</stringProp>
+                  <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
                 </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value"> en-GB,en;q=0.5</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-language</stringProp>
+                  <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
                 </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value"> max-age=0</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">cache-control</stringProp>
+                  <stringProp name="Header.value">no-cache</stringProp>
                 </elementProp>
-                <elementProp name="Cookie" elementType="Header">
-                  <stringProp name="Header.name">Cookie</stringProp>
-                  <stringProp name="Header.value"></stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">connection</stringProp>
+                  <stringProp name="Header.value">keep-alive</stringProp>
                 </elementProp>
-                <elementProp name="Priority" elementType="Header">
-                  <stringProp name="Header.name">Priority</stringProp>
-                  <stringProp name="Header.value"> u=0, i</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${DVU_AccessToken}</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Ch-Ua" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua</stringProp>
-                  <stringProp name="Header.value"> &quot;Chromium&quot;;v=&quot;124&quot;, &quot;Brave&quot;;v=&quot;124&quot;, &quot;Not-A.Brand&quot;;v=&quot;99&quot;</stringProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET mail">
+            <stringProp name="HTTPSampler.domain">${Mail_BaseURL}</stringProp>
+            <stringProp name="HTTPSampler.port">${Mail_PortNumber}</stringProp>
+            <stringProp name="HTTPSampler.protocol">${Mail_HTTPBase}</stringProp>
+            <stringProp name="HTTPSampler.path">api/patients</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager - json">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Ch-Ua-Mobile" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Mobile</stringProp>
-                  <stringProp name="Header.value"> ?0</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-encoding</stringProp>
+                  <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Ch-Ua-Model" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Model</stringProp>
-                  <stringProp name="Header.value"> &quot;&quot;</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">accept-language</stringProp>
+                  <stringProp name="Header.value">nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform</stringProp>
-                  <stringProp name="Header.value"> &quot;Windows&quot;</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">cache-control</stringProp>
+                  <stringProp name="Header.value">no-cache</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Ch-Ua-Platform-Version" elementType="Header">
-                  <stringProp name="Header.name">Sec-Ch-Ua-Platform-Version</stringProp>
-                  <stringProp name="Header.value"> &quot;10.0.0&quot;</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">connection</stringProp>
+                  <stringProp name="Header.value">keep-alive</stringProp>
                 </elementProp>
-                <elementProp name="Sec-Fetch-Dest" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Dest</stringProp>
-                  <stringProp name="Header.value">document</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Mode" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Mode</stringProp>
-                  <stringProp name="Header.value">navigate</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-Site" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-Site</stringProp>
-                  <stringProp name="Header.value"> same-origin</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Fetch-User" elementType="Header">
-                  <stringProp name="Header.name">Sec-Fetch-User</stringProp>
-                  <stringProp name="Header.value"> ?1</stringProp>
-                </elementProp>
-                <elementProp name="Sec-Gpc" elementType="Header">
-                  <stringProp name="Header.name">Sec-Gpc</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="Upgrade-Insecure-Requests" elementType="Header">
-                  <stringProp name="Header.name">Upgrade-Insecure-Requests</stringProp>
-                  <stringProp name="Header.value">1</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value"> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</stringProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${DVU_Mail_AccessToken}</stringProp>
                 </elementProp>
               </collectionProp>
             </HeaderManager>
