@@ -2,7 +2,6 @@ import {
     faArrowLeft,
     faComments,
     faFlaskVial,
-    faImages,
     faUser,
     faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
@@ -108,17 +107,6 @@ export default function PatientInfoPage() {
                     >
                         <FontAwesomeIcon icon={faComments} />
                         <span>Gesprekken</span>
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        className={({ isActive }) =>
-                            `nav-link ${isActive ? 'active' : ''}`
-                        }
-                        to="afbeeldingen"
-                    >
-                        <FontAwesomeIcon icon={faImages} />
-                        <span>Afbeeldingen</span>
                     </NavLink>
                 </li>
             </ul>

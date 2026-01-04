@@ -6,7 +6,6 @@ import RootPage from './core/root/root.page';
 import PatientsDashboardPage from './patients/dashboard/patients-dashboard.page';
 import PatientInfoPage from './patients/patient-info/patient-info.page';
 import PatientInfoConversationsComponent from './patients/patient-info/sections/conversations/patient-info-conversations.component';
-import PatientInfoImagesComponent from './patients/patient-info/sections/images/patient-info-images.component';
 import PatientInfoLabResultsComponent from './patients/patient-info/sections/lab-results/patient-info-lab-results.component';
 import PatientInfoOverviewComponent from './patients/patient-info/sections/overview/patient-info-overview.component';
 
@@ -46,10 +45,6 @@ export default function App() {
                                     element={
                                         <PatientInfoConversationsComponent />
                                     }
-                                />
-                                <Route
-                                    path="afbeeldingen"
-                                    element={<PatientInfoImagesComponent />}
                                 />
                             </Route>
                         </Routes>
