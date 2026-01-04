@@ -2,3 +2,7 @@
     width: 40rem;
     max-width: unset !important;
 }
+
+#upload-data-btn {
+    border-style: dashed !important;
+}

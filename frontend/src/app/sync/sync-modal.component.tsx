@@ -1,4 +1,4 @@
-import { faDownload, faFileImport, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFileImport, faLink, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './sync-modal.component.css';
 
@@ -12,6 +12,10 @@ export default function SyncModalComponent() {
 
     function onExportData() {
         console.warn('EXPORTING DATA AS JSON');
+    }
+
+    function onImportData() {
+        console.warn('IMPORTING DATA FROM JSON');
     }
 
     return (
@@ -86,6 +90,18 @@ export default function SyncModalComponent() {
                             </button>
 
                             <hr />
+
+                            <h6>Importeren</h6>
+                            <small>Upload een JSON-bestand met patiëntgegevens om te importeren</small>
+                            <button
+                                id="upload-data-btn"
+                                className="w-100 mt-3 border py-5 d-flex flex-column rounded-4 align-items-center justify-content-center bg-body-tertiary"
+                                onClick={onImportData}
+                            >
+                                <FontAwesomeIcon icon={faUpload} size="3x" />
+                                <span>Klik hier om een bestand te selecteren</span>
+                                <span className="text-muted">Ondersteunde bestandformaten: JSON</span>
+                            </button>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
