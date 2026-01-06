@@ -1,20 +1,21 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../auth';
+import { useNavigate } from 'react-router-dom';
 import './root.page.css';
 
 export default function RootPage() {
-    const { user, loading } = useAuth();
+    const { isLoading, user, loginWithRedirect } = useAuth0();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!loading && !user) {
-            navigate('/login');
+        if (!isLoading && !user) {
+            console.log('tes');
+            loginWithRedirect();
         }
-        if (!loading && user) {
+        if (!isLoading && user) {
             navigate('/dashboard');
         }
-    }, [loading, user, navigate]);
+    }, [isLoading, user, navigate, loginWithRedirect]);
 
-    return loading || user ? <></> : <Navigate to="/login" replace />;
+    return <></>;
 }
