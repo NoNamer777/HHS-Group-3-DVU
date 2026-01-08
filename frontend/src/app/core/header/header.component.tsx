@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import {
     faArrowRightFromBracket,
     faFileImport,
@@ -5,16 +6,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
-import { useAuth } from '../../auth';
 import AddPatientModalComponent from '../../patients/add-patient-modal/add-patient-modal.component';
 import './header.component.css';
 
 export default function HeaderComponent() {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuth0();
 
     async function onLogOut() {
-        await logout();
+        await logout({ logoutParams: { returnTo: window.location.origin } });
         navigate('/login');
     }
 
@@ -70,9 +70,10 @@ export default function HeaderComponent() {
                                 <span className="navbar-text fw-bold flex-grow-0 p-0">
                                     {user.email}
                                 </span>
-                                <span className="navbar-text text-sm ms-auto flex-grow-0 p-0">
-                                    {user.role}
-                                </span>
+                                {/* TODO - Find out how to get/use metadata */}
+                                {/*<span className="navbar-text text-sm ms-auto flex-grow-0 p-0">*/}
+                                {/*    {user.role}*/}
+                                {/*</span>*/}
                             </div>
                             <button
                                 className="nav-link"
