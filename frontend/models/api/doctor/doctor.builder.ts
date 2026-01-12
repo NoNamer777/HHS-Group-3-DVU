@@ -1,9 +1,4 @@
-import {
-    type Doctor,
-    type Patient,
-    UserBuilder,
-    type UserRole,
-} from '@/models';
+import { type Doctor, type Patient, UserBuilder, type UserRole } from '@/models';
 import { nanoid } from 'nanoid';
 
 export class DoctorBuilder {

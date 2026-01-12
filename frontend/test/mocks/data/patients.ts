@@ -1,9 +1,4 @@
-import {
-    DiabetesTypes,
-    Genders,
-    PatientBuilder,
-    PatientStatuses,
-} from '@/models';
+import { DiabetesTypes, Genders, PatientBuilder, PatientStatuses } from '@/models';
 
 export const [alice, bob, charlie, diana, eve] = [
     new PatientBuilder('2t6j6EWk6H-pQGy7c3un2')

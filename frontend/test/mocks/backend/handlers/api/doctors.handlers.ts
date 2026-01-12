@@ -11,21 +11,18 @@ export const doctorsHandlers: RequestHandler[] = [
 
         return HttpResponse.json(mockDoctorsDB.getAll());
     }),
-    http.get<{ doctorId: string }>(
-        buildResourceEndPoint(endPoint, ':doctorId'),
-        async ({ params }) => {
-            await delay();
+    http.get<{ doctorId: string }>(buildResourceEndPoint(endPoint, ':doctorId'), async ({ params }) => {
+        await delay();
 
-            const { doctorId } = params;
-            const doctor = mockDoctorsDB.getById(doctorId);
+        const { doctorId } = params;
+        const doctor = mockDoctorsDB.getById(doctorId);
 
-            if (!doctor) {
-                return throwErrorResponse({
-                    status: HttpStatusCodes.NOT_FOUND,
-                    message: `Doctor with ID "${doctorId}" was not found`,
-                });
-            }
-            return HttpResponse.json(doctor);
-        },
-    ),
+        if (!doctor) {
+            return throwErrorResponse({
+                status: HttpStatusCodes.NOT_FOUND,
+                message: `Doctor with ID "${doctorId}" was not found`,
+            });
+        }
+        return HttpResponse.json(doctor);
+    }),
 ];

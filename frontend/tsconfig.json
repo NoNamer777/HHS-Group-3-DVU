@@ -1,8 +1,5 @@
 {
-    "references": [
-        { "path": "./tsconfig.app.json" },
-        { "path": "./tsconfig.spec.json" }
-    ],
+    "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }],
     "files": [],
     "compileOnSave": false,
     "compilerOptions": {

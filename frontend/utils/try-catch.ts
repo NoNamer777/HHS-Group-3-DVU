@@ -18,9 +18,7 @@ export function tryCatch<T = unknown, E = Error>(fn: () => T): Result<T, E> {
     }
 }
 
-export async function tryCatchAsync<T = unknown, E = Error>(
-    promise: Promise<T>,
-): Promise<Result<T, E>> {
+export async function tryCatchAsync<T = unknown, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
     try {
         return { data: await promise, error: null };
     } catch (error) {
