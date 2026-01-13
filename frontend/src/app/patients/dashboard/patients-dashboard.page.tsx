@@ -1,4 +1,5 @@
 import { PatientStatuses } from '@/models';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
     faCircleCheck,
     faHeartPulse,
@@ -6,13 +7,14 @@ import {
     faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { type ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetPatientsQuery } from '../patients.api';
 import './patients-dashboard.page.css';
 
 export default function PatientsDashboardPage() {
     const { data: patients } = useGetPatientsQuery();
+    const { user, isLoading } = useAuth0();
     const navigate = useNavigate();
 
     const [query, setQuery] = useState('');
@@ -20,6 +22,13 @@ export default function PatientsDashboardPage() {
     function onQueryChange(event: ChangeEvent) {
         setQuery((event.target as HTMLInputElement).value);
     }
+
+    useEffect(() => {
+        if (user && !isLoading) return;
+        if (!isLoading && !user) {
+            navigate('/');
+        }
+    }, [user, isLoading, navigate]);
 
     function onQuery() {
         // TODO: Actually query the patients
