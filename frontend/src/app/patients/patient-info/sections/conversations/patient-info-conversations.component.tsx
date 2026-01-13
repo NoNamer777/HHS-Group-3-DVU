@@ -31,27 +31,34 @@ export default function PatientInfoConversationsComponent() {
         await createConversation(data);
     }
 
+    function canAddMessage() {
+        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        return roles.every((role) => role !== 'Patient');
+    }
+
     return (
         <div className="d-flex flex-column gap-4">
-            <div className="card w-100 shadow-sm rounded-4">
-                <form className="card-body" action={onAddNote}>
-                    <div className="mb-3">
-                        <label htmlFor="note-textarea" className="form-label fw-bold">
-                            Nieuwe notitie toevoegen
-                        </label>
-                        <textarea
-                            id="note-textarea"
-                            className="form-control"
-                            name="note"
-                            rows={4}
-                            placeholder="Voer hier uw notitie of bericht in..."
-                        ></textarea>
-                    </div>
-                    <button className="btn btn-primary" type="submit">
-                        Notitie toevoegen
-                    </button>
-                </form>
-            </div>
+            {canAddMessage() && (
+                <div className="card w-100 shadow-sm rounded-4">
+                    <form className="card-body" action={onAddNote}>
+                        <div className="mb-3">
+                            <label htmlFor="note-textarea" className="form-label fw-bold">
+                                Nieuwe notitie toevoegen
+                            </label>
+                            <textarea
+                                id="note-textarea"
+                                className="form-control"
+                                name="note"
+                                rows={4}
+                                placeholder="Voer hier uw notitie of bericht in..."
+                            ></textarea>
+                        </div>
+                        <button className="btn btn-primary" type="submit">
+                            Notitie toevoegen
+                        </button>
+                    </form>
+                </div>
+            )}
             <div className="card w-100 shadow-sm rounded-4">
                 <div className="card-body">
                     <h5 className="card-title">Gespreksgeschiedenis</h5>

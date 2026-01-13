@@ -20,6 +20,16 @@ export default function HeaderComponent() {
         navigate('/dashboard');
     }
 
+    function canSeePatients() {
+        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        return roles.every((role) => role !== 'Patient');
+    }
+
+    function isAdmin() {
+        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        return roles.some((role) => role === 'Admin');
+    }
+
     return (
         <nav className="navbar navbar-expand-lg bg-primary-subtle text-bg-primary">
             <div className="container-fluid">
@@ -36,17 +46,23 @@ export default function HeaderComponent() {
 
                 <div className="navbar-collapse">
                     <ul className="navbar-nav ms-auto align-items-center gap-2">
-                        <li className="nav-item">
-                            <button type="button" className="btn btn-primary" onClick={onNavigateToDashboard}>
-                                Patiënten
-                            </button>
-                        </li>
-                        <li className="nav-item">
-                            <AddPatientModalComponent />
-                        </li>
-                        <li className="nav-item">
-                            <SyncModalComponent />
-                        </li>
+                        {canSeePatients() && (
+                            <>
+                                <li className="nav-item">
+                                    <button type="button" className="btn btn-primary" onClick={onNavigateToDashboard}>
+                                        Patiënten
+                                    </button>
+                                </li>
+                                <li className="nav-item">
+                                    <AddPatientModalComponent />
+                                </li>
+                            </>
+                        )}
+                        {isAdmin() && (
+                            <li className="nav-item">
+                                <SyncModalComponent />
+                            </li>
+                        )}
                         <li className="nav-item border-start border-dark-subtle border-2 align-self-stretch"></li>
                         <li className="nav-item d-flex">
                             <div className="d-flex flex-column align-items-center p-1">
