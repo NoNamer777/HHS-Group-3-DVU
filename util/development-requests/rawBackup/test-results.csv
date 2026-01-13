@@ -1,0 +1,39 @@
+Service,Name,URL,Method,AuthRequired,Status,StatusCode,Time
+"FastAPI","Root Health Check","http://localhost:8000/api/","GET",false,PASS,200,26
+"FastAPI","Auth Login (Get Token)","http://localhost:8000/api/auth/login/","POST",false,PASS,200,462
+"FastAPI","List Patients","http://localhost:8000/api/patient/","GET",true,FORBIDDEN,403,4
+"FastAPI","List Patients (with limit)","http://localhost:8000/api/patient/?limit=5&offset=0","GET",true,FORBIDDEN,403,2
+"FastAPI","Get Patient by ID","http://localhost:8000/api/patient/1","GET",true,FORBIDDEN,403,4
+"FastAPI","List Encounters","http://localhost:8000/api/encounters/","GET",true,FORBIDDEN,403,3
+"FastAPI","List Encounters (with filters)","http://localhost:8000/api/encounters/?page=1&limit=10","GET",true,FORBIDDEN,403,2
+"FastAPI","Get Encounter by ID","http://localhost:8000/api/encounters/1","GET",true,FORBIDDEN,403,3
+"FastAPI","Get User Mails","http://localhost:8000/api/mails/user/1","GET",true,FORBIDDEN,403,3
+"FastAPI","Get User Mail Count","http://localhost:8000/api/mails/user/1/count","GET",true,FORBIDDEN,403,3
+"EPD","Health Check","http://localhost:3001/health","GET",false,PASS,200,7
+"EPD","List Users","http://localhost:3001/api/users","GET",true,FORBIDDEN,403,565
+"EPD","Get User by ID","http://localhost:3001/api/users/1","GET",true,NOT_FOUND,404,22
+"EPD","List Patients","http://localhost:3001/api/patients","GET",true,PASS,200,19
+"EPD","List Patients (paginated)","http://localhost:3001/api/patients?page=1&limit=5","GET",true,PASS,200,11
+"EPD","Get Patient by ID","http://localhost:3001/api/patients/420","GET",true,PASS,200,13
+"EPD","Search Patients","http://localhost:3001/api/patients?search=Anna","GET",true,PASS,200,9
+"EPD","List Encounters","http://localhost:3001/api/encounters","GET",true,PASS,200,7
+"EPD","List Encounters (paginated)","http://localhost:3001/api/encounters?page=1&limit=5","GET",true,PASS,200,7
+"EPD","Get Encounter by ID","http://localhost:3001/api/encounters/14","GET",true,PASS,200,11
+"EPD","List Medications","http://localhost:3001/api/medications","GET",true,PASS,200,7
+"EPD","List Medications (paginated)","http://localhost:3001/api/medications?page=1&limit=5","GET",true,PASS,200,9
+"EPD","List Allergies","http://localhost:3001/api/allergies","GET",true,PASS,200,5
+"EPD","Get Allergy by ID","http://localhost:3001/api/allergies/14","GET",true,PASS,200,4
+"EPD","List Vitals","http://localhost:3001/api/vitals","GET",true,PASS,200,6
+"EPD","List Vitals (paginated)","http://localhost:3001/api/vitals?page=1&limit=5","GET",true,PASS,200,5
+"EPD","List Lab Results","http://localhost:3001/api/lab-results","GET",true,PASS,200,8
+"EPD","List Lab Results (paginated)","http://localhost:3001/api/lab-results?page=1&limit=5","GET",true,PASS,200,7
+"EPD","List Appointments","http://localhost:3001/api/appointments","GET",true,PASS,200,8
+"EPD","List Appointments (paginated)","http://localhost:3001/api/appointments?page=1&limit=5","GET",true,PASS,200,6
+"EPD","List Insurers","http://localhost:3001/api/insurance/insurers","GET",true,PASS,200,6
+"EPD","List Insurance Policies","http://localhost:3001/api/insurance/policies","GET",true,PASS,200,9
+"EPD","List Medical Records","http://localhost:3001/api/medical-records","GET",true,PASS,200,7
+"EPD","List Diagnoses","http://localhost:3001/api/diagnoses","GET",true,PASS,200,7
+"EPD-NoAuth","List Patients (no auth)","http://localhost:3001/api/patients","GET",false,PASS,401,2
+"Mail","Health Check","http://localhost:3002/health","GET",false,FAIL,0,2
+"Mail","Get User Mail Count","http://localhost:3002/api/mails/user/test-user/count","GET",true,FAIL,0,2
+"Mail","Get User Mails","http://localhost:3002/api/mails/user/test-user","GET",true,FAIL,0,1

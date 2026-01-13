@@ -1,0 +1,10 @@
+# Auto detect text files and normalize line endings to LF
+* text=auto eol=lf
+
+# Shell scripts must always use LF
+# This allows Linux to read the .sh scripts for Docker
+*.sh text eol=lf
+
+# Batch files use CRLF on Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf

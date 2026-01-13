@@ -1,0 +1,212 @@
+[
+  {
+    "service": "FastAPI",
+    "name": "Root",
+    "url": "http://localhost:8000/api/",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 29,
+    "response": "{\"message\":\"Hello World!!\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Auth Login",
+    "url": "http://localhost:8000/api/auth/login/",
+    "method": "POST",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 424,
+    "response": "{\"access_token\":\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9Da1E4cFhmOG9sZDRTekpNNnVLMSJ9.eyJpc3MiOiJodHRwczovL2Rldi1najh1YnNycGtkdHQxdnhwLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJrdGtUN2JhRFB5aDdOT0xXRXZ5QX"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Patients",
+    "url": "http://localhost:8000/api/patient/",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 778,
+    "response": "{\"patients\":[{\"id\":420,\"createdAt\":\"2026-01-04T04:36:42.447Z\",\"firstName\":\"Koen\",\"lastName\":\"Kok\",\"email\":\"patient60@email.nl\",\"role\":null,\"hospitalNumber\":\"P2024060\",\"dateOfBirth\":\"1959-12-04T00:00:0"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get Patient 1",
+    "url": "http://localhost:8000/api/patient/1",
+    "method": "GET",
+    "status": "FAIL",
+    "statusCode": 404,
+    "time": 47,
+    "response": "{\"detail\":\"{\\\"error\\\":\\\"Patient not found\\\"}\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Encounters",
+    "url": "http://localhost:8000/api/encounters/",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 52,
+    "response": "{\"encounters\":[{\"id\":14,\"createdAt\":\"2026-01-04T04:36:42.481Z\",\"type\":\"EMERGENCY\",\"status\":\"COMPLETED\",\"start\":\"2024-11-15T14:30:00.000Z\",\"end\":\"2024-11-15T18:00:00.000Z\",\"reason\":\"Pijn op de borst\",\""
+  },
+  {
+    "service": "FastAPI",
+    "name": "Get Encounter 1",
+    "url": "http://localhost:8000/api/encounters/1",
+    "method": "GET",
+    "status": "FAIL",
+    "statusCode": 404,
+    "time": 52,
+    "response": "{\"detail\":\"{\\\"error\\\":\\\"Encounter not found\\\"}\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "List Mails User 1",
+    "url": "http://localhost:8000/api/mails/user/1",
+    "method": "GET",
+    "status": "FAIL",
+    "statusCode": 502,
+    "time": 42,
+    "response": "{\"detail\":\"Mail service niet bereikbaar\"}"
+  },
+  {
+    "service": "FastAPI",
+    "name": "Mail Count User 1",
+    "url": "http://localhost:8000/api/mails/user/1/count",
+    "method": "GET",
+    "status": "FAIL",
+    "statusCode": 502,
+    "time": 41,
+    "response": "{\"detail\":\"Mail service niet bereikbaar\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "Health",
+    "url": "http://localhost:3001/health",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 6,
+    "response": "{\"status\":\"ok\",\"timestamp\":\"2026-01-04T08:49:46.571Z\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "List Users",
+    "url": "http://localhost:3001/api/users",
+    "method": "GET",
+    "status": "FORBIDDEN",
+    "statusCode": 403,
+    "time": 4,
+    "response": "{\"error\":\"Insufficient permissions\",\"required\":\"One of: read:users, admin:all\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "List Patients",
+    "url": "http://localhost:3001/api/patients",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 7,
+    "response": "{\"patients\":[{\"id\":420,\"hospitalNumber\":\"P2024060\",\"firstName\":\"Koen\",\"lastName\":\"Kok\",\"dateOfBirth\":\"1959-12-04T00:00:00.000Z\",\"sex\":\"OTHER\",\"phone\":\"06-12345737\",\"email\":\"patient60@email.nl\",\"addres"
+  },
+  {
+    "service": "EPD",
+    "name": "Get Patient 1",
+    "url": "http://localhost:3001/api/patients/1",
+    "method": "GET",
+    "status": "FAIL",
+    "statusCode": 404,
+    "time": 6,
+    "response": "{\"error\":\"Patient not found\"}"
+  },
+  {
+    "service": "EPD",
+    "name": "List Encounters",
+    "url": "http://localhost:3001/api/encounters",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 6,
+    "response": "{\"encounters\":[{\"id\":14,\"type\":\"EMERGENCY\",\"status\":\"COMPLETED\",\"reason\":\"Pijn op de borst\",\"location\":\"Spoedeisende Hulp\",\"start\":\"2024-11-15T14:30:00.000Z\",\"end\":\"2024-11-15T18:00:00.000Z\",\"createdA"
+  },
+  {
+    "service": "EPD",
+    "name": "List Medications",
+    "url": "http://localhost:3001/api/medications",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 8,
+    "response": "{\"medications\":[{\"id\":7,\"medicationName\":\"Metformine\",\"dose\":\"850mg\",\"route\":\"Oraal\",\"frequency\":\"2x daags\",\"startDate\":\"2020-05-15T00:00:00.000Z\",\"endDate\":null,\"status\":\"ACTIVE\",\"createdAt\":\"2026-01"
+  },
+  {
+    "service": "EPD",
+    "name": "List Allergies",
+    "url": "http://localhost:3001/api/allergies",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 5,
+    "response": "{\"allergies\":[{\"id\":14,\"substance\":\"Noten\",\"reaction\":\"Anafylaxie\",\"severity\":\"Ernstig\",\"notedAt\":\"2026-01-04T04:36:42.461Z\",\"patientId\":362,\"patient\":{\"id\":362,\"firstName\":\"Henk\",\"lastName\":\"Smit\",\"h"
+  },
+  {
+    "service": "EPD",
+    "name": "List Vitals",
+    "url": "http://localhost:3001/api/vitals",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 6,
+    "response": "{\"vitals\":[{\"id\":21,\"type\":\"TEMPERATURE\",\"value\":\"36.8\",\"unit\":\"°C\",\"measuredAt\":\"2024-11-15T14:30:00.000Z\",\"patientId\":362,\"patient\":{\"id\":362,\"firstName\":\"Henk\",\"lastName\":\"Smit\",\"hospitalNumber\":\"P"
+  },
+  {
+    "service": "EPD",
+    "name": "List Lab Results",
+    "url": "http://localhost:3001/api/lab-results",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 7,
+    "response": "{\"labResults\":[{\"id\":14,\"testName\":\"Troponine\",\"value\":\"0.02\",\"unit\":\"ng/mL\",\"referenceRange\":\"< 0.04\",\"status\":\"FINAL\",\"takenAt\":\"2024-11-15T14:45:00.000Z\",\"reportedAt\":\"2026-01-04T04:36:42.506Z\",\"pa"
+  },
+  {
+    "service": "EPD",
+    "name": "List Appointments",
+    "url": "http://localhost:3001/api/appointments",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 7,
+    "response": "{\"appointments\":[{\"id\":21,\"start\":\"2024-12-10T09:00:00.000Z\",\"end\":\"2024-12-10T09:30:00.000Z\",\"location\":\"Polikliniek C\",\"reason\":\"Intake\",\"status\":\"SCHEDULED\",\"createdAt\":\"2026-01-04T04:36:42.518Z\",\""
+  },
+  {
+    "service": "EPD",
+    "name": "List Insurers",
+    "url": "http://localhost:3001/api/insurance/insurers",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 6,
+    "response": "{\"insurers\":[{\"id\":13,\"name\":\"CZ Zorgverzekeringen\",\"code\":\"CZ001\",\"phone\":\"088-123-4567\",\"email\":\"info@cz.nl\",\"website\":\"https://www.cz.nl\",\"address\":null,\"createdAt\":\"2026-01-04T04:36:42.222Z\"},{\"id"
+  },
+  {
+    "service": "EPD",
+    "name": "List Policies",
+    "url": "http://localhost:3001/api/insurance/policies",
+    "method": "GET",
+    "status": "PASS",
+    "statusCode": 200,
+    "time": 10,
+    "response": "{\"policies\":[{\"id\":13,\"policyNumber\":\"POL-2024-001\",\"status\":\"ACTIVE\",\"startDate\":\"2024-01-01T00:00:00.000Z\",\"endDate\":null,\"patientId\":361,\"insurerId\":13,\"createdAt\":\"2026-01-04T04:36:42.450Z\",\"patie"
+  },
+  {
+    "service": "EPD-NoAuth",
+    "name": "List Patients (no auth)",
+    "url": "http://localhost:3001/api/patients",
+    "method": "GET",
+    "status": "AUTH",
+    "statusCode": 401,
+    "time": 2,
+    "response": "{\"error\":\"Unauthorized\",\"message\":\"Valid Auth0 M2M token required\"}"
+  }
+]
