@@ -13,11 +13,12 @@ import { useGetPatientsQuery } from '../patients.api';
 import './patients-dashboard.page.css';
 
 export default function PatientsDashboardPage() {
-    const { data: patients } = useGetPatientsQuery();
     const { user, isLoading } = useAuth0();
     const navigate = useNavigate();
 
     const [query, setQuery] = useState('');
+
+    const { data: patients } = useGetPatientsQuery({ name: query });
 
     function onQueryChange(event: ChangeEvent) {
         setQuery((event.target as HTMLInputElement).value);

@@ -13,10 +13,12 @@ import { throwErrorResponse } from '../error-response';
 const endPoint = `${BASE_URL}/api/patients`;
 
 export const patientsHandlers: RequestHandler[] = [
-    http.get(endPoint, async () => {
+    http.get(endPoint, async ({ request }) => {
+        const { searchParams } = new URL(request.url);
+
         await delay();
 
-        const patients = mockPatientsDB.getAll();
+        const patients = mockPatientsDB.getAll(searchParams);
         return HttpResponse.json(patients);
     }),
     http.post<null, CreatePatientData>(endPoint, async ({ request }) => {
