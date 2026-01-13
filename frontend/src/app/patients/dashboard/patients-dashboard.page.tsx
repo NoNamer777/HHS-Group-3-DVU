@@ -18,13 +18,15 @@ export default function PatientsDashboardPage() {
 
     const [query, setQuery] = useState('');
 
-    const { data: patients } = useGetPatientsQuery({ name: query });
+    const { data: patients, refetch } = useGetPatientsQuery({ name: query });
 
     function onQueryChange(event: ChangeEvent) {
         setQuery((event.target as HTMLInputElement).value);
     }
 
     useEffect(() => {
+        refetch();
+
         function isPatient() {
             const roles: string[] = user['http://localhost:5173/roles'] ?? [];
             return roles.every((role) => role === 'Patient');
@@ -38,7 +40,7 @@ export default function PatientsDashboardPage() {
         if (!isLoading && !user) {
             navigate('/');
         }
-    }, [user, isLoading, navigate, patients]);
+    }, [user, isLoading, navigate, patients, refetch]);
 
     function onQuery() {
         // TODO: Actually query the patients

@@ -38,6 +38,14 @@ export const patientsHandlers: RequestHandler[] = [
             },
         });
     }),
+    http.post(`${endPoint}/upload`, async ({ request }) => {
+        const formData = await request.formData();
+        const file = formData.get('file');
+        const contents = await (file as File).text();
+
+        mockPatientsDB.createMany(JSON.parse(contents));
+        return HttpResponse.json();
+    }),
     http.get<{ patientId: string }>(buildResourceEndPoint(endPoint, ':patientId'), async ({ params }) => {
         await delay();
 

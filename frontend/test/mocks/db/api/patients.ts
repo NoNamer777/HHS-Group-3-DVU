@@ -19,6 +19,12 @@ class MockPatientsDB {
         return this.records[patientId] ?? null;
     }
 
+    public createMany(data: Patient[]) {
+        for (const patient of data) {
+            this.records[patient.id] = patient;
+        }
+    }
+
     public create(data: CreatePatientData) {
         const patient: Patient = {
             ...data,
