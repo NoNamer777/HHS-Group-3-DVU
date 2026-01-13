@@ -24,11 +24,20 @@ export default function PatientsDashboardPage() {
     }
 
     useEffect(() => {
-        if (user && !isLoading) return;
+        function isPatient() {
+            const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+            return roles.every((role) => role === 'Patient');
+        }
+        if (user && !isLoading) {
+            if (isPatient() && (patients ?? []).length > 0) {
+                navigate(`/patienten/${patients[0].id}/overzicht`);
+            }
+            return;
+        }
         if (!isLoading && !user) {
             navigate('/');
         }
-    }, [user, isLoading, navigate]);
+    }, [user, isLoading, navigate, patients]);
 
     function onQuery() {
         // TODO: Actually query the patients
