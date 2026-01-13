@@ -51,10 +51,9 @@ export default function HeaderComponent() {
                         <li className="nav-item d-flex">
                             <div className="d-flex flex-column align-items-center p-1">
                                 <span className="navbar-text fw-bold flex-grow-0 p-0">{user.email}</span>
-                                {/* TODO - Find out how to get/use metadata */}
-                                {/*<span className="navbar-text text-sm ms-auto flex-grow-0 p-0">*/}
-                                {/*    {user.role}*/}
-                                {/*</span>*/}
+                                <span className="navbar-text text-sm ms-auto flex-grow-0 p-0">
+                                    {user['http://localhost:5173/roles'][0]}
+                                </span>
                             </div>
                             <button className="nav-link" type="button" onClick={onLogOut}>
                                 <FontAwesomeIcon icon={faArrowRightFromBracket} size="3x" />
