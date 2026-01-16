@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { faArrowLeft, faComments, faFlaskVial, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +8,7 @@ import './patient-info.page.css';
 export default function PatientInfoPage() {
     const { patientId } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth0();
 
     const { data: patient, isLoading } = useGetPatientByIdQuery(patientId);
 
@@ -14,17 +16,24 @@ export default function PatientInfoPage() {
         await navigate('/dashboard');
     }
 
+    function isNotPatient() {
+        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        return !roles.every((role) => role === 'Patient');
+    }
+
     return (
         <article className="container-fluid">
             {/*Back button*/}
-            <button
-                type="button"
-                className="btn btn-light d-flex align-items-center gap-3 mb-5"
-                onClick={onNavigateBack}
-            >
-                <FontAwesomeIcon icon={faArrowLeft} />
-                <span className="h5 m-0">Terug naar het dashboard</span>
-            </button>
+            {isNotPatient() && (
+                <button
+                    type="button"
+                    className="btn btn-light d-flex align-items-center gap-3 mb-5"
+                    onClick={onNavigateBack}
+                >
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                    <span className="h5 m-0">Terug naar het dashboard</span>
+                </button>
+            )}
 
             {/*Patient info*/}
             <div className="card shadow-sm w-100 rounded-4 mb-5">

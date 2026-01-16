@@ -12,13 +12,28 @@ const END_POINT = '/api/patients' as const;
 
 const TAG_TYPE = 'Patient' as const;
 
+interface GetAllPatientsQueryParams {
+    name?: string;
+}
+
 export const patientsApi = createApi({
     reducerPath: 'patientsApi',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     tagTypes: [TAG_TYPE],
     endpoints: (build) => ({
-        getPatients: build.query<Patient[], void>({
-            query: () => END_POINT,
+        getPatients: build.query<Patient[], GetAllPatientsQueryParams | void>({
+            query: (params) => {
+                if (!params) return END_POINT;
+                const queryParams = new URLSearchParams();
+
+                if (params.name) {
+                    queryParams.set('name', params.name);
+                }
+                const query = queryParams.toString();
+
+                if (!query) return END_POINT;
+                return `${END_POINT}?${queryParams}`;
+            },
             providesTags: (patients) =>
                 patients
                     ? [

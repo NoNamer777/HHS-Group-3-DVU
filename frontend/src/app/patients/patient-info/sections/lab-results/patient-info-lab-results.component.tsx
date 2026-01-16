@@ -1,4 +1,5 @@
 import type { CreateLabResultData } from '@/models';
+import { useAuth0 } from '@auth0/auth0-react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
@@ -9,6 +10,7 @@ import './patient-info-lab-results.component.css';
 
 export default function PatientInfoLabResultsComponent() {
     const { patientId } = useParams();
+    const { user } = useAuth0();
     const { data: patient } = useGetPatientByIdQuery(patientId);
 
     const { data: labResults } = useGetLabResultsQuery({
@@ -30,21 +32,28 @@ export default function PatientInfoLabResultsComponent() {
         await createLabResult(data);
     }
 
+    function canAddLabResults() {
+        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        return roles.every((role) => role !== 'Patient');
+    }
+
     return (
         <div className="d-flex flex-column gap-4">
             <div className="d-flex align-items-center justify-content-between">
                 <h5>Meetwaarden overzicht</h5>
-                <button
-                    type="button"
-                    className="btn btn-primary btn-lg d-flex align-items-center gap-2"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#lab-result-form"
-                    aria-expanded="false"
-                    aria-controls="lab-result-form"
-                >
-                    <FontAwesomeIcon icon={faPlus} />
-                    <span>Meetwaarde toevoegen</span>
-                </button>
+                {canAddLabResults() && (
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-lg d-flex align-items-center gap-2"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#lab-result-form"
+                        aria-expanded="false"
+                        aria-controls="lab-result-form"
+                    >
+                        <FontAwesomeIcon icon={faPlus} />
+                        <span>Meetwaarde toevoegen</span>
+                    </button>
+                )}
             </div>
 
             <div className="container-fluid d-flex flex-column gap-4">
