@@ -36,23 +36,20 @@ export const patientsHandlers: RequestHandler[] = [
             },
         });
     }),
-    http.get<{ patientId: string }>(
-        buildResourceEndPoint(endPoint, ':patientId'),
-        async ({ params }) => {
-            await delay();
+    http.get<{ patientId: string }>(buildResourceEndPoint(endPoint, ':patientId'), async ({ params }) => {
+        await delay();
 
-            const { patientId } = params;
-            const patient = mockPatientsDB.getById(patientId);
+        const { patientId } = params;
+        const patient = mockPatientsDB.getById(patientId);
 
-            if (!patient) {
-                return throwErrorResponse({
-                    status: HttpStatusCodes.NOT_FOUND,
-                    message: `Patient with ID "${patientId}" was not found.`,
-                });
-            }
-            return HttpResponse.json(patient);
-        },
-    ),
+        if (!patient) {
+            return throwErrorResponse({
+                status: HttpStatusCodes.NOT_FOUND,
+                message: `Patient with ID "${patientId}" was not found.`,
+            });
+        }
+        return HttpResponse.json(patient);
+    }),
     http.put<{ patientId: string }, Patient>(
         buildResourceEndPoint(endPoint, ':patientId'),
         async ({ params, request }) => {
@@ -78,25 +75,22 @@ export const patientsHandlers: RequestHandler[] = [
             return HttpResponse.json(patient);
         },
     ),
-    http.delete<{ patientId: string }>(
-        buildResourceEndPoint(endPoint, ':patientId'),
-        async ({ params }) => {
-            await delay();
+    http.delete<{ patientId: string }>(buildResourceEndPoint(endPoint, ':patientId'), async ({ params }) => {
+        await delay();
 
-            const { patientId } = params;
-            const status = HttpStatusCodes.NO_CONTENT;
-            const removed = mockPatientsDB.remove(patientId as string);
+        const { patientId } = params;
+        const status = HttpStatusCodes.NO_CONTENT;
+        const removed = mockPatientsDB.remove(patientId as string);
 
-            if (!removed) {
-                return throwErrorResponse({
-                    status: HttpStatusCodes.NOT_FOUND,
-                    message: `Could not remove Patient with ID "${patientId}". - Reason: Patient was not found.`,
-                });
-            }
-            return new HttpResponse(undefined, {
-                status: status,
-                statusText: HttpStatusNames[status],
+        if (!removed) {
+            return throwErrorResponse({
+                status: HttpStatusCodes.NOT_FOUND,
+                message: `Could not remove Patient with ID "${patientId}". - Reason: Patient was not found.`,
             });
-        },
-    ),
+        }
+        return new HttpResponse(undefined, {
+            status: status,
+            statusText: HttpStatusNames[status],
+        });
+    }),
 ];

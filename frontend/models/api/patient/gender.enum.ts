@@ -7,10 +7,7 @@ export const Genders = {
 export type Gender = (typeof Genders)[keyof typeof Genders];
 
 export function genderAttribute(value: unknown) {
-    return (
-        Object.values(Genders).find((gender) => gender === value) ??
-        Genders.MALE
-    );
+    return Object.values(Genders).find((gender) => gender === value) ?? Genders.MALE;
 }
 
 export const GENDER_OPTIONS = [

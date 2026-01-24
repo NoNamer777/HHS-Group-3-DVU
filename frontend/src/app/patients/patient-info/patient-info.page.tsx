@@ -1,11 +1,4 @@
-import {
-    faArrowLeft,
-    faComments,
-    faFlaskVial,
-    faImages,
-    faUser,
-    faUserCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faComments, faFlaskVial, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useGetPatientByIdQuery } from '../patients.api';
@@ -45,15 +38,9 @@ export default function PatientInfoPage() {
                         <div className="d-flex align-items-center gap-3 py-3 px-2">
                             <FontAwesomeIcon icon={faUserCircle} size="6x" />
                             <div>
-                                <p className="card-title fw-bold fs-5 mb-1">
-                                    {patient.name}
-                                </p>
+                                <p className="card-title fw-bold fs-5 mb-1">{patient.name}</p>
                                 <p className="card-text text-muted fw-semibold d-flex gap-2 mb-0">
-                                    <span>
-                                        {new Date(
-                                            patient.dateOfBirth,
-                                        ).toLocaleDateString(['nl'])}
-                                    </span>
+                                    <span>{new Date(patient.dateOfBirth).toLocaleDateString(['nl'])}</span>
                                     <span>•</span>
                                     <span>{patient.gender}</span>
                                 </p>
@@ -63,11 +50,7 @@ export default function PatientInfoPage() {
                                 </p>
                                 <p className="card-text text-muted fw-semibold d-flex gap-2">
                                     <span>Laatst bijgewerkt:</span>
-                                    <span>
-                                        {new Date(
-                                            patient.lastUpdated,
-                                        ).toLocaleString(['nl'])}
-                                    </span>
+                                    <span>{new Date(patient.lastUpdated).toLocaleString(['nl'])}</span>
                                 </p>
                             </div>
                         </div>
@@ -78,47 +61,21 @@ export default function PatientInfoPage() {
             {/*Sections*/}
             <ul className="nav nav-tabs mb-3">
                 <li className="nav-item">
-                    <NavLink
-                        className={({ isActive }) =>
-                            `nav-link ${isActive ? 'active' : ''}`
-                        }
-                        to="overzicht"
-                    >
+                    <NavLink className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} to="overzicht">
                         <FontAwesomeIcon icon={faUser} />
                         <span>Overzicht</span>
                     </NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink
-                        className={({ isActive }) =>
-                            `nav-link ${isActive ? 'active' : ''}`
-                        }
-                        to="meetwaarden"
-                    >
+                    <NavLink className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} to="meetwaarden">
                         <FontAwesomeIcon icon={faFlaskVial} />
                         <span>Meetwaarden</span>
                     </NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink
-                        className={({ isActive }) =>
-                            `nav-link ${isActive ? 'active' : ''}`
-                        }
-                        to="gesprekken"
-                    >
+                    <NavLink className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} to="gesprekken">
                         <FontAwesomeIcon icon={faComments} />
                         <span>Gesprekken</span>
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        className={({ isActive }) =>
-                            `nav-link ${isActive ? 'active' : ''}`
-                        }
-                        to="afbeeldingen"
-                    >
-                        <FontAwesomeIcon icon={faImages} />
-                        <span>Afbeeldingen</span>
                     </NavLink>
                 </li>
             </ul>

@@ -21,9 +21,7 @@ export default function AddPatientModalComponent() {
     const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
     const [gender, setGender] = useState<Gender>(Genders.MALE);
     const [condition, setCondition] = useState('');
-    const [patientStatus, setPatientStatus] = useState<PatientStatus>(
-        PatientStatuses.STABLE,
-    );
+    const [patientStatus, setPatientStatus] = useState<PatientStatus>(PatientStatuses.STABLE);
 
     const [createPatient] = useCreatePatientMutation();
 
@@ -44,9 +42,7 @@ export default function AddPatientModalComponent() {
     }
 
     function onPatientStatusChange(event: ChangeEvent) {
-        setPatientStatus(
-            patientStatusAttribute((event.target as HTMLInputElement).value),
-        );
+        setPatientStatus(patientStatusAttribute((event.target as HTMLInputElement).value));
     }
 
     async function onAddPatient() {
@@ -98,25 +94,16 @@ export default function AddPatientModalComponent() {
                                 <FontAwesomeIcon icon={faUserPlus} size="2x" />
                             </div>
                             <div>
-                                <h3 className="h5 m-0">
-                                    Nieuwe patiënt toevoegen
-                                </h3>
-                                <h4 className="h6 text-muted m-0">
-                                    Vul de gegevens van de nieuwe patiënt in
-                                </h4>
+                                <h3 className="h5 m-0">Nieuwe patiënt toevoegen</h3>
+                                <h4 className="h6 text-muted m-0">Vul de gegevens van de nieuwe patiënt in</h4>
                             </div>
                         </div>
                         <div className="modal-body">
                             <form action={onAddPatient}>
                                 <div className="mb-3">
-                                    <label
-                                        htmlFor="name-input"
-                                        className="form-label"
-                                    >
+                                    <label htmlFor="name-input" className="form-label">
                                         Naam
-                                        <span className="text-danger position-relative top-0 right-0">
-                                            *
-                                        </span>
+                                        <span className="text-danger position-relative top-0 right-0">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -128,35 +115,23 @@ export default function AddPatientModalComponent() {
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col">
-                                        <label
-                                            htmlFor="date-of-birth-input"
-                                            className="form-label"
-                                        >
+                                        <label htmlFor="date-of-birth-input" className="form-label">
                                             Geboortedatum
-                                            <span className="text-danger position-relative top-0 right-0">
-                                                *
-                                            </span>
+                                            <span className="text-danger position-relative top-0 right-0">*</span>
                                         </label>
                                         <input
                                             type="date"
                                             className="form-control"
                                             id="date-of-birth-input"
                                             // For some reason this is the only locale that worked quickly to format the value in the required form (yyyy-MM-dd).
-                                            value={dateOfBirth.toLocaleDateString(
-                                                ['fr-CA'],
-                                            )}
+                                            value={dateOfBirth.toLocaleDateString(['fr-CA'])}
                                             onChange={onDateOfBirthChange}
                                         />
                                     </div>
                                     <div className="col">
-                                        <label
-                                            htmlFor="gender-select"
-                                            className="form-label"
-                                        >
+                                        <label htmlFor="gender-select" className="form-label">
                                             Geslacht
-                                            <span className="text-danger position-relative top-0 right-0">
-                                                *
-                                            </span>
+                                            <span className="text-danger position-relative top-0 right-0">*</span>
                                         </label>
                                         <select
                                             className="form-select"
@@ -165,10 +140,7 @@ export default function AddPatientModalComponent() {
                                             onChange={onGenderChange}
                                         >
                                             {GENDER_OPTIONS.map((option) => (
-                                                <option
-                                                    key={option.value}
-                                                    value={option.value}
-                                                >
+                                                <option key={option.value} value={option.value}>
                                                     {option.label}
                                                 </option>
                                             ))}
@@ -176,14 +148,9 @@ export default function AddPatientModalComponent() {
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <label
-                                        htmlFor="condition-input"
-                                        className="form-label"
-                                    >
+                                    <label htmlFor="condition-input" className="form-label">
                                         Aandoening
-                                        <span className="text-danger position-relative top-0 right-0">
-                                            *
-                                        </span>
+                                        <span className="text-danger position-relative top-0 right-0">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -194,10 +161,7 @@ export default function AddPatientModalComponent() {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label
-                                        htmlFor="status-select"
-                                        className="form-label"
-                                    >
+                                    <label htmlFor="status-select" className="form-label">
                                         Status
                                     </label>
                                     <select
@@ -206,26 +170,17 @@ export default function AddPatientModalComponent() {
                                         value={patientStatus}
                                         onChange={onPatientStatusChange}
                                     >
-                                        {PATIENT_STATUS_OPTIONS.map(
-                                            (option) => (
-                                                <option
-                                                    key={option.value}
-                                                    value={option.value}
-                                                >
-                                                    {option.label}
-                                                </option>
-                                            ),
-                                        )}
+                                        {PATIENT_STATUS_OPTIONS.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </form>
                         </div>
                         <div className="modal-footer d-flex align-items-center">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                                 Annuleren
                             </button>
                             <button

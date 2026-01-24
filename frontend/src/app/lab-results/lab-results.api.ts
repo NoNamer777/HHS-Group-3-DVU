@@ -1,27 +1,27 @@
 import {
     BASE_URL,
     buildResourceEndPoint,
-    type Conversation,
-    type CreateConversationData,
+    type CreateLabResultData,
+    type LabResult,
     RequestMethods,
     TAG_LIST_ID,
 } from '@/models';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const END_POINT = '/api/conversations' as const;
-const TAG_TYPE = 'Conversation' as const;
+const END_POINT = '/api/lab-results' as const;
+const TAG_TYPE = 'LabResult' as const;
 
 interface GetAllQueryParams {
-    to?: string;
+    patient?: string;
     limit?: number;
 }
 
-export const conversationsApi = createApi({
-    reducerPath: 'conversationsApi',
+export const labResultsApi = createApi({
+    reducerPath: 'labResultsApi',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     tagTypes: [TAG_TYPE],
     endpoints: (build) => ({
-        getConversations: build.query<Conversation[], GetAllQueryParams | void>({
+        getLabResults: build.query<LabResult[], GetAllQueryParams | void>({
             query: (params) => {
                 if (!params) return END_POINT;
                 const queryParams = new URLSearchParams();
@@ -29,18 +29,18 @@ export const conversationsApi = createApi({
                 if (params.limit) {
                     queryParams.set('limit', `${params.limit}`);
                 }
-                if (params.to) {
-                    queryParams.set('to', params.to);
+                if (params.patient) {
+                    queryParams.set('patient', params.patient);
                 }
                 const queryString = queryParams.toString();
 
                 if (!queryString) return END_POINT;
                 return `${END_POINT}?${queryString}`;
             },
-            providesTags: (conversations) =>
-                conversations
+            providesTags: (labResults) =>
+                labResults
                     ? [
-                          ...conversations.map(({ id }) => ({
+                          ...labResults.map(({ id }) => ({
                               type: TAG_TYPE,
                               id: id,
                           })),
@@ -49,7 +49,7 @@ export const conversationsApi = createApi({
                     : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
         }),
 
-        createConversation: build.mutation<Conversation, CreateConversationData>({
+        createLabResult: build.mutation<LabResult, CreateLabResultData>({
             query: (data) => ({
                 url: END_POINT,
                 method: RequestMethods.POST,
@@ -58,16 +58,16 @@ export const conversationsApi = createApi({
             invalidatesTags: [{ type: TAG_TYPE, id: TAG_LIST_ID }],
         }),
 
-        getConversationById: build.query<Conversation, string>({
-            query: (conversationId) => buildResourceEndPoint(END_POINT, conversationId),
-            providesTags: (conversation) => [{ type: TAG_TYPE, id: conversation.id }],
+        getLabResultById: build.query<LabResult, string>({
+            query: (labResultId) => buildResourceEndPoint(END_POINT, labResultId),
+            providesTags: (labResult) => [{ type: TAG_TYPE, id: labResult.id }],
         }),
 
-        updateConversation: build.mutation<Conversation, Conversation>({
-            query: ({ id: conversationId, ...conversation }) => ({
-                url: buildResourceEndPoint(END_POINT, conversationId),
+        updateLabResult: build.mutation<LabResult, LabResult>({
+            query: ({ id: labResultId, ...labResult }) => ({
+                url: buildResourceEndPoint(END_POINT, labResultId),
                 method: RequestMethods.PUT,
-                body: conversation,
+                body: labResult,
             }),
             invalidatesTags: (result) => [
                 { type: TAG_TYPE, id: result.id },
@@ -75,13 +75,13 @@ export const conversationsApi = createApi({
             ],
         }),
 
-        removeConversation: build.mutation<void, string>({
-            query: (conversationId) => ({
-                url: buildResourceEndPoint(END_POINT, conversationId),
+        removeLabResult: build.mutation<void, string>({
+            query: (labResultId) => ({
+                url: buildResourceEndPoint(END_POINT, labResultId),
                 method: RequestMethods.DELETE,
             }),
-            invalidatesTags: (_result, _error, conversationId) => [
-                { type: TAG_TYPE, id: conversationId },
+            invalidatesTags: (_result, _error, labResultId) => [
+                { type: TAG_TYPE, id: labResultId },
                 { type: TAG_TYPE, id: TAG_LIST_ID },
             ],
         }),
@@ -89,9 +89,9 @@ export const conversationsApi = createApi({
 });
 
 export const {
-    useGetConversationsQuery,
-    useCreateConversationMutation,
-    useGetConversationByIdQuery,
-    useUpdateConversationMutation,
-    useRemoveConversationMutation,
-} = conversationsApi;
+    useGetLabResultsQuery,
+    useCreateLabResultMutation,
+    useGetLabResultByIdQuery,
+    useUpdateLabResultMutation,
+    useRemoveLabResultMutation,
+} = labResultsApi;

@@ -1,12 +1,10 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-    faArrowRightFromBracket,
-    faFileImport,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../../public/logo.png';
 import AddPatientModalComponent from '../../patients/add-patient-modal/add-patient-modal.component';
+import SyncModalComponent from '../../sync/sync-modal.component.tsx';
 import './header.component.css';
 
 export default function HeaderComponent() {
@@ -20,10 +18,6 @@ export default function HeaderComponent() {
 
     function onNavigateToDashboard() {
         navigate('/dashboard');
-    }
-
-    function onShowSyncDialog() {
-        console.warn('SHOWING SYNC DIALOG');
     }
 
     return (
@@ -43,11 +37,7 @@ export default function HeaderComponent() {
                 <div className="navbar-collapse">
                     <ul className="navbar-nav ms-auto align-items-center gap-2">
                         <li className="nav-item">
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={onNavigateToDashboard}
-                            >
+                            <button type="button" className="btn btn-primary" onClick={onNavigateToDashboard}>
                                 Patiënten
                             </button>
                         </li>
@@ -55,35 +45,19 @@ export default function HeaderComponent() {
                             <AddPatientModalComponent />
                         </li>
                         <li className="nav-item">
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={onShowSyncDialog}
-                            >
-                                <FontAwesomeIcon icon={faFileImport} />
-                                Import / Export
-                            </button>
+                            <SyncModalComponent />
                         </li>
                         <li className="nav-item border-start border-dark-subtle border-2 align-self-stretch"></li>
                         <li className="nav-item d-flex">
                             <div className="d-flex flex-column align-items-center p-1">
-                                <span className="navbar-text fw-bold flex-grow-0 p-0">
-                                    {user.email}
-                                </span>
+                                <span className="navbar-text fw-bold flex-grow-0 p-0">{user.email}</span>
                                 {/* TODO - Find out how to get/use metadata */}
                                 {/*<span className="navbar-text text-sm ms-auto flex-grow-0 p-0">*/}
                                 {/*    {user.role}*/}
                                 {/*</span>*/}
                             </div>
-                            <button
-                                className="nav-link"
-                                type="button"
-                                onClick={onLogOut}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faArrowRightFromBracket}
-                                    size="3x"
-                                />
+                            <button className="nav-link" type="button" onClick={onLogOut}>
+                                <FontAwesomeIcon icon={faArrowRightFromBracket} size="3x" />
                             </button>
                         </li>
                     </ul>

@@ -13,12 +13,7 @@ export default function LogOutButton() {
     }
 
     return (
-        <a
-            role="button"
-            href="#"
-            className="btn btn-primary"
-            onClick={onLogout}
-        >
+        <a role="button" href="#" className="btn btn-primary" onClick={onLogout}>
             Log out
         </a>
     );

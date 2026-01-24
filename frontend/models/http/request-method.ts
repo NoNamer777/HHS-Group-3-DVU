@@ -5,5 +5,4 @@ export const RequestMethods = {
     DELETE: 'DELETE',
 };
 
-export type RequestMethod =
-    (typeof RequestMethods)[keyof typeof RequestMethods];
+export type RequestMethod = (typeof RequestMethods)[keyof typeof RequestMethods];

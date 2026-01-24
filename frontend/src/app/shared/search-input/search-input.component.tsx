@@ -8,12 +8,7 @@ interface SearchInputProps {
     placeholder?: string;
 }
 
-export default function SearchInputComponent({
-    column,
-    value,
-    onChange,
-    placeholder,
-}: SearchInputProps) {
+export default function SearchInputComponent({ column, value, onChange, placeholder }: SearchInputProps) {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(column, e.target.value);
     };
