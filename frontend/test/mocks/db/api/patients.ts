@@ -6,12 +6,23 @@ import type { Records } from '../../types';
 class MockPatientsDB {
     private records: Records<Patient> = {};
 
-    public getAll() {
-        return Object.values(this.records);
+    public getAll(searchParams: URLSearchParams) {
+        const users = Object.values(this.records);
+
+        if (searchParams.has('name')) {
+            return users.filter((user) => user.name.toLowerCase().includes(searchParams.get('name').toLowerCase()));
+        }
+        return users;
     }
 
     public getById(patientId: string) {
         return this.records[patientId] ?? null;
+    }
+
+    public createMany(data: Patient[]) {
+        for (const patient of data) {
+            this.records[patient.id] = patient;
+        }
     }
 
     public create(data: CreatePatientData) {

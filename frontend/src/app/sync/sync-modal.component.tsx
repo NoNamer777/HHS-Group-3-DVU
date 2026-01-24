@@ -1,8 +1,11 @@
 import { faDownload, faFileImport, faLink, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { type ChangeEvent, useRef } from 'react';
 import './sync-modal.component.css';
 
 export default function SyncModalComponent() {
+    const inputElemRef = useRef<HTMLInputElement>(null);
+
     function onSynchroniseApi(formData: FormData) {
         console.warn('SYNCHRONIZING API', {
             apiEndpoint: formData.get('api-endpoint'),
@@ -15,7 +18,21 @@ export default function SyncModalComponent() {
     }
 
     function onImportData() {
-        console.warn('IMPORTING DATA FROM JSON');
+        inputElemRef.current?.click();
+    }
+
+    async function onFileUpload(event: ChangeEvent<HTMLInputElement>) {
+        console.log({ files: event.target.files });
+
+        const files = event.target.files;
+        const formData = new FormData();
+
+        formData.append('file', files[0]);
+
+        await fetch('http://localhost:8000/api/patients/upload', {
+            method: 'POST',
+            body: formData,
+        });
     }
 
     return (
@@ -102,6 +119,13 @@ export default function SyncModalComponent() {
                                 <span>Klik hier om een bestand te selecteren</span>
                                 <span className="text-muted">Ondersteunde bestandformaten: JSON</span>
                             </button>
+                            <input
+                                accept="application/json"
+                                ref={inputElemRef}
+                                type="file"
+                                className="visually-hidden"
+                                onChange={onFileUpload}
+                            />
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
