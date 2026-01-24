@@ -14,7 +14,7 @@ class UserRead(DVUBaseModel):
 class User(DVUBaseModel):
     firstName: str
     lastName: str
-    email: str
+    email: Optional[str] = None
     role: Optional[UserRoleEnum] = None
 
 
