@@ -17,6 +17,8 @@ export default function PatientsDashboardPage() {
     const { user, isLoading } = useAuth0();
     const navigate = useNavigate();
 
+    console.log('user: ', user);
+
     const [query, setQuery] = useState('');
 
     const { data: patients, refetch } = useGetPatientsQuery({ name: query });

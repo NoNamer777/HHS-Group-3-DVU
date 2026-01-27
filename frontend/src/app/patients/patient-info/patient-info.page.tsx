@@ -12,6 +12,8 @@ export default function PatientInfoPage() {
     const navigate = useNavigate();
     const { user } = useAuth0();
 
+    console.log('user: ', user);
+
     const { data: patient, isLoading } = useGetPatientByIdQuery(patientId);
 
     async function onNavigateBack() {
