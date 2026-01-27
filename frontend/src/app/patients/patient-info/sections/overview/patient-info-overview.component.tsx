@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { parseDate } from '../../../../../utils/parseDate.ts';
 import { useGetConversationsQuery } from '../../../../conversations';
 import ConversationCardComponent from '../../../../conversations/conversation-card.component.tsx';
 import { useGetLabResultsQuery } from '../../../../lab-results';
@@ -23,18 +24,30 @@ export default function PatientInfoOverviewComponent() {
             <div className="card rounded-4 w-100 shadow-sm">
                 <div className="card-body">
                     <h5 className="card-title">Recente meetwaarden</h5>
-                    {(labResults ?? []).map((labResult) => (
-                        <LabResultCardComponent labResult={labResult} key={labResult.id} />
-                    ))}
+                    {[...(labResults ?? [])]
+                        .sort((a, b) => {
+                            const da = parseDate(a.timestamp);
+                            const db = parseDate(b.timestamp);
+                            return db && da ? db.getTime() - da.getTime() : 0;
+                        })
+                        .map((labResult) => (
+                            <LabResultCardComponent labResult={labResult} key={labResult.id} />
+                        ))}
                     {(!labResults || labResults?.length === 0) && <p className="card-text">Geen resultaten</p>}
                 </div>
             </div>
             <div className="card rounded-4 w-100 shadow-sm">
                 <div className="card-body">
                     <h5 className="card-title">Recente communicatie</h5>
-                    {(conversations ?? []).map((conversation) => (
-                        <ConversationCardComponent conversation={conversation} key={conversation.id} />
-                    ))}
+                    {[...(conversations ?? [])]
+                        .sort((a, b) => {
+                            const da = parseDate(a.timestamp);
+                            const db = parseDate(b.timestamp);
+                            return db && da ? db.getTime() - da.getTime() : 0;
+                        })
+                        .map((conversation) => (
+                            <ConversationCardComponent conversation={conversation} key={conversation.id} />
+                        ))}
                     {(!conversations || conversations?.length === 0) && <p className="card-text">Geen resultaten</p>}
                 </div>
             </div>

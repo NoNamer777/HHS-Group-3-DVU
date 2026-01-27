@@ -1,4 +1,5 @@
 import type { Conversation } from '@/models';
+import { parseDate } from '../../utils/parseDate';
 
 interface ConversationCardComponentProps {
     conversation: Conversation;
@@ -12,7 +13,12 @@ export default function ConversationCardComponent(props: ConversationCardCompone
             <div className="card-body">
                 <div className="d-flex justify-content-between">
                     <h6 className="card-title">{conversation.from.name}</h6>
-                    <span className="text-muted">{new Date(conversation.timestamp).toLocaleDateString()}</span>
+                    <span className="text-muted">
+                        {(() => {
+                            const d = parseDate(conversation.timestamp);
+                            return d ? d.toLocaleDateString('nl-NL') : 'Onbekende datum';
+                        })()}
+                    </span>
                 </div>
                 {/* TODO: Add role of health professional once we know how to get/use user metadata */}
                 <p>{conversation.message}</p>

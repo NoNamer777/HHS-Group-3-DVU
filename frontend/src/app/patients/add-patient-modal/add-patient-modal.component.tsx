@@ -18,19 +18,21 @@ import './add-patient-modal.component.css';
 
 export default function AddPatientModalComponent() {
     const [name, setName] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
+    // Store as string (YYYY-MM-DD) for compatibility with seed
+    const [dateOfBirth, setDateOfBirth] = useState<string>('');
     const [gender, setGender] = useState<Gender>(Genders.MALE);
     const [condition, setCondition] = useState('');
     const [patientStatus, setPatientStatus] = useState<PatientStatus>(PatientStatuses.STABLE);
 
     const [createPatient] = useCreatePatientMutation();
+    // No longer needed: refresh state
 
     function onNameChange(event: ChangeEvent) {
         setName((event.target as HTMLInputElement).value);
     }
 
     function onDateOfBirthChange(event: ChangeEvent) {
-        setDateOfBirth((event.target as HTMLInputElement).valueAsDate);
+        setDateOfBirth((event.target as HTMLInputElement).value);
     }
 
     function onGenderChange(event: ChangeEvent) {
@@ -47,19 +49,21 @@ export default function AddPatientModalComponent() {
 
     async function onAddPatient() {
         const modal = new Modal(document.getElementById('add-patient-modal'));
-
+        // Store as string (YYYY-MM-DD)
         const data = {
             name: name,
-            dateOfBirth: dateOfBirth.getTime(),
+            dateOfBirth: dateOfBirth,
             gender: gender,
             condition: condition,
             status: patientStatus,
         } as CreatePatientData;
         await createPatient(data);
+        // Notify other components that patients have changed
+        globalThis.dispatchEvent(new Event('patients-changed'));
 
         // Reset form
         setName('');
-        setDateOfBirth(new Date());
+        setDateOfBirth('');
         setGender(Genders.MALE);
         setCondition('');
         setPatientStatus(PatientStatuses.STABLE);
@@ -124,7 +128,7 @@ export default function AddPatientModalComponent() {
                                             className="form-control"
                                             id="date-of-birth-input"
                                             // For some reason this is the only locale that worked quickly to format the value in the required form (yyyy-MM-dd).
-                                            value={dateOfBirth.toLocaleDateString(['fr-CA'])}
+                                            value={dateOfBirth}
                                             onChange={onDateOfBirthChange}
                                         />
                                     </div>

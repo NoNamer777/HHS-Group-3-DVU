@@ -1,4 +1,4 @@
-import { PatientStatuses } from '@/models';
+import { BASE_URL, PatientStatuses } from '@/models';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
     faCircleCheck,
@@ -9,6 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { parseDate } from '../../../utils/parseDate';
 import { useGetPatientsQuery } from '../patients.api';
 import './patients-dashboard.page.css';
 
@@ -19,6 +20,8 @@ export default function PatientsDashboardPage() {
     const [query, setQuery] = useState('');
 
     const { data: patients, refetch } = useGetPatientsQuery({ name: query });
+    // State to force refresh on custom event
+    const [patientsChanged, setPatientsChanged] = useState(0);
 
     function onQueryChange(event: ChangeEvent) {
         setQuery((event.target as HTMLInputElement).value);
@@ -27,8 +30,11 @@ export default function PatientsDashboardPage() {
     useEffect(() => {
         refetch();
 
+        function getRoles() {
+            return user?.[`${BASE_URL}/roles`] ?? [];
+        }
         function isPatient() {
-            const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+            const roles: string[] = getRoles();
             return roles.every((role) => role === 'Patient');
         }
         if (user && !isLoading) {
@@ -41,6 +47,22 @@ export default function PatientsDashboardPage() {
             navigate('/');
         }
     }, [user, isLoading, navigate, patients, refetch]);
+
+    // Listen for patients-changed event to trigger refresh
+    useEffect(() => {
+        function handlePatientsChanged() {
+            setPatientsChanged((c) => c + 1);
+        }
+        globalThis.addEventListener('patients-changed', handlePatientsChanged);
+        return () => {
+            globalThis.removeEventListener('patients-changed', handlePatientsChanged);
+        };
+    }, []);
+
+    // Refetch patients when patientsChanged increments
+    useEffect(() => {
+        refetch();
+    }, [patientsChanged, refetch]);
 
     function onQuery() {
         // TODO: Actually query the patients
@@ -150,27 +172,39 @@ export default function PatientsDashboardPage() {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {(patients ?? []).map((patient) => (
-                            <tr key={patient.id} onClick={() => onOpenPatientDossier(patient.id)}>
-                                <td className="p-3">{patient.name}</td>
-                                <td className="p-3">{new Date(patient.dateOfBirth).toLocaleDateString(['nl'])}</td>
-                                <td className="p-3">{patient.gender}</td>
-                                <td className="p-3">{patient.condition}</td>
-                                <td className="p-3">{new Date(patient.lastUpdated).toLocaleString(['nl'])}</td>
-                                <td className="p-3 d-flex gap-2 align-items-center">
-                                    {patient.status === PatientStatuses.STABLE && (
-                                        <FontAwesomeIcon icon={faCircleCheck} className="text-success" />
-                                    )}
-                                    {patient.status === PatientStatuses.MONITORING && (
-                                        <FontAwesomeIcon icon={faHeartPulse} className="text-warning" />
-                                    )}
-                                    {patient.status === PatientStatuses.CRITICAL && (
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-danger" />
-                                    )}
-                                    {patient.status}
-                                </td>
-                            </tr>
-                        ))}
+                        {[...(patients ?? [])]
+                            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''))
+                            .map((patient) => (
+                                <tr key={patient.id} onClick={() => onOpenPatientDossier(patient.id)}>
+                                    <td className="p-3">{patient.name}</td>
+                                    <td className="p-3">
+                                        {(() => {
+                                            const d = parseDate(patient.dateOfBirth);
+                                            return d ? d.toLocaleDateString(['nl']) : 'Onbekend';
+                                        })()}
+                                    </td>
+                                    <td className="p-3">{patient.gender}</td>
+                                    <td className="p-3">{patient.condition}</td>
+                                    <td className="p-3">
+                                        {(() => {
+                                            const d = parseDate(patient.lastUpdated);
+                                            return d ? d.toLocaleString(['nl']) : 'Onbekend';
+                                        })()}
+                                    </td>
+                                    <td className="p-3 d-flex gap-2 align-items-center">
+                                        {patient.status === PatientStatuses.STABLE && (
+                                            <FontAwesomeIcon icon={faCircleCheck} className="text-success" />
+                                        )}
+                                        {patient.status === PatientStatuses.MONITORING && (
+                                            <FontAwesomeIcon icon={faHeartPulse} className="text-warning" />
+                                        )}
+                                        {patient.status === PatientStatuses.CRITICAL && (
+                                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-danger" />
+                                        )}
+                                        {patient.status}
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>

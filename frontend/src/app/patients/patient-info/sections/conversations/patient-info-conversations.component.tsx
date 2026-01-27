@@ -1,14 +1,17 @@
-import type { CreateConversationData, User } from '@/models';
+import { BASE_URL, type CreateConversationData, type User } from '@/models';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { parseDate } from '../../../../../utils/parseDate.ts';
 import { useCreateConversationMutation, useGetConversationsQuery } from '../../../../conversations';
 import ConversationCardComponent from '../../../../conversations/conversation-card.component.tsx';
-import { useGetPatientByIdQuery } from '../../../patients.api.ts';
+import { useGetPatientByIdQuery, useUpdatePatientMutation } from '../../../patients.api.ts';
 import './patient-info-conversations.component.css';
 
 export default function PatientInfoConversationsComponent() {
     const { patientId } = useParams();
     const { user } = useAuth0();
+    const [refresh, setRefresh] = useState(0);
 
     const { data: patient } = useGetPatientByIdQuery(patientId);
 
@@ -16,6 +19,7 @@ export default function PatientInfoConversationsComponent() {
         to: patientId,
     });
     const [createConversation] = useCreateConversationMutation();
+    const [updatePatient] = useUpdatePatientMutation();
 
     async function onAddNote(formData: FormData) {
         const data: CreateConversationData = {
@@ -29,10 +33,17 @@ export default function PatientInfoConversationsComponent() {
             } as User,
         };
         await createConversation(data);
+        if (patient) {
+            await updatePatient({ ...patient, lastUpdated: new Date().toISOString() });
+        }
+        setRefresh((r) => r + 1); // trigger refresh
     }
 
+    function getRoles() {
+        return user?.[`${BASE_URL}/roles`] ?? [];
+    }
     function canAddMessage() {
-        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        const roles: string[] = getRoles();
         return roles.every((role) => role !== 'Patient');
     }
 
@@ -63,9 +74,18 @@ export default function PatientInfoConversationsComponent() {
                 <div className="card-body">
                     <h5 className="card-title">Gespreksgeschiedenis</h5>
                     <div className="d-flex flex-column gap-2">
-                        {(conversations ?? []).map((conversation) => (
-                            <ConversationCardComponent conversation={conversation} key={conversation.id} />
-                        ))}
+                        {[...(conversations ?? [])]
+                            .sort((a, b) => {
+                                const da = parseDate(a.timestamp);
+                                const db = parseDate(b.timestamp);
+                                return db && da ? db.getTime() - da.getTime() : 0;
+                            })
+                            .map((conversation) => (
+                                <ConversationCardComponent
+                                    conversation={conversation}
+                                    key={conversation.id + refresh}
+                                />
+                            ))}
                         {(!conversations || conversations?.length === 0) && (
                             <p className="card-text">Geen resultaten</p>
                         )}

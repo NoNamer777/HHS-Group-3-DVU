@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/models';
 import { useAuth0 } from '@auth0/auth0-react';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,13 +21,15 @@ export default function HeaderComponent() {
         navigate('/dashboard');
     }
 
+    function getRoles() {
+        return user?.[`${BASE_URL}/roles`] ?? [];
+    }
     function canSeePatients() {
-        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        const roles: string[] = getRoles();
         return roles.every((role) => role !== 'Patient');
     }
-
     function isAdmin() {
-        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        const roles: string[] = getRoles();
         return roles.some((role) => role === 'Admin');
     }
 
@@ -67,9 +70,7 @@ export default function HeaderComponent() {
                         <li className="nav-item d-flex">
                             <div className="d-flex flex-column align-items-center p-1">
                                 <span className="navbar-text fw-bold flex-grow-0 p-0">{user.email}</span>
-                                <span className="navbar-text text-sm ms-auto flex-grow-0 p-0">
-                                    {user['http://localhost:5173/roles'][0]}
-                                </span>
+                                <span className="navbar-text text-sm ms-auto flex-grow-0 p-0">{getRoles()[0]}</span>
                             </div>
                             <button className="nav-link" type="button" onClick={onLogOut}>
                                 <FontAwesomeIcon icon={faArrowRightFromBracket} size="3x" />

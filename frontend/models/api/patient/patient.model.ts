@@ -10,12 +10,12 @@ export interface Patient extends User {
     /**
      * Timestamp in ms since the epoch.
      */
-    dateOfBirth: number; // Date;
+    dateOfBirth: string; // Date;
 
     /**
      * Timestamp in ms since the epoch.
      */
-    lastUpdated: number; // Date;
+    lastUpdated: string; // Date;
 }
 
-export type CreatePatientData = Omit<Patient, 'id' | 'lastUpdated'>;
+export type CreatePatientData = Omit<Patient, 'id' | 'lastUpdated' | 'email' | 'password' | 'role'>;

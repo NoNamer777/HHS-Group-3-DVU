@@ -10,6 +10,9 @@ import { BrowserRouter } from 'react-router-dom';
 import '../public/style.css';
 import App from './app/app';
 import store from './app/store';
+import { seedLocalStorage } from './utils/seed';
+// Seed dummy data if needed
+seedLocalStorage();
 
 const rootElement = document.getElementById('root');
 

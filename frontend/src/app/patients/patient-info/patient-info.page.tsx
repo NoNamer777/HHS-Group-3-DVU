@@ -1,7 +1,9 @@
+import { BASE_URL } from '@/models';
 import { useAuth0 } from '@auth0/auth0-react';
 import { faArrowLeft, faComments, faFlaskVial, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { parseDate } from '../../../utils/parseDate';
 import { useGetPatientByIdQuery } from '../patients.api';
 import './patient-info.page.css';
 
@@ -16,8 +18,11 @@ export default function PatientInfoPage() {
         await navigate('/dashboard');
     }
 
+    function getRoles() {
+        return user?.[`${BASE_URL}/roles`] ?? [];
+    }
     function isNotPatient() {
-        const roles: string[] = user['http://localhost:5173/roles'] ?? [];
+        const roles: string[] = getRoles();
         return !roles.every((role) => role === 'Patient');
     }
 
@@ -49,9 +54,14 @@ export default function PatientInfoPage() {
                             <div>
                                 <p className="card-title fw-bold fs-5 mb-1">{patient.name}</p>
                                 <p className="card-text text-muted fw-semibold d-flex gap-2 mb-0">
-                                    <span>{new Date(patient.dateOfBirth).toLocaleDateString(['nl'])}</span>
+                                    <span>
+                                        {(() => {
+                                            const d = parseDate(patient.dateOfBirth);
+                                            return d ? d.toLocaleDateString('nl-NL') : 'Onbekende geboortedatum';
+                                        })()}
+                                    </span>
                                     <span>•</span>
-                                    <span>{patient.gender}</span>
+                                    <span>{patient.gender ?? 'Onbekend'}</span>
                                 </p>
                                 <p className="card-text text-muted fw-semibold d-flex gap-2 mb-0">
                                     <span>Aandoening:</span>
@@ -59,7 +69,12 @@ export default function PatientInfoPage() {
                                 </p>
                                 <p className="card-text text-muted fw-semibold d-flex gap-2">
                                     <span>Laatst bijgewerkt:</span>
-                                    <span>{new Date(patient.lastUpdated).toLocaleString(['nl'])}</span>
+                                    <span>
+                                        {(() => {
+                                            const d = parseDate(patient.lastUpdated);
+                                            return d ? d.toLocaleString('nl-NL') : 'Onbekend';
+                                        })()}
+                                    </span>
                                 </p>
                             </div>
                         </div>

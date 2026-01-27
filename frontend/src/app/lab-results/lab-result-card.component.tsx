@@ -1,4 +1,5 @@
 import type { LabResult } from '@/models';
+import { parseDate } from '../../utils/parseDate';
 
 interface LabResultCardComponentProps {
     labResult: LabResult;
@@ -23,7 +24,12 @@ export default function LabResultCardComponent(props: LabResultCardComponentProp
                     </span>
                 </div>
                 <small className="text-muted d-flex align-items-center justify-content-between">
-                    <span>{new Date(labResult.timestamp).toLocaleDateString()}</span>
+                    <span>
+                        {(() => {
+                            const d = parseDate(labResult.timestamp);
+                            return d ? d.toLocaleDateString('nl-NL') : 'Onbekende datum';
+                        })()}
+                    </span>
                     {labResult.minValue && labResult.maxValue && (
                         <span>
                             Normaal: {labResult.minValue} - {labResult.maxValue}

@@ -1,97 +1,61 @@
-import {
-    BASE_URL,
-    buildResourceEndPoint,
-    type Conversation,
-    type CreateConversationData,
-    RequestMethods,
-    TAG_LIST_ID,
-} from '@/models';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { type Conversation, type CreateConversationData } from '@/models';
+import { add, getAll, getById, remove, update } from '../../utils/LocalStorageAdapter';
 
-const END_POINT = '/api/conversations' as const;
-const TAG_TYPE = 'Conversation' as const;
+const CONVERSATIONS_KEY = 'conversations';
 
-interface GetAllQueryParams {
-    to?: string;
-    limit?: number;
+export function useGetConversationsQuery(params?: { to?: string; limit?: number }) {
+    let conversations = getAll<Conversation>(CONVERSATIONS_KEY);
+    if (params?.to) {
+        conversations = conversations.filter((c) => c.to?.id === params.to);
+    }
+    if (params?.limit) {
+        conversations = conversations.slice(0, params.limit);
+    }
+    return {
+        data: conversations,
+        refetch: () => {},
+    };
 }
 
-export const conversationsApi = createApi({
-    reducerPath: 'conversationsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-    tagTypes: [TAG_TYPE],
-    endpoints: (build) => ({
-        getConversations: build.query<Conversation[], GetAllQueryParams | void>({
-            query: (params) => {
-                if (!params) return END_POINT;
-                const queryParams = new URLSearchParams();
+export function useCreateConversationMutation() {
+    return [
+        async (data: CreateConversationData) => {
+            const id = Math.random().toString(36).slice(2);
+            // Force timestamp as ISO string (YYYY-MM-DDTHH:mm:ssZ) for consistency
+            let timestamp: string;
+            if (typeof (data as any).timestamp === 'string') {
+                timestamp = (data as any).timestamp;
+            } else if (typeof (data as any).timestamp === 'number') {
+                timestamp = new Date((data as any).timestamp).toISOString();
+            } else {
+                timestamp = new Date().toISOString();
+            }
+            add(CONVERSATIONS_KEY, { ...data, id, timestamp });
+            return { ...data, id, timestamp };
+        },
+    ];
+}
 
-                if (params.limit) {
-                    queryParams.set('limit', `${params.limit}`);
-                }
-                if (params.to) {
-                    queryParams.set('to', params.to);
-                }
-                const queryString = queryParams.toString();
+export function useGetConversationByIdQuery(conversationId?: string) {
+    return {
+        data: conversationId ? getById<Conversation>(CONVERSATIONS_KEY, conversationId) : undefined,
+        isLoading: false,
+    };
+}
 
-                if (!queryString) return END_POINT;
-                return `${END_POINT}?${queryString}`;
-            },
-            providesTags: (conversations) =>
-                conversations
-                    ? [
-                          ...conversations.map(({ id }) => ({
-                              type: TAG_TYPE,
-                              id: id,
-                          })),
-                          { type: TAG_TYPE, id: TAG_LIST_ID },
-                      ]
-                    : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
+export function useUpdateConversationMutation() {
+    return [
+        async (conversation: Conversation) => {
+            update(CONVERSATIONS_KEY, conversation);
+            return conversation;
+        },
+    ];
+}
 
-        createConversation: build.mutation<Conversation, CreateConversationData>({
-            query: (data) => ({
-                url: END_POINT,
-                method: RequestMethods.POST,
-                body: data,
-            }),
-            invalidatesTags: [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
-
-        getConversationById: build.query<Conversation, string>({
-            query: (conversationId) => buildResourceEndPoint(END_POINT, conversationId),
-            providesTags: (conversation) => [{ type: TAG_TYPE, id: conversation.id }],
-        }),
-
-        updateConversation: build.mutation<Conversation, Conversation>({
-            query: ({ id: conversationId, ...conversation }) => ({
-                url: buildResourceEndPoint(END_POINT, conversationId),
-                method: RequestMethods.PUT,
-                body: conversation,
-            }),
-            invalidatesTags: (result) => [
-                { type: TAG_TYPE, id: result.id },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-
-        removeConversation: build.mutation<void, string>({
-            query: (conversationId) => ({
-                url: buildResourceEndPoint(END_POINT, conversationId),
-                method: RequestMethods.DELETE,
-            }),
-            invalidatesTags: (_result, _error, conversationId) => [
-                { type: TAG_TYPE, id: conversationId },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-    }),
-});
-
-export const {
-    useGetConversationsQuery,
-    useCreateConversationMutation,
-    useGetConversationByIdQuery,
-    useUpdateConversationMutation,
-    useRemoveConversationMutation,
-} = conversationsApi;
+export function useRemoveConversationMutation() {
+    return [
+        async (conversationId: string) => {
+            remove(CONVERSATIONS_KEY, conversationId);
+        },
+    ];
+}

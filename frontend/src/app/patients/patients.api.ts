@@ -1,94 +1,49 @@
-import {
-    BASE_URL,
-    buildResourceEndPoint,
-    type CreatePatientData,
-    type Patient,
-    RequestMethods,
-    TAG_LIST_ID,
-} from '@/models';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { type CreatePatientData, type Patient } from '@/models';
+import { add, getAll, getById, remove, update } from '../../utils/LocalStorageAdapter';
 
-const END_POINT = '/api/patients' as const;
+const PATIENTS_KEY = 'patients';
 
-const TAG_TYPE = 'Patient' as const;
-
-interface GetAllPatientsQueryParams {
-    name?: string;
+export function useGetPatientsQuery(params?: { name?: string }) {
+    return {
+        data: getAll<Patient>(PATIENTS_KEY).filter((p: Patient) =>
+            params?.name ? p.name?.toLowerCase().includes(params.name.toLowerCase()) : true,
+        ),
+        refetch: () => {},
+    };
 }
 
-export const patientsApi = createApi({
-    reducerPath: 'patientsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-    tagTypes: [TAG_TYPE],
-    endpoints: (build) => ({
-        getPatients: build.query<Patient[], GetAllPatientsQueryParams | void>({
-            query: (params) => {
-                if (!params) return END_POINT;
-                const queryParams = new URLSearchParams();
+export function useCreatePatientMutation() {
+    return [
+        async (data: CreatePatientData) => {
+            const id = Math.random().toString(36).slice(2);
+            // Force lastUpdated as ISO string with date and time
+            const lastUpdated = new Date().toISOString();
+            add(PATIENTS_KEY, { ...data, id, lastUpdated });
+            return { ...data, id, lastUpdated };
+        },
+    ];
+}
 
-                if (params.name) {
-                    queryParams.set('name', params.name);
-                }
-                const query = queryParams.toString();
+export function useGetPatientByIdQuery(patientId?: string) {
+    return {
+        data: patientId ? getById<Patient>(PATIENTS_KEY, patientId) : undefined,
+        isLoading: false,
+    };
+}
 
-                if (!query) return END_POINT;
-                return `${END_POINT}?${queryParams}`;
-            },
-            providesTags: (patients) =>
-                patients
-                    ? [
-                          ...patients.map(({ id }) => ({
-                              type: TAG_TYPE,
-                              id: id,
-                          })),
-                          { type: TAG_TYPE, id: TAG_LIST_ID },
-                      ]
-                    : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
+export function useUpdatePatientMutation() {
+    return [
+        async (patient: Patient) => {
+            update(PATIENTS_KEY, patient);
+            return patient;
+        },
+    ];
+}
 
-        createPatient: build.mutation<Patient, CreatePatientData>({
-            query: (data) => ({
-                url: END_POINT,
-                method: RequestMethods.POST,
-                body: data,
-            }),
-            invalidatesTags: [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
-
-        getPatientById: build.query<Patient, string>({
-            query: (patientId) => buildResourceEndPoint(END_POINT, patientId),
-            providesTags: (patient) => [{ type: TAG_TYPE, id: patient.id }],
-        }),
-
-        updatePatient: build.mutation<Patient, Patient>({
-            query: ({ id: patientId, ...patient }) => ({
-                url: buildResourceEndPoint(END_POINT, patientId),
-                method: RequestMethods.PUT,
-                body: patient,
-            }),
-            invalidatesTags: (result) => [
-                { type: TAG_TYPE, id: result.id },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-
-        removePatient: build.mutation<void, string>({
-            query: (patientId) => ({
-                url: buildResourceEndPoint(END_POINT, patientId),
-                method: RequestMethods.DELETE,
-            }),
-            invalidatesTags: (_result, _error, patientId) => [
-                { type: TAG_TYPE, id: patientId },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-    }),
-});
-
-export const {
-    useGetPatientsQuery,
-    useCreatePatientMutation,
-    useGetPatientByIdQuery,
-    useUpdatePatientMutation,
-    useRemovePatientMutation,
-} = patientsApi;
+export function useRemovePatientMutation() {
+    return [
+        async (patientId: string) => {
+            remove(PATIENTS_KEY, patientId);
+        },
+    ];
+}

@@ -1,97 +1,61 @@
-import {
-    BASE_URL,
-    buildResourceEndPoint,
-    type CreateLabResultData,
-    type LabResult,
-    RequestMethods,
-    TAG_LIST_ID,
-} from '@/models';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { type CreateLabResultData, type LabResult } from '@/models';
+import { add, getAll, getById, remove, update } from '../../utils/LocalStorageAdapter';
 
-const END_POINT = '/api/lab-results' as const;
-const TAG_TYPE = 'LabResult' as const;
+const LAB_RESULTS_KEY = 'labResults';
 
-interface GetAllQueryParams {
-    patient?: string;
-    limit?: number;
+export function useGetLabResultsQuery(params?: { patient?: string; limit?: number }) {
+    let results = getAll<LabResult>(LAB_RESULTS_KEY);
+    if (params?.patient) {
+        results = results.filter((r) => r.patient?.id === params.patient);
+    }
+    if (params?.limit) {
+        results = results.slice(0, params.limit);
+    }
+    return {
+        data: results,
+        refetch: () => {},
+    };
 }
 
-export const labResultsApi = createApi({
-    reducerPath: 'labResultsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-    tagTypes: [TAG_TYPE],
-    endpoints: (build) => ({
-        getLabResults: build.query<LabResult[], GetAllQueryParams | void>({
-            query: (params) => {
-                if (!params) return END_POINT;
-                const queryParams = new URLSearchParams();
+export function useCreateLabResultMutation() {
+    return [
+        async (data: CreateLabResultData) => {
+            const id = Math.random().toString(36).slice(2);
+            // Force timestamp as ISO string (YYYY-MM-DD) for consistency
+            let timestamp: string;
+            if (typeof (data as any).timestamp === 'string') {
+                timestamp = (data as any).timestamp;
+            } else if (typeof (data as any).timestamp === 'number') {
+                timestamp = new Date((data as any).timestamp).toISOString().slice(0, 10);
+            } else {
+                timestamp = new Date().toISOString().slice(0, 10);
+            }
+            add(LAB_RESULTS_KEY, { ...data, id, timestamp });
+            return { ...data, id, timestamp };
+        },
+    ];
+}
 
-                if (params.limit) {
-                    queryParams.set('limit', `${params.limit}`);
-                }
-                if (params.patient) {
-                    queryParams.set('patient', params.patient);
-                }
-                const queryString = queryParams.toString();
+export function useGetLabResultByIdQuery(labResultId?: string) {
+    return {
+        data: labResultId ? getById<LabResult>(LAB_RESULTS_KEY, labResultId) : undefined,
+        isLoading: false,
+    };
+}
 
-                if (!queryString) return END_POINT;
-                return `${END_POINT}?${queryString}`;
-            },
-            providesTags: (labResults) =>
-                labResults
-                    ? [
-                          ...labResults.map(({ id }) => ({
-                              type: TAG_TYPE,
-                              id: id,
-                          })),
-                          { type: TAG_TYPE, id: TAG_LIST_ID },
-                      ]
-                    : [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
+export function useUpdateLabResultMutation() {
+    return [
+        async (labResult: LabResult) => {
+            update(LAB_RESULTS_KEY, labResult);
+            return labResult;
+        },
+    ];
+}
 
-        createLabResult: build.mutation<LabResult, CreateLabResultData>({
-            query: (data) => ({
-                url: END_POINT,
-                method: RequestMethods.POST,
-                body: data,
-            }),
-            invalidatesTags: [{ type: TAG_TYPE, id: TAG_LIST_ID }],
-        }),
-
-        getLabResultById: build.query<LabResult, string>({
-            query: (labResultId) => buildResourceEndPoint(END_POINT, labResultId),
-            providesTags: (labResult) => [{ type: TAG_TYPE, id: labResult.id }],
-        }),
-
-        updateLabResult: build.mutation<LabResult, LabResult>({
-            query: ({ id: labResultId, ...labResult }) => ({
-                url: buildResourceEndPoint(END_POINT, labResultId),
-                method: RequestMethods.PUT,
-                body: labResult,
-            }),
-            invalidatesTags: (result) => [
-                { type: TAG_TYPE, id: result.id },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-
-        removeLabResult: build.mutation<void, string>({
-            query: (labResultId) => ({
-                url: buildResourceEndPoint(END_POINT, labResultId),
-                method: RequestMethods.DELETE,
-            }),
-            invalidatesTags: (_result, _error, labResultId) => [
-                { type: TAG_TYPE, id: labResultId },
-                { type: TAG_TYPE, id: TAG_LIST_ID },
-            ],
-        }),
-    }),
-});
-
-export const {
-    useGetLabResultsQuery,
-    useCreateLabResultMutation,
-    useGetLabResultByIdQuery,
-    useUpdateLabResultMutation,
-    useRemoveLabResultMutation,
-} = labResultsApi;
+export function useRemoveLabResultMutation() {
+    return [
+        async (labResultId: string) => {
+            remove(LAB_RESULTS_KEY, labResultId);
+        },
+    ];
+}
